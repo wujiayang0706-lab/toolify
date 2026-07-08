@@ -83,7 +83,8 @@
 }
 .login-provider-btn:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
 .google-btn:hover{background:#f8faf9;border-color:#4285F4}
-.line-btn:hover{background:#f0fdf4;border-color:#06C755}
+.apple-btn{background:#000!important;color:#fff!important;border-color:#000!important}
+.apple-btn:hover{background:#1a1a1a!important;border-color:#1a1a1a!important}
 .login-note{font-size:12px;color:var(--text-muted)}
 .login-demo-banner{background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:12px;padding:10px 14px;border-radius:8px;margin-bottom:20px;line-height:1.5}
 .demo-checkout-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:20px}

@@ -1,6 +1,6 @@
 /**
  * Toolify Auth & Common App Logic
- * Handles: Google login (GIS), LINE login (implicit flow), user state,
+ * Handles: Google login (GIS), Sign in with Apple (implicit flow), user state,
  * premium status, usage tracking, and UI updates.
  */
 (function() {
@@ -61,13 +61,13 @@
   // ---- Demo Mode (active when credentials are placeholders) ----
   function isDemoMode() {
     return CONFIG.GOOGLE_CLIENT_ID.startsWith('YOUR_') ||
-           CONFIG.LINE_CHANNEL_ID.startsWith('YOUR_');
+           CONFIG.APPLE_CLIENT_ID.startsWith('YOUR_');
   }
 
   function demoLogin(provider) {
     var names = {
       google: 'Demo Google User',
-      line: 'Demo LINE User'
+      apple: 'Demo Apple User'
     };
     var name = names[provider] || 'Demo User';
     setUser({
@@ -127,59 +127,67 @@
     }
   }
 
-  // ---- LINE Login (implicit grant flow) ----
-  function loginWithLINE() {
-    if (CONFIG.LINE_CHANNEL_ID.startsWith('YOUR_')) {
-      // Demo mode: simulate LINE login
-      demoLogin('line');
+  // ---- Sign in with Apple (implicit flow, no backend needed) ----
+  function loginWithApple() {
+    if (CONFIG.APPLE_CLIENT_ID.startsWith('YOUR_')) {
+      // Demo mode: simulate Apple login
+      demoLogin('apple');
       return;
     }
-    const redirectUri = encodeURIComponent(window.location.origin + '/auth/line-callback.html');
-    const state = Math.random().toString(36).substring(2);
-    localStorage.setItem('line_auth_state', state);
-    const url = 'https://access.line.me/oauth2/v2.1/authorize' +
-      '?response_type=token' +
-      '&client_id=' + CONFIG.LINE_CHANNEL_ID +
+    var redirectUri = encodeURIComponent(window.location.origin + '/auth/apple-callback.html');
+    var state = Math.random().toString(36).substring(2);
+    var nonce = Math.random().toString(36).substring(2);
+    localStorage.setItem('apple_auth_state', state);
+    var url = 'https://appleid.apple.com/auth/authorize' +
+      '?response_type=id_token' +
+      '&response_mode=fragment' +
+      '&client_id=' + CONFIG.APPLE_CLIENT_ID +
       '&redirect_uri=' + redirectUri +
       '&state=' + state +
-      '&scope=profile%20openid';
+      '&nonce=' + nonce +
+      '&scope=name%20email';
     window.location.href = url;
   }
 
-  // Called by line-callback.html after redirect
-  window.handleLINECallback = function() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token');
-    const state = params.get('state');
-    const savedState = localStorage.getItem('line_auth_state');
-    localStorage.removeItem('line_auth_state');
+  // Called by apple-callback.html after redirect
+  window.handleAppleCallback = function() {
+    var hash = window.location.hash.substring(1);
+    var params = new URLSearchParams(hash);
+    var idToken = params.get('id_token');
+    var state = params.get('state');
+    var savedState = localStorage.getItem('apple_auth_state');
+    localStorage.removeItem('apple_auth_state');
 
-    if (!accessToken || state !== savedState) {
-      // Redirect to home with error
-      window.location.href = '/?login_error=line';
+    if (!idToken || state !== savedState) {
+      window.location.href = '/?login_error=apple';
       return;
     }
 
-    fetch('https://api.line.me/v2/profile', {
-      headers: { 'Authorization': 'Bearer ' + accessToken }
-    })
-    .then(r => r.json())
-    .then(profile => {
+    try {
+      // Decode JWT payload (id_token)
+      var payload = JSON.parse(atob(idToken.split('.')[1]));
+      var user = params.get('user'); // First-time login only: JSON with name
+      var name = 'Apple User';
+      if (user) {
+        var userInfo = JSON.parse(user);
+        if (userInfo.name) {
+          name = (userInfo.name.firstName || '') + ' ' + (userInfo.name.lastName || '');
+          name = name.trim() || 'Apple User';
+        }
+      }
       setUser({
-        provider: 'line',
-        id: profile.userId,
-        name: profile.displayName,
-        email: profile.email || null,
-        avatar: profile.pictureUrl,
+        provider: 'apple',
+        id: payload.sub,
+        name: name,
+        email: payload.email || null,
+        avatar: null,
         premium: false
       });
       window.location.href = '/';
-    })
-    .catch(err => {
-      console.error('LINE profile error:', err);
-      window.location.href = '/?login_error=line';
-    });
+    } catch (err) {
+      console.error('Apple login error:', err);
+      window.location.href = '/?login_error=apple';
+    }
   };
 
   // ---- Login Modal ----
@@ -267,7 +275,7 @@
         login_success: 'Welcome', login_failed: 'Login failed. Please try again.',
         logged_out: 'You have been logged out.',
         login_title: 'Welcome to Toolify', login_subtitle: 'Login to sync your subscriptions and unlock premium features.',
-        login_with_google: 'Continue with Google', login_with_line: 'Continue with LINE',
+        login_with_google: 'Continue with Google', login_with_apple: 'Sign in with Apple',
         or_continue: 'or', no_signup: 'No signup required — just one click.',
         my_account: 'My Account', upgrade: 'Upgrade to Premium',
         premium_member: 'Premium Member', free_member: 'Free Member'
@@ -277,7 +285,7 @@
         login_success: '欢迎', login_failed: '登录失败，请重试。',
         logged_out: '您已退出登录。',
         login_title: '欢迎来到 Toolify', login_subtitle: '登录以同步您的订阅并解锁高级功能。',
-        login_with_google: '使用 Google 继续', login_with_line: '使用 LINE 继续',
+        login_with_google: '使用 Google 继续', login_with_apple: '使用 Apple 登录',
         or_continue: '或', no_signup: '无需注册—一键登录。',
         my_account: '我的账户', upgrade: '升级到高级会员',
         premium_member: '高级会员', free_member: '免费用户'
@@ -287,7 +295,7 @@
         login_success: 'ようこそ', login_failed: 'ログインに失敗しました。もう一度お試しください。',
         logged_out: 'ログアウトしました。',
         login_title: 'Toolifyへようこそ', login_subtitle: 'ログインしてサブスクリプションを同期し、プレミアム機能のロックを解除します。',
-        login_with_google: 'Googleで続行', login_with_line: 'LINEで続行',
+        login_with_google: 'Googleで続行', login_with_apple: 'Appleでサインイン',
         or_continue: 'または', no_signup: '登録不要—ワンクリックでログイン。',
         my_account: 'マイアカウント', upgrade: 'プレミアムにアップグレード',
         premium_member: 'プレミアム会員', free_member: '無料会員'
@@ -304,7 +312,7 @@
     var demoBanner = demo ?
       '<div class="login-demo-banner">Demo Mode — credentials not configured yet. Click any provider to simulate login.</div>' : '';
     var googleClick = demo ? ' onclick="demoLogin(\'google\')" style="cursor:pointer"' : '';
-    var lineClick = demo ? ' onclick="demoLogin(\'line\')"' : ' onclick="loginWithLINE()"';
+    var appleClick = demo ? ' onclick="demoLogin(\'apple\')" style="cursor:pointer"' : ' onclick="loginWithApple()"';
 
     const modal = document.createElement('div');
     modal.id = 'loginModal';
@@ -321,9 +329,9 @@
             '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>' +
             '<span>' + getText('login_with_google') + '</span>' +
           '</div>' +
-          '<div id="line-login-btn" class="login-provider-btn line-btn"' + lineClick + '>' +
-            '<svg viewBox="0 0 24 24" width="20" height="20" fill="#06C755"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-10.781.629c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.345 0 .63.285.63.63v4.771c0 .344-.285.629-.63.629zM12 1C5.926 1 1 5.926 1 12s4.926 11 11 11 11-4.926 11-11S18.074 1 12 1z"/></svg>' +
-            '<span>' + getText('login_with_line') + '</span>' +
+          '<div id="apple-login-btn" class="login-provider-btn apple-btn"' + appleClick + '>' +
+            '<svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M17.05 12.04c-.02-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.78 1.3 10.33.86 1.25 1.88 2.65 3.22 2.6 1.29-.05 1.78-.83 3.34-.83 1.56 0 2 .83 3.37.81 1.39-.03 2.27-1.27 3.12-2.53.98-1.44 1.39-2.83 1.41-2.9-.03-.01-2.7-1.04-2.72-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.66.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg>' +
+            '<span>' + getText('login_with_apple') + '</span>' +
           '</div>' +
         '</div>' +
         '<p class="login-note">' + getText('no_signup') + '</p>' +
@@ -396,7 +404,7 @@
   // ---- Check URL for login errors ----
   function checkLoginErrors() {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('login_error') === 'line') {
+    if (params.get('login_error') === 'apple') {
       showToast(getText('login_failed'), true);
       history.replaceState(null, '', window.location.pathname);
     }
@@ -417,13 +425,13 @@
     getUser, setUser, isLoggedIn, isPremium, logout,
     canUse, incrementUsage, getMaxFileSize,
     openLoginModal, closeLoginModal, updateAuthUI,
-    loginWithLINE, initGoogleAuth
+    loginWithApple, initGoogleAuth
   };
 
   // Expose simple functions globally for onclick handlers
   window.openLoginModal = openLoginModal;
   window.closeLoginModal = closeLoginModal;
-  window.loginWithLINE = loginWithLINE;
+  window.loginWithApple = loginWithApple;
   window.demoLogin = demoLogin;
   window.logout = logout;
   window.toggleUserMenu = toggleUserMenu;
