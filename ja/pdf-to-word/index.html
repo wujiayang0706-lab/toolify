@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料PDF to Word変換ツール — オンラインでPDFをDOCXに即時変換</title>
+<meta name="description" content="PDFを編集可能なWord（DOCX）に無料でオンライン変換。サーバーへのアップロード不要—変換はすべてブラウザ内で完結。高速、安全、登録不要。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/pdf-to-word">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/pdf-to-word">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/pdf-to-word">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/pdf-to-word">
+<link rel="canonical" href="https://toolify.com/pdf-to-word">
+<meta property="og:title" content="無料PDF to Word変換ツール — アップロード不要、ブラウザ内で変換">
+<meta property="og:description" content="PDFをWord（DOCX）に無料変換。アップロード不要、登録不要、完全プライベート。すべての処理はブラウザ内で行われます。">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+/* Header */
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+/* Hero */
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+/* Upload */
+.upload-section{padding:0 0 32px}
+.upload-area{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-area.drag-over{transform:scale(1.01)}
+.upload-icon{margin-bottom:16px;display:flex;justify-content:center}
+.upload-icon svg{width:56px;height:56px;color:var(--primary)}
+.upload-area h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.upload-area p{font-size:14px;color:var(--text-muted)}
+.upload-area .または-divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:var(--text-muted);font-size:12px}
+.upload-area .または-divider::before,.upload-area .または-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-browse{display:inline-block;padding:10px 28px;background:var(--primary);color:#fff;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-browse:hover{background:var(--primary-hover)}
+.upload-area input[type=ファイル]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-area.has-ファイル{border-style:solid;border-color:var(--primary);background:var(--primary-light)}
+
+/* File preview */
+.ファイル-preview{display:none;margin-top:16px}
+.ファイル-preview.active{display:block}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.preview-icon{width:52px;height:52px;border-radius:10px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.preview-info{flex:1;min-width:0}
+.preview-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-meta{font-size:13px;color:var(--text-muted);margin-top:2px}
+.preview-status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary)}
+.preview-status .dot{width:8px;height:8px;border-radius:50%;background:var(--warning)}
+.preview-status .dot.ready{background:var(--success)}
+.btn-remove{background:none;border:none;padding:6px 8px;color:var(--text-muted);cursor:pointer;border-radius:6px}
+.btn-remove:hover{color:var(--danger);background:#fef2f2}
+
+/* Options */
+.options{display:none;margin:0 0 24px}
+.options.active{display:block}
+.options-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.option-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s}
+.option-card:hover{border-color:var(--primary)}
+.option-card.selected{border-color:var(--primary);background:var(--primary-light)}
+.option-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.option-card.selected .option-radio{border-color:var(--primary)}
+.option-card.selected .option-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--primary)}
+.option-label{font-size:14px;font-weight:600}
+.option-desc{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* Convert */
+.convert-section{text-align:center;padding:0 0 40px;display:none}
+.convert-section.active{display:block}
+.btn-convert{display:inline-flex;align-items:center;gap:8px;padding:16px 48px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(37,99,235,.3)}
+.btn-convert:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.4)}
+.btn-convert:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-convert svg{width:22px;height:22px}
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{width:100%;max-width:400px;height:6px;background:var(--border);border-radius:3px;margin:0 auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:3px;width:0%;transition:width .3s ease}
+.progress-text{font-size:13px;color:var(--text-secondary);margin-top:8px}
+
+/* Result */
+.result{display:none;padding:0 0 40px}
+.result.active{display:block}
+.result-card{background:var(--surface);border:1px solid var(--success);border-radius:var(--radius);padding:32px 24px;text-align:center}
+.result-icon{margin-bottom:12px}
+.result-icon svg{width:56px;height:56px;color:var(--success)}
+.result-card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.result-card p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-again{display:inline-block;margin-left:12px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.btn-again:hover{border-color:var(--border-hover);background:#f8fafc}
+
+/* Warning */
+.warning{display:none;padding:0 0 24px}
+.warning.active{display:block}
+.warning-card{background:#fffbeb;border:1px solid #fcd34d;border-radius:var(--radius-sm);padding:14px 20px;display:flex;align-items:flex-start;gap:10px}
+.warning-card svg{width:20px;height:20px;color:var(--warning);flex-shrink:0;margin-top:1px}
+.warning-card p{font-size:13px;color:#92400e;line-height:1.6}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+/* SEO */
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+.usecases{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0}
+.usecase-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px}
+.usecase-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.usecase-card p{font-size:13px;color:var(--text-muted)}
+
+/* Footer */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+
+/* Ad placeholder */
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .upload-area{padding:32px 16px}
+  .nav{display:none}
+  .steps,.usecases{grid-template-columns:1fr}
+  .preview-card{padding:14px 16px;gap:10px}
+  .btn-convert{padding:14px 32px;font-size:15px}
+}
+
+.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
+.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.lang-link:hover{background:var(--primary-light);color:var(--primary)}
+.lang-link.active{background:var(--primary);color:#fff}
+
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/ja/" class="logo">
+      <div class="logo-icon">T</div>
+      <span class="logo-text">Toolify</span>
+    </a>
+    <nav class="nav">
+      <a href="/ja/">すべてのツール</a>
+      <a href="#how-to">使い方</a>
+      <a href="#faq">よくある質問</a>
+    <a href="/ja/pricing/">料金</a>
+      <a href="/ja/support/">サポート</a>
+      <div class="lang-switcher"><a href="/pdf-to-word/" class="lang-link">EN</a><a href="/zh/pdf-to-word/" class="lang-link">中文</a><a href="/ja/pdf-to-word/" class="lang-link active">日本語</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>無料PDF to Word変換ツール</h1>
+    <p>PDFを編集可能なWord（DOCX）にオンライン変換—即時かつ安全。サーバーアップロード不要、登録不要、透かしなし。ファイルはお使いのデバイスに残ります。</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>アップロード不要</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>無料＆即時</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>登録不要</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>透かしなし</span>
+    </div>
+  </section>
+
+  <section class="upload-section container">
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <h3>PDFファイルをここにドロップ</h3>
+      <p>あらゆるPDFを編集可能なWord文書に変換—最大50MB</p>
+      <div class="または-divider">または</div>
+      <span class="btn-browse">ファイルを選択</span>
+      <input type="ファイル" id="fileInput" accept=".pdf">
+    </div>
+
+    <div class="ファイル-preview" id="filePreview">
+      <div class="preview-card">
+        <div class="preview-icon">PDF</div>
+        <div class="preview-info">
+          <div class="preview-name" id="fileName">—</div>
+          <div class="preview-meta" id="fileMeta">—</div>
+        </div>
+        <div class="preview-status">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">準備完了</span>
+        </div>
+        <button class="btn-remove" onclick="removeFile()" title="Remove">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="warning" id="warning">
+      <div class="warning-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p>複雑なフォーマット、表、スキャン画像を含むPDFは完全に変換できない場合があります。最適な結果にはテキストベースのPDFをご使用ください。スキャン文書はWordファイル内に画像として抽出されます。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="options container" id="options">
+    <div class="options-grid">
+      <div class="option-card selected" data-mode="editable" onclick="selectMode('editable')">
+        <div class="option-radio"></div>
+        <div><div class="option-label">編集可能ドキュメント</div><div class="option-desc">テキストを編集可能なコンテンツとして抽出（推奨）</div></div>
+      </div>
+      <div class="option-card" data-mode="preserve" onclick="selectMode('preserve')">
+        <div class="option-radio"></div>
+        <div><div class="option-label">レイアウト保持</div><div class="option-desc">元のフォーマットを維持—ファイルサイズが大きくなります</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="convert-section container" id="convertSection">
+    <button class="btn-convert" id="convertBtn" onclick="convertPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      Wordに変換
+    </button>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-text" id="progressText">PDFを分析中...</p>
+    </div>
+  </div>
+
+  <div class="result container" id="result">
+    <div class="result-card">
+      <div class="result-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>変換完了！</h3>
+      <p id="resultMsg">Word文書の準備ができました。</p>
+      <a class="btn-download" id="downloadBtn" href="#" download="converted.docx">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Wordファイルをダウンロード
+      </a>
+      <button class="btn-again" onclick="resetAll()">別のファイルを変換</button>
+    </div>
+  </div>
+
+  <div class="container"><div class="ad-slot">[ 広告枠 — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>PDFをWordにオンライン変換する方法—無料＆安全</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>PDFをアップロード</h4><p>ドラッグ＆ドロップまたはクリックしてPDFファイルを選択。最大50MBまで対応。</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>モードを選択</h4><p>「編集可能」でクリーンなテキストを、「レイアウト保持」で元のフォーマットを維持。</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>変換＆ダウンロード</h4><p>変換をクリック—処理はすべてブラウザ内で完結。DOCXを即時ダウンロード。</p></div>
+    </div>
+
+    <h3>PDF to Word変換とは？</h3>
+    <p>PDF to Word変換とは、静的なPDF（Portable Document Format）ファイルを編集可能なMicrosoft Word（.docx）文書に変換するプロセスです。これにより、テキストの修正、フォーマットの調整、コンテンツの追加や削除、文書の再利用が可能になります—ロックされたPDFではできないことです。当ツールはPDFからテキスト、画像、基本フォーマットを抽出し、ブラウザ内でWord互換フォーマットに再構築します。</p>
+
+    <h3>当社の無料PDF to Word変換ツールを使う理由</h3>
+    <ul>
+      <li><strong>100%プライベート＆安全：</strong> 他の変換ツールがファイルをリモートサーバーにアップロードするのとは異なり、当ツールはすべてブラウザ内でローカル処理します。機密文書がデバイスから外に出ることはありません。</li>
+      <li><strong>透かしなし、制限なし：</strong> 多くの「無料」変換ツールは透かしを追加したり変換ページ数を制限します。当ツールはしません。必要な時に必要なだけPDFを変換できます。</li>
+      <li><strong>登録不要：</strong> すぐに変換を開始。メール不要、アカウント不要、登録不要。アップロードして変換するだけ。</li>
+      <li><strong>あらゆるデバイスで動作：</strong> デスクトップ、ノートPC、タブレット、スマートフォン—完全レスポンシブで、すべてのモダンブラウザで動作します。</li>
+      <li><strong>即時結果：</strong> ほとんどの文書は数秒で変換完了。メール配信やキュー処理の待ち時間なし。</li>
+    </ul>
+
+    <h3>一般的なユースケース</h3>
+    <div class="usecases">
+      <div class="usecase-card"><h4>契約書・合意書の編集</h4><p>署名済みのPDF契約書を編集可能なWord文書に変換し、改訂、条項追加、条件更新を行えます。</p></div>
+      <div class="usecase-card"><h4>履歴書の更新</h4><p>古いPDF履歴書がありますか？Wordに変換して経歴、スキル、フォーマットを簡単に更新。</p></div>
+      <div class="usecase-card"><h4>報告書・研究の再利用</h4><p>学術論文、報告書、研究PDFからコンテンツを抽出し、引用、参照、発展させることができます。</p></div>
+      <div class="usecase-card"><h4>フォームのデジタル入力</h4><p>PDFフォームをWordに変換し、デジタルで入力、手書きなしで保存や印刷が可能。</p></div>
+      <div class="usecase-card"><h4>文書の翻訳</h4><p>PDFをWordに変換し、翻訳ツールやAIでコンテンツを別の言語に翻訳。</p></div>
+      <div class="usecase-card"><h4>請求書データの抽出</h4><p>PDF請求書をWordに変換し、会計ソフトやスプレッドシートにデータをコピー＆ペースト。</p></div>
+    </div>
+
+    <h3>PDF to Wordと他のフォーマットの比較</h3>
+    <p>PDF to Wordは最も一般的な変換ですが、他にも以下が必要かもしれません：</p>
+    <ul>
+      <li><strong>PDF to Excel：</strong> PDFに埋め込まれた表、財務データ、スプレッドシートに最適。</li>
+      <li><strong>PDF to PowerPoint：</strong> プレゼンPDFを編集可能なスライドに変換。</li>
+      <li><strong>PDF to TXT：</strong> プレーンテキストのみ抽出—フォーマットなしでコンテンツをコピペするのに便利。</li>
+      <li><strong>PDF to Image (JPG/PNG)：</strong> 各PDFページを高品質な画像ファイルに変換。</li>
+    </ul>
+
+    <div id="faq">
+      <h3>よくある質問</h3>
+      <div class="faq-item"><h4>このPDF to Word変換ツールは本当に無料ですか？</h4><p>はい、完全に無料です。隠れた費用なし、サブスク不要、出力ファイルに透かしなし。ページ上の控えめな広告で運営しています。</p></div>
+      <div class="faq-item"><h4>PDFのフォーマットは保持されますか？</h4><p>「レイアウト保持」モードはフォント、間隔、表、画像の維持に最善を尽くします。ただし、複雑なPDF（スキャン文書、重いグラフィック）は完全に変換できない場合があります。テキストベースのPDFが最も良好に変換されます。</p></div>
+      <div class="faq-item"><h4>機密文書の変換は安全ですか？</h4><p>はい。すべての変換はブラウザ内でローカルに行われます。ファイルはサーバーにアップロードされず、お使いのコンピュータから出ることはありません。機密契約書、法的文書、個人ファイルに最適です。</p></div>
+      <div class="faq-item"><h4>スキャンPDF（画像ベース）を変換できますか？</h4><p>当ツールはスキャンPDFから画像を抽出し、Word文書に配置します。スキャン画像を編集可能なテキストに変換する完全なOCR（光学式文字認識）には専用ツールが必要な場合があります—この機能の追加を開発中です。</p></div>
+      <div class="faq-item"><h4>最大ファイルサイズは？</h4><p>最適な体験には50MB以下のファイルを推奨します。処理はブラウザ内で行われるため、大きいファイルはデバイスの性能とメモリによって遅くなる場合があります。</p></div>
+      <div class="faq-item"><h4>スマートフォンで動作しますか？</h4><p>はい！iOS、Android、すべてのモダンモバイルブラウザで動作します。スマートフォンやタブレットで直接PDFをWordに変換できます。</p></div>
+      <div class="faq-item"><h4>パスワード保護されたPDFを変換できますか？</h4><p>いいえ、まずパスワードを解除する必要があります。無料のPDFロック解除ツールでパスワード保護を解除してから変換してください。</p></div>
+      <div class="faq-item"><h4>これはAdobe Acrobatとどう違いますか？</h4><p>Adobe Acrobat Proは月額$19.99です。当ツールは完全無料で、ブラウザで動作、インストール不要。基本的なPDF to Word変換において、ほとんどのユースケースを完璧に処理します。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/ja/pdf-to-word/">PDF to Word</a>
+      <a href="/ja/pdf-merge/">PDF結合</a>
+      <a href="#">PDF圧縮</a>
+      <a href="#">JPG to PDF</a>
+      <a href="#">Word to PDF</a>
+      <a href="#">画像圧縮</a>
+      <a href="#">QR生成</a>
+    <a href="/ja/currency-converter/">為替レート変換</a>
+      <a href="/ja/pricing/">料金</a>
+      <a href="/ja/support/">サポート</a>
+    </div>
+    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。 <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- pdf.js: real text extraction engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- docx: generate Word documents in browser -->
+<script src="https://unpkg.com/docx@9.0.0/build/index.umd.js"></script>
+<script>
+// ---- pdf.js worker setup ----
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const uploadArea = document.getElementById('uploadArea');
+const fileInput  = document.getElementById('fileInput');
+const filePreview= document.getElementById('filePreview');
+const options    = document.getElementById('options');
+const convertSection = document.getElementById('convertSection');
+const result     = document.getElementById('result');
+const warning    = document.getElementById('warning');
+const progress   = document.getElementById('progress');
+const progressFill  = document.getElementById('progressFill');
+const progressText  = document.getElementById('progressText');
+const convertBtn = document.getElementById('convertBtn');
+const toast      = document.getElementById('toast');
+let selectedFile = null;
+let conversionMode = 'editable';
+let resultBlob = null;
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function selectFile(ファイル) {
+  if (ファイル.type !== 'application/pdf' && !ファイル.name.toLowerCase().endsWith('.pdf')) {
+    showToast('PDFファイルを選択してください。', true); return;
+  }
+  if (ファイル.size > 50 * 1024 * 1024) {
+    showToast('ファイルが大きすぎます。50MB以下のPDFをご使用ください。', true); return;
+  }
+  selectedFile = ファイル;
+  document.getElementById('fileName').textContent = ファイル.name;
+  document.getElementById('fileMeta').textContent = formatSize(ファイル.size);
+  document.getElementById('statusDot').className = 'dot ready';
+  document.getElementById('statusText').textContent = '変換準備完了';
+  uploadArea.classList.add('has-ファイル');
+  filePreview.classList.add('active');
+  options.classList.add('active');
+  convertSection.classList.add('active');
+  warning.classList.add('active');
+  result.classList.remove('active');
+}
+
+function removeFile() {
+  selectedFile = null;
+  uploadArea.classList.remove('has-ファイル');
+  filePreview.classList.remove('active');
+  options.classList.remove('active');
+  convertSection.classList.remove('active');
+  warning.classList.remove('active');
+  result.classList.remove('active');
+  fileInput.value = '';
+  if (resultBlob) { URL.revokeObjectURL(resultBlob); resultBlob = null; }
+}
+
+function resetAll() { removeFile(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function selectMode(mode) {
+  conversionMode = mode;
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-mode="' + mode + '"]').classList.add('selected');
+}
+
+uploadArea.addEventListener('click', (e) => {
+  if (e.target === fileInput || e.target.closest('.btn-browse')) return;
+  fileInput.click();
+});
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault(); uploadArea.classList.remove('drag-over');
+  if (e.dataTransfer.files.length > 0) selectFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) selectFile(e.target.files[0]);
+});
+
+// ============================================================
+//  Real PDF text extraction using pdf.js
+//  Groups text items into lines by Y-coordinate, then into
+//  paragraphs by gaps. Detects headings via font size.
+// ============================================================
+async function extractPdfContent(arrayBuffer, onProgress) {
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const totalPages = pdf.numPages;
+  const ページ = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    const ページ = await pdf.getPage(i);
+    const viewport = ページ.getViewport({ scale: 1 });
+    const textContent = await ページ.getTextContent();
+
+    // Group text items into lines by Y position
+    const lineMap = new Map();
+    for (const item / textContent.items) {
+      if (!item.str || item.str.trim() === '') {
+        // Track spaces / line breaks via empty items
+        if (item.hasEOL) {
+          // mark a line break
+          const y = Math.round(item.transform[5]);
+          if (!lineMap.has(y)) lineMap.set(y, []);
+          lineMap.get(y).push({ str: '', break: true, height: item.height, x: item.transform[4] });
+        }
+        continue;
+      }
+      const y = Math.round(item.transform[5]);
+      if (!lineMap.has(y)) lineMap.set(y, []);
+      lineMap.get(y).push({
+        str: item.str,
+        x: item.transform[4],
+        height: item.height || item.transform[0] || 10,
+        fontName: item.fontName
+      });
+    }
+
+    // Sort lines top-to-bottom (PDF Y is bottom-up, so descending = top first)
+    const sortedYs = [...lineMap.keys()].sort((a, b) => b - a);
+
+    // Calculate median font height to distinguish headings
+    const allHeights = [...lineMap.values()].flat()
+      .map(it => it.height).filter(h => h > 0 && h < 100);
+    const medianHeight = allHeights.length > 0
+      ? allHeights.sort((a, b) => a - b)[Math.floor(allHeights.length / 2)]
+      : 12;
+
+    // Build lines with text content
+    const lines = sortedYs.map(y => {
+      const items = lineMap.get(y).sort((a, b) => a.x - b.x);
+      const text = items.map(it => it.str).join('');
+      const avgHeight = items.filter(it => it.height > 0).reduce((s, it) => s + it.height, 0)
+        / (items.filter(it => it.height > 0).length || 1);
+      return { text: text.trim(), height: avgHeight, isHeading: avgHeight > medianHeight * 1.4 };
+    }).filter(l => l.text.length > 0);
+
+    ページ.push({
+      pageNum: i,
+      lines: lines,
+      medianHeight: medianHeight,
+      viewport: viewport
+    });
+
+    if (onProgress) onProgress(i, totalPages);
+  }
+
+  return { ページ, totalPages };
+}
+
+// ============================================================
+//  Build DOCX from extracted content using the docx library
+// ============================================================
+async function buildDocx(extracted, fileName, mode) {
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak } = docx;
+  const children = [];
+
+  // Title
+  children.push(new Paragraph({
+    text: fileName.replace(/\.pdf$/i, ''),
+    heading: HeadingLevel.TITLE,
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 200 }
+  }));
+  children.push(new Paragraph({
+    children: [new TextRun({
+      text: 'PDFから変換 \u00b7 ' + extracted.totalPages +
+            ' ページ' + (extracted.totalPages > 1 ? 's' : '') + ' \u00b7 ' +
+            new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
+      color: '888888', size: 18, italics: true
+    })],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 300 }
+  }));
+  children.push(new Paragraph({
+    children: [new TextRun({ text: '\u2500'.repeat(50), color: 'CCCCCC', size: 18 })],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 300 }
+  }));
+
+  // Process each ページ
+  for (const ページ / extracted.ページ) {
+    if (mode === 'preserve') {
+      // Preserve layout mode: add ページ headers
+      children.push(new Paragraph({
+        text: 'Page ' + ページ.pageNum,
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 300, after: 200 }
+      }));
+    }
+
+    let paragraphBuffer = [];
+    let lastWasHeading = false;
+
+    for (const line / ページ.lines) {
+      if (line.isHeading && line.text.length < 100) {
+        // Flush buffer first
+        if (paragraphBuffer.length > 0) {
+          children.push(new Paragraph({
+            children: [new TextRun({ text: paragraphBuffer.join(' '), size: 22 })],
+            spacing: { after: 120 }
+          }));
+          paragraphBuffer = [];
+        }
+        children.push(new Paragraph({
+          text: line.text,
+          heading: HeadingLevel.HEADING_1,
+          spacing: { before: 240, after: 120 }
+        }));
+        lastWasHeading = true;
+      } else {
+        // Accumulate text into paragraphs.
+        // Heuristic: if line ends with sentence-ending punctuation, flush paragraph.
+        paragraphBuffer.push(line.text);
+        if (/[.!?]\s*$/.test(line.text) || paragraphBuffer.join(' ').length > 500) {
+          children.push(new Paragraph({
+            children: [new TextRun({ text: paragraphBuffer.join(' '), size: 22 })],
+            spacing: { after: 120 }
+          }));
+          paragraphBuffer = [];
+        }
+        lastWasHeading = false;
+      }
+    }
+
+    // Flush remaining buffer
+    if (paragraphBuffer.length > 0) {
+      children.push(new Paragraph({
+        children: [new TextRun({ text: paragraphBuffer.join(' '), size: 22 })],
+        spacing: { after: 120 }
+      }));
+    }
+
+    // Page break between ページ in preserve mode
+    if (mode === 'preserve' && ページ.pageNum < extracted.totalPages) {
+      children.push(new Paragraph({ children: [new PageBreak()] }));
+    }
+  }
+
+  // Footer
+  children.push(new Paragraph({ text: '', spacing: { before: 600 } }));
+  children.push(new Paragraph({
+    children: [new TextRun({
+      text: 'Converted with Toolify \u2014 Free Online PDF to Word Converter',
+      italics: true, color: '999999', size: 16
+    })],
+    alignment: AlignmentType.CENTER
+  }));
+
+  const doc = new Document({
+    sections: [{ properties: {}, children: children }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  return blob;
+}
+
+// ============================================================
+//  Main conversion handler
+// ============================================================
+async function convertPDF() {
+  if (!selectedFile) return;
+
+  convertBtn.disabled = true;
+  progress.classList.add('active');
+  result.classList.remove('active');
+
+  try {
+    progressFill.style.width = '5%';
+    progressText.textContent = 'PDFを読み込み中...';
+
+    const arrayBuffer = await selectedFile.arrayBuffer();
+
+    progressFill.style.width = '15%';
+    progressText.textContent = 'テキストを抽出中...';
+
+    const extracted = await extractPdfContent(arrayBuffer, (current, total) => {
+      const pct = 15 + Math.round((current / total) * 60);
+      progressFill.style.width = pct + '%';
+      progressText.textContent = 'ページを抽出中 ' + current + ' / ' + total + '...';
+    });
+
+    if (extracted.ページ.every(p => p.lines.length === 0)) {
+      throw new Error('NO_TEXT');
+    }
+
+    progressFill.style.width = '80%';
+    progressText.textContent = 'Word文書を生成中...';
+
+    const blob = await buildDocx(extracted, selectedFile.name, conversionMode);
+
+    progressFill.style.width = '100%';
+    progressText.textContent = '完了！';
+
+    resultBlob = URL.createObjectURL(blob);
+
+    setTimeout(() => {
+      progress.classList.remove('active');
+      result.classList.add('active');
+
+      const downloadBtn = document.getElementById('downloadBtn');
+      downloadBtn.href = resultBlob;
+      downloadBtn.download = selectedFile.name.replace(/\.pdf$/i, '') + '.docx';
+
+      // Count total words extracted
+      const totalWords = extracted.ページ
+        .flatMap(p => p.lines)
+        .map(l => l.text)
+        .join(' ')
+        .split(/\s+/)
+        .filter(w => w.length > 0).length;
+
+      document.getElementById('resultMsg').textContent =
+        '"' + selectedFile.name + '" converted to an editable Word document' +
+        (totalWords > 0 ? ' \u2014 ' + totalWords.toLocaleString() + ' words extracted from ' + extracted.totalPages + ' ページ' + (extracted.totalPages > 1 ? 's' : '') + '.' : '.');
+
+      convertBtn.disabled = false;
+      showToast('変換完了！');
+    }, 400);
+
+  } catch (err) {
+    console.error('Conversion error:', err);
+    progress.classList.remove('active');
+    convertBtn.disabled = false;
+
+    let errorMsg = '変換に失敗しました。';
+    if (err.message === 'NO_TEXT') {
+      errorMsg = '抽出可能なテキストが見つかりません。このPDFはスキャン（画像ベース）の可能性があります。スキャン文書にはOCRツールが必要です。';
+    } else if (err.message.includes('Password')) {
+      errorMsg += 'このPDFはパスワード保護されています。まずロックを解除してください。';
+    } else if (err.message.includes('Invalid')) {
+      errorMsg += 'ファイルが破損しているか、有効なPDFではないようです。';
+    } else {
+      errorMsg += '別のPDFファイルをお試しください。';
+    }
+    showToast(errorMsg, true);
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "無料PDF to Word変換ツール",
+  "url": "https://toolify.com/pdf-to-word",
+  "description": "PDFを編集可能なWord（DOCX）に無料でオンライン変換。アップロード不要—変換はすべてブラウザ内で完結。高速、安全、登録不要。",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

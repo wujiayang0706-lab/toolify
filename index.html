@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolify — Free Online Tools | PDF, Image, Text Utilities</title>
+<meta name="description" content="Toolify offers free online tools that run entirely in your browser — PDF merger, PDF to Word converter, image compressor, and more. No upload, no signup, no watermarks.">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com">
+<link rel="canonical" href="https://toolify.com/">
+<meta property="og:title" content="Toolify — Free Online Tools">
+<meta property="og:description" content="Free online tools that run in your browser. No upload, no signup, no watermarks.">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+/* Hero */
+.hero{padding:60px 0 40px;text-align:center}
+.hero h1{font-size:clamp(30px,6vw,48px);font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto 24px}
+.hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+.hero-badge svg{width:16px;height:16px;color:var(--primary)}
+
+/* Tool grid */
+.tools-section{padding:0 0 60px}
+.section-title{font-size:24px;font-weight:700;margin-bottom:8px;text-align:center}
+.section-subtitle{font-size:15px;color:var(--text-muted);text-align:center;margin-bottom:32px}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:12px}
+.tool-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.tool-card.available{cursor:pointer}
+.tool-card.coming-soon{opacity:.55;cursor:default}
+.tool-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.tool-icon.pdf{background:#fef2f2;color:#ef4444}
+.tool-icon.image{background:#f0fdf4;color:#22c55e}
+.tool-icon.text{background:#fffbeb;color:#f59e0b}
+.tool-icon.dev{background:#eff6ff;color:#3b82f6}
+.tool-card h3{font-size:17px;font-weight:700}
+.tool-card p{font-size:13px;color:var(--text-muted);line-height:1.5;flex:1}
+.tool-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;width:fit-content}
+.tool-tag.live{background:var(--primary-light);color:var(--primary)}
+.tool-tag.soon{background:#f1f5f9;color:var(--text-muted)}
+
+/* Features */
+.features{padding:40px 0 60px;border-top:1px solid var(--border)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+.feature{text-align:center}
+.feature-icon{width:56px;height:56px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.feature-icon svg{width:28px;height:28px}
+.feature h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.feature p{font-size:14px;color:var(--text-muted)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-links a:hover{background:var(--primary-light);color:var(--primary)}
+
+@media(max-width:640px){
+  .hero{padding:40px 0 24px}
+  .nav{display:none}
+  .tools-grid{grid-template-columns:1fr}
+}
+
+.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
+.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.lang-link:hover{background:var(--primary-light);color:var(--primary)}
+.lang-link.active{background:var(--primary);color:#fff}
+
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="#tools">Tools</a>
+      <a href="#why">Why Toolify</a>
+    <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+      <div class="lang-switcher"><a href="/" class="lang-link active">EN</a><a href="/zh/" class="lang-link">中文</a><a href="/ja/" class="lang-link">日本語</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>Free Online Tools</h1>
+    <p>Powerful utilities that run entirely in your browser. No uploads, no signups, no watermarks. Your files never leave your device.</p>
+    <div class="hero-badges">
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% Private</span>
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Instant</span>
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Free Forever</span>
+    </div>
+  </section>
+
+  <section class="tools-section container" id="tools">
+    <h2 class="section-title">All Tools</h2>
+    <p class="section-subtitle">Browse our growing collection of free browser-based utilities</p>
+    <div class="tools-grid">
+
+      <a href="/pdf-to-word/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF to Word</h3>
+        <p>Convert PDF files to editable Word (DOCX) documents. Real text extraction, right in your browser.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/pdf-merge/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF Merge</h3>
+        <p>Combine multiple PDF files into one. Drag to reorder, click to merge. No upload required.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/currency-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
+        <h3>Currency Converter</h3>
+        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>Compress PDF</h3>
+        <p>Reduce PDF file size while maintaining quality. Perfect for email attachments and web uploads.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <a href="/pdf-split/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF Split</h3>
+        <p>Split a PDF into individual pages or page ranges. Extract exactly what you need.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF to JPG</h3>
+        <p>Convert each PDF page into a high-quality JPG image. Great for thumbnails and previews.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>JPG to PDF</h3>
+        <p>Combine multiple images into a single PDF document. Supports JPG, PNG, and WebP.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon image">IMG</div>
+        <h3>Image Compressor</h3>
+        <p>Compress JPG, PNG, and WebP images without visible quality loss. Reduce file sizes by up to 80%.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon image">IMG</div>
+        <h3>Image Resizer</h3>
+        <p>Resize images to exact dimensions or percentage. Batch process multiple files at once.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon text">TXT</div>
+        <h3>Word Counter</h3>
+        <p>Count words, characters, sentences, and paragraphs. Reading time estimation included.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon dev">DEV</div>
+        <h3>JSON Formatter</h3>
+        <p>Format, validate, and minify JSON data. Syntax highlighting and tree view.</p>
+        <span class="tool-tag soon">Coming Soon</span>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="features container" id="why">
+    <h2 class="section-title">Why Toolify?</h2>
+    <p class="section-subtitle">Privacy-first tools that just work</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Files Never Leave</h3>
+        <p>All processing happens in your browser. No uploads, no servers, no tracking of your documents.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Lightning Fast</h3>
+        <p>No waiting in queues. No email delivery. Results are ready the instant processing completes.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h3>No Account Needed</h3>
+        <p>No signup, no login, no email required. Open the page and start using — that's it.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3>No Watermarks</h3>
+        <p>Your output files are clean. No branding, no ads embedded in your documents, no strings attached.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="/pdf-to-word/">PDF to Word</a>
+      <a href="/pdf-merge/">PDF Merge</a>
+      <a href="#">Compress PDF</a>
+      <a href="#">JPG to PDF</a>
+      <a href="#">Word to PDF</a>
+      <a href="#">Image Compressor</a>
+      <a href="#">QR Generator</a>
+    </div>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser. <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+  </div>
+</footer>
+
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolify — 無料オンラインツール | PDF、画像、テキストユーティリティ</title>
+<meta name="description" content="Toolifyはブラウザ内で完全に動作する無料オンラインツールを提供—PDF結合、PDF to Word変換、画像圧縮など。アップロード不要、登録不要、透かしなし。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com">
+<link rel="canonical" href="https://toolify.com/ja/">
+<meta property="og:title" content="Toolify — 無料オンラインツール">
+<meta property="og:description" content="ブラウザで動作する無料オンラインツール。アップロード不要、登録不要、透かしなし。">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+/* Hero */
+.hero{padding:60px 0 40px;text-align:center}
+.hero h1{font-size:clamp(30px,6vw,48px);font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto 24px}
+.hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+.hero-badge svg{width:16px;height:16px;color:var(--primary)}
+
+/* Tool grid */
+.tools-section{padding:0 0 60px}
+.section-title{font-size:24px;font-weight:700;margin-bottom:8px;text-align:center}
+.section-subtitle{font-size:15px;color:var(--text-muted);text-align:center;margin-bottom:32px}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:12px}
+.tool-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.tool-card.available{cursor:pointer}
+.tool-card.coming-soon{opacity:.55;cursor:default}
+.tool-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.tool-icon.pdf{background:#fef2f2;color:#ef4444}
+.tool-icon.image{background:#f0fdf4;color:#22c55e}
+.tool-icon.text{background:#fffbeb;color:#f59e0b}
+.tool-icon.dev{background:#eff6ff;color:#3b82f6}
+.tool-card h3{font-size:17px;font-weight:700}
+.tool-card p{font-size:13px;color:var(--text-muted);line-height:1.5;flex:1}
+.tool-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;width:fit-content}
+.tool-tag.live{background:var(--primary-light);color:var(--primary)}
+.tool-tag.soon{background:#f1f5f9;color:var(--text-muted)}
+
+/* Features */
+.features{padding:40px 0 60px;border-top:1px solid var(--border)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+.feature{text-align:center}
+.feature-icon{width:56px;height:56px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.feature-icon svg{width:28px;height:28px}
+.feature h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.feature p{font-size:14px;color:var(--text-muted)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-links a:hover{background:var(--primary-light);color:var(--primary)}
+
+@media(max-width:640px){
+  .hero{padding:40px 0 24px}
+  .nav{display:none}
+  .tools-grid{grid-template-columns:1fr}
+}
+
+.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
+.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.lang-link:hover{background:var(--primary-light);color:var(--primary)}
+.lang-link.active{background:var(--primary);color:#fff}
+
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/ja/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="#tools">Tools</a>
+      <a href="#why">Why Toolify</a>
+    <a href="/ja/pricing/">料金</a>
+      <a href="/ja/support/">サポート</a>
+      <div class="lang-switcher"><a href="/" class="lang-link">EN</a><a href="/zh/" class="lang-link">中文</a><a href="/ja/" class="lang-link active">日本語</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>無料オンラインツール</h1>
+    <p>ブラウザ内で完全に動作する強力なユーティリティ。アップロード不要、登録不要、透かしなし。ファイルはデバイスから出ません。</p>
+    <div class="hero-badges">
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100%プライベート</span>
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>即時</span>
+      <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>永久無料</span>
+    </div>
+  </section>
+
+  <section class="tools-section container" id="tools">
+    <h2 class="section-title">すべてのツール</h2>
+    <p class="section-subtitle">無料のブラウザベースユーティリティのコレクションをご覧ください</p>
+    <div class="tools-grid">
+
+      <a href="/ja/pdf-to-word/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF to Word</h3>
+        <p>PDFファイルを編集可能なWord（DOCX）文書に変換。ブラウザ内で実際のテキスト抽出。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/pdf-merge/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF結合</h3>
+        <p>複数のPDFファイルを1つに結合。ドラッグで並べ替え、クリックで結合。アップロード不要。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/currency-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
+        <h3>為替レート変換</h3>
+        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF圧縮</h3>
+        <p>品質を維持しながらPDFファイルサイズを縮小。メール添付やウェブアップロードに最適。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <a href="/ja/pdf-split/" class="tool-card available">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF分割</h3>
+        <p>PDFを個別ページまたはページ範囲に分割。必要なものを正確に抽出。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>PDF to JPG</h3>
+        <p>各PDFページを高品質JPG画像に変換。サムネイルやプレビューに最適。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon pdf">PDF</div>
+        <h3>JPG to PDF</h3>
+        <p>複数の画像を1つのPDF文書に結合。JPG、PNG、WebPに対応。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon image">IMG</div>
+        <h3>画像圧縮</h3>
+        <p>Compress JPG, PNG, and WebP images without visible quality loss. Reduce ファイル sizes by up to 80%.</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon image">IMG</div>
+        <h3>画像リサイズ</h3>
+        <p>画像を正確なサイズまたはパーセンテージにリサイズ。複数ファイルを一括処理。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon text">TXT</div>
+        <h3>文字数カウンター</h3>
+        <p>単語、文字、文、段落をカウント。読了時間の見積もり付き。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+      <div class="tool-card coming-soon">
+        <div class="tool-icon dev">DEV</div>
+        <h3>JSONフォーマッター</h3>
+        <p>JSONデータのフォーマット、検証、圧縮。シンタックスハイライトとツリービュー。</p>
+        <span class="tool-tag soon">近日公開</span>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="features container" id="why">
+    <h2 class="section-title">Toolifyを選ぶ理由？</h2>
+    <p class="section-subtitle">プライバシー優先、すぐに使えるツール</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>ファイルは外部に送信されません</h3>
+        <p>すべての処理はブラウザ内で完結。アップロード不要、サーバー不要、文書の追跡なし。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>超高速</h3>
+        <p>待ち行列なし。メール配信なし。処理完了と同時に結果表示。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h3>アカウント不要</h3>
+        <p>登録、ログイン、メール不要。ページを開いてすぐ使える—それだけ。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3>No Watermarks</h3>
+        <p>出力ファイルはクリーン。ブランドマークなし、文書内広告なし、条件なし。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="/ja/pdf-to-word/">PDF to Word</a>
+      <a href="/ja/pdf-merge/">PDF結合</a>
+      <a href="#">PDF圧縮</a>
+      <a href="#">JPG to PDF</a>
+      <a href="#">Word to PDF</a>
+      <a href="#">画像圧縮</a>
+      <a href="#">QR生成</a>
+    </div>
+    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。 <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
+  </div>
+</footer>
+
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

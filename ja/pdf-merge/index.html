@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料オンラインPDF結合ツール — ブラウザ内で結合、アップロード不要</title>
+<meta name="description" content="PDFファイルを無料でオンライン結合。アップロード不要—すべての処理はブラウザ内で完結。複数のPDFを1つに結合、並べ替え、高速・安全。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/pdf-merge">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/pdf-merge">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/pdf-merge">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/pdf-merge">
+<link rel="canonical" href="https://toolify.com/pdf-merge">
+<meta property="og:title" content="無料オンラインPDF結合ツール — アップロード不要、ブラウザ内で結合">
+<meta property="og:description" content="PDFファイルを無料でオンライン結合。アップロード不要、登録不要、完全プライベート。すべての処理はブラウザ内で行われます。">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+.upload-section{padding:0 0 24px}
+.upload-area{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-area.drag-over{transform:scale(1.01)}
+.upload-icon{margin-bottom:16px;display:flex;justify-content:center}
+.upload-icon svg{width:56px;height:56px;color:var(--primary)}
+.upload-area h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.upload-area p{font-size:14px;color:var(--text-muted)}
+.upload-area .または-divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:var(--text-muted);font-size:12px}
+.upload-area .または-divider::before,.upload-area .または-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-browse{display:inline-block;padding:10px 28px;background:var(--primary);color:#fff;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-browse:hover{background:var(--primary-hover)}
+.upload-area input[type=ファイル]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-area.has-ファイル{border-style:solid;border-color:var(--primary);background:var(--primary-light)}
+
+/* File list */
+.ファイル-list-section{display:none;padding:0 0 24px}
+.ファイル-list-section.active{display:block}
+.ファイル-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ファイル-list-header h3{font-size:16px;font-weight:600}
+.ファイル-count{font-size:13px;color:var(--text-muted)}
+.btn-add-more{padding:8px 18px;background:transparent;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.btn-add-more:hover{border-color:var(--primary);color:var(--primary)}
+.btn-add-more input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.ファイル-list{list-style:none}
+.ファイル-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:grab;transition:all .15s}
+.ファイル-item:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+.ファイル-item.dragging{opacity:.4}
+.ファイル-item.drag-over-top{border-top:3px solid var(--primary)}
+.ファイル-handle{color:var(--text-muted);cursor:grab;flex-shrink:0}
+.ファイル-handle:active{cursor:grabbing}
+.ファイル-handle svg{width:20px;height:20px}
+.ファイル-order{width:28px;height:28px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ファイル-icon{width:44px;height:44px;border-radius:10px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.ファイル-info{flex:1;min-width:0}
+.ファイル-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ファイル-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
+.btn-remove{background:none;border:none;padding:6px 8px;color:var(--text-muted);cursor:pointer;border-radius:6px;flex-shrink:0}
+.btn-remove:hover{color:var(--danger);background:#fef2f2}
+.btn-remove svg{width:18px;height:18px}
+
+/* Merge button */
+.merge-section{text-align:center;padding:0 0 40px;display:none}
+.merge-section.active{display:block}
+.btn-merge{display:inline-flex;align-items:center;gap:8px;padding:16px 48px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(37,99,235,.3)}
+.btn-merge:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.4)}
+.btn-merge:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-merge svg{width:22px;height:22px}
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{width:100%;max-width:400px;height:6px;background:var(--border);border-radius:3px;margin:0 auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:3px;width:0%;transition:width .3s ease}
+.progress-text{font-size:13px;color:var(--text-secondary);margin-top:8px}
+
+/* Result */
+.result{display:none;padding:0 0 40px}
+.result.active{display:block}
+.result-card{background:var(--surface);border:1px solid var(--success);border-radius:var(--radius);padding:32px 24px;text-align:center}
+.result-icon{margin-bottom:12px}
+.result-icon svg{width:56px;height:56px;color:var(--success)}
+.result-card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.result-card p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-again{display:inline-block;margin-left:12px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.btn-again:hover{border-color:var(--border-hover);background:#f8fafc}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+/* SEO */
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .upload-area{padding:32px 16px}
+  .nav{display:none}
+  .steps{grid-template-columns:1fr}
+  .ファイル-item{padding:12px 14px;gap:10px}
+  .btn-merge{padding:14px 32px;font-size:15px}
+}
+
+.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
+.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.lang-link:hover{background:var(--primary-light);color:var(--primary)}
+.lang-link.active{background:var(--primary);color:#fff}
+
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/ja/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/ja/">すべてのツール</a>
+      <a href="#how-to">使い方</a>
+      <a href="#faq">よくある質問</a>
+    <a href="/ja/pricing/">料金</a>
+      <a href="/ja/support/">サポート</a>
+      <div class="lang-switcher"><a href="/pdf-merge/" class="lang-link">EN</a><a href="/zh/pdf-merge/" class="lang-link">中文</a><a href="/ja/pdf-merge/" class="lang-link active">日本語</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>無料オンラインPDF結合ツール</h1>
+    <p>ブラウザ内で複数のPDFファイルを1つに結合。アップロード不要、登録不要、透かしなし。ドラッグで並べ替え、クリックで結合。</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>アップロード不要</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>高速＆無料</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>登録不要</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>透かしなし</span>
+    </div>
+  </section>
+
+  <section class="upload-section container">
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h3>結合するPDFファイルをここにドロップ</h3>
+      <p>2つ以上のPDFファイルを選択—各最大50MB</p>
+      <div class="または-divider">または</div>
+      <span class="btn-browse">ファイルを選択</span>
+      <input type="ファイル" id="fileInput" accept=".pdf" multiple>
+    </div>
+  </section>
+
+  <section class="ファイル-list-section container" id="fileListSection">
+    <div class="ファイル-list-header">
+      <h3>結合するファイル <span class="ファイル-count" id="fileCount"></span></h3>
+      <button class="btn-add-more">+ 追加
+        <input type="ファイル" id="addMoreInput" accept=".pdf" multiple>
+      </button>
+    </div>
+    <ul class="ファイル-list" id="fileList"></ul>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px">ドラッグで並べ替え。上から下の順に結合されます。</p>
+  </section>
+
+  <div class="merge-section container" id="mergeSection">
+    <button class="btn-merge" id="mergeBtn" onclick="mergePDFs()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      PDFを結合
+    </button>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-text" id="progressText">結合中...</p>
+    </div>
+  </div>
+
+  <div class="result container" id="result">
+    <div class="result-card">
+      <div class="result-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>結合完了！</h3>
+      <p id="resultMsg">結合されたPDFの準備ができました。</p>
+      <a class="btn-download" id="downloadBtn" href="#" download="merged.pdf">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        結合PDFをダウンロード
+      </a>
+      <button class="btn-again" onclick="resetAll()">最初から</button>
+    </div>
+  </div>
+
+  <div class="container"><div class="ad-slot">[ 広告枠 — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>PDFファイルをオンライン結合する方法—無料＆安全</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>PDFをアップロード</h4><p>ドラッグ＆ドロップまたはブラウズで結合する複数のPDFファイルを選択。</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>並べ替え</h4><p>ファイルを上下にドラッグして結合順を設定。一番上のファイルが結果の最初になります。</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>結合＆ダウンロード</h4><p>結合をクリック—処理はすべてブラウザ内で完結。即時ダウンロード。</p></div>
+    </div>
+
+    <h3>PDF結合とは？</h3>
+    <p>PDF結合（結合または連結とも呼ばれる）は、複数のPDFファイルを1つの文書に統合するプロセスです。複数のファイルを1つにまとめることで、個別に開く必要がなくなり、報告書、ポートフォリオ、契約書、プレゼンに最適です。当ツールはすべてブラウザ内で実行するため、ファイルがデバイスから外に出ることはありません。</p>
+
+    <h3>当社の無料PDF結合ツールを使う理由</h3>
+    <ul>
+      <li><strong>100%プライベート＆安全：</strong> Your PDFs are processed locally in your browser. Nothing is uploaded to any server — your confidential documents stay on your computer.</li>
+      <li><strong>制限なし：</strong> 好きなだけPDFを結合。1日の制限なし、ページ制限なし、ファイル数上限なし。</li>
+      <li><strong>ドラッグで並べ替え：</strong> リスト内のファイルを上下にドラッグして結合順を簡単に調整。見た目通りに結合されます。</li>
+      <li><strong>透かしなし：</strong> 結合されたPDFはクリーン—ブランドマークなし、透かしなし、文書内に広告なし。</li>
+      <li><strong>どこでも動作：</strong> デスクトップ、タブレット、スマートフォン—モダンブラウザを搭載するあらゆるデバイスで動作。</li>
+    </ul>
+
+    <h3>一般的なユースケース</h3>
+    <ul>
+      <li><strong>契約書の結合：</strong> 主契約書と付録、条項、署名ページを1つのファイルに結合。</li>
+      <li><strong>報告書の作成：</strong> 表紙、エグゼクティブサマリー、各セクションを1つの報告書に結合。</li>
+      <li><strong>ポートフォリオ作成：</strong> 証明書、作品サンプル、カバーレターを1つのポートフォリオPDFに結合。</li>
+      <li><strong>請求書の束ね：</strong> 月次請求書を1つのファイルにまとめて会計や顧客提出に。</li>
+      <li><strong>コース資料：</strong> 講義ノート、スライド、リーディングを1つの学習パケットに結合。</li>
+    </ul>
+
+    <div id="faq">
+      <h3>よくある質問</h3>
+      <div class="faq-item"><h4>このPDF結合ツールは本当に無料ですか？</h4><p>はい、完全に無料で制限なし。ページ上の控えめな広告で運営しています。</p></div>
+      <div class="faq-item"><h4>一度にいくつのPDFを結合できますか？</h4><p>ハードリミットはありません。ただし処理はブラウザ内で行われるため、非常に多くのファイルや大きなファイルはデバイスのメモリによって遅くなる場合があります。</p></div>
+      <div class="faq-item"><h4>ファイルはサーバーにアップロードされますか？</h4><p>いいえ。すべての結合はJavaScriptでブラウザ内でローカルに行われます。ファイルがデバイスから出ることはなく、機密文書にも安全です。</p></div>
+      <div class="faq-item"><h4>1つのPDF内のページを並べ替えできますか？</h4><p>このツールはファイル全体を結合します。PDF内の個別ページの並べ替えにはPDFページ並べ替えツール（近日公開）をお試しください。</p></div>
+      <div class="faq-item"><h4>最大ファイルサイズは？</h4><p>各50MB以下を推奨。結合はブラウザ内で行われるため、利用可能メモリが制限要因です。</p></div>
+      <div class="faq-item"><h4>スマートフォンで動作しますか？</h4><p>はい！iOS、Android、すべてのモダンモバイルブラウザで動作します。</p></div>
+      <div class="faq-item"><h4>品質は影響を受けますか？</h4><p>いいえ。結合はPDFデータを連結するだけ—再エンコードや圧縮は行われません。ページは元のファイルと全く同じように見えます。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/ja/pdf-to-word/">PDF to Word</a>
+      <a href="/ja/pdf-merge/">PDF結合</a>
+      <a href="#">PDF圧縮</a>
+      <a href="#">JPG to PDF</a>
+      <a href="#">Word to PDF</a>
+      <a href="#">画像圧縮</a>
+      <a href="#">QR生成</a>
+    <a href="/ja/currency-converter/">為替レート変換</a>
+      <a href="/ja/pricing/">料金</a>
+      <a href="/ja/support/">サポート</a>
+    </div>
+    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。 <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- pdf-lib: create/merge PDFs in browser -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<!-- SortableJS: drag-to-reorder -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script>
+const uploadArea = document.getElementById('uploadArea');
+const fileInput  = document.getElementById('fileInput');
+const addMoreInput = document.getElementById('addMoreInput');
+const fileListSection = document.getElementById('fileListSection');
+const fileList  = document.getElementById('fileList');
+const fileCount = document.getElementById('fileCount');
+const mergeSection = document.getElementById('mergeSection');
+const mergeBtn  = document.getElementById('mergeBtn');
+const result    = document.getElementById('result');
+const progress  = document.getElementById('progress');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const toast     = document.getElementById('toast');
+let pdfFiles = [];
+let resultBlob = null;
+let sortableInstance = null;
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function addFiles(files) {
+  let added = 0;
+  for (const ファイル / files) {
+    if (ファイル.type !== 'application/pdf' && !ファイル.name.toLowerCase().endsWith('.pdf')) {
+      continue;
+    }
+    if (ファイル.size > 50 * 1024 * 1024) {
+      showToast('"' + ファイル.name + '" は50MBを超えているためスキップしました。', true);
+      continue;
+    }
+    pdfFiles.push({ ファイル: ファイル, id: Date.now() + '-' + Math.random() });
+    added++;
+  }
+  if (added > 0) {
+    renderFileList();
+    showToast(added + ' ファイル' + (added > 1 ? 's' : '') + ' added');
+  } else if (files.length > 0) {
+    showToast('有効なPDFファイルが見つかりません。', true);
+  }
+}
+
+function renderFileList() {
+  fileList.innerHTML = '';
+  pdfFiles.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.className = 'ファイル-item';
+    li.dataset.id = item.id;
+    li.innerHTML =
+      '<div class="ファイル-handle">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>' +
+      '</div>' +
+      '<div class="ファイル-order">' + (index + 1) + '</div>' +
+      '<div class="ファイル-icon">PDF</div>' +
+      '<div class="ファイル-info">' +
+        '<div class="ファイル-name">' + item.ファイル.name + '</div>' +
+        '<div class="ファイル-meta">' + formatSize(item.ファイル.size) + '</div>' +
+      '</div>' +
+      '<button class="btn-remove" onclick="removeFile(\'' + item.id + '\')" title="Remove">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+      '</button>';
+    fileList.appendChild(li);
+  });
+
+  fileCount.textContent = '(' + pdfFiles.length + ' ファイル' + (pdfFiles.length !== 1 ? 's' : '') + ')';
+
+  // Show/hide sections
+  if (pdfFiles.length > 0) {
+    uploadArea.classList.add('has-ファイル');
+    fileListSection.classList.add('active');
+    mergeSection.classList.add('active');
+  } else {
+    uploadArea.classList.remove('has-ファイル');
+    fileListSection.classList.remove('active');
+    mergeSection.classList.remove('active');
+  }
+
+  // Enable merge button only with 2+ files
+  mergeBtn.disabled = pdfFiles.length < 2;
+
+  // Update order numbers after drag
+  updateOrderNumbers();
+
+  // Initialize または refresh Sortable
+  if (!sortableInstance) {
+    sortableInstance = Sortable.create(fileList, {
+      animation: 150,
+      ghostClass: 'dragging',
+      onEnd: function() {
+        reorderFiles();
+        updateOrderNumbers();
+      }
+    });
+  }
+}
+
+function updateOrderNumbers() {
+  const items = fileList.querySelectorAll('.ファイル-item');
+  items.forEach((item, i) => {
+    item.querySelector('.ファイル-order').textContent = i + 1;
+  });
+}
+
+function reorderFiles() {
+  const newOrder = [];
+  fileList.querySelectorAll('.ファイル-item').forEach(item => {
+    const found = pdfFiles.find(f => f.id === item.dataset.id);
+    if (found) newOrder.push(found);
+  });
+  pdfFiles = newOrder;
+}
+
+function removeFile(id) {
+  pdfFiles = pdfFiles.filter(f => f.id !== id);
+  renderFileList();
+}
+
+function resetAll() {
+  pdfFiles = [];
+  if (resultBlob) { URL.revokeObjectURL(resultBlob); resultBlob = null; }
+  result.classList.remove('active');
+  renderFileList();
+  fileInput.value = '';
+  addMoreInput.value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Upload area events
+uploadArea.addEventListener('click', (e) => {
+  if (e.target === fileInput || e.target.closest('.btn-browse')) return;
+  fileInput.click();
+});
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault(); uploadArea.classList.remove('drag-over');
+  if (e.dataTransfer.files.length > 0) addFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) addFiles(e.target.files);
+});
+addMoreInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) addFiles(e.target.files);
+});
+
+// ============================================================
+//  PDFを結合 using pdf-lib
+// ============================================================
+async function mergePDFs() {
+  if (pdfFiles.length < 2) {
+    showToast('結合には少なくとも2つのPDFファイルを追加してください。', true);
+    return;
+  }
+
+  mergeBtn.disabled = true;
+  progress.classList.add('active');
+  result.classList.remove('active');
+
+  try {
+    const { PDFDocument } = PDFLib;
+    const mergedPdf = await PDFDocument.create();
+    const total = pdfFiles.length;
+
+    for (let i = 0; i < total; i++) {
+      const item = pdfFiles[i];
+      progressFill.style.width = Math.round((i / total) * 90) + '%';
+      progressText.textContent = '処理中 ' + (i + 1) + ' / ' + total + ': ' + item.ファイル.name;
+
+      const arrayBuffer = await item.ファイル.arrayBuffer();
+      const srcPdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      const ページ = await mergedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
+      ページ.forEach(p => mergedPdf.addPage(p));
+    }
+
+    progressFill.style.width = '95%';
+    progressText.textContent = '結合PDFを完成中...';
+
+    const mergedBytes = await mergedPdf.save();
+    const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+    resultBlob = URL.createObjectURL(blob);
+
+    progressFill.style.width = '100%';
+    progressText.textContent = '完了！';
+
+    setTimeout(() => {
+      progress.classList.remove('active');
+      result.classList.add('active');
+
+      const downloadBtn = document.getElementById('downloadBtn');
+      downloadBtn.href = resultBlob;
+
+      const totalPages = mergedPdf.getPageCount();
+      const totalSize = pdfFiles.reduce((s, f) => s + f.ファイル.size, 0);
+      document.getElementById('resultMsg').textContent =
+        '結合済み ' + pdfFiles.length + ' つのPDFを1つのファイルに結合、 ' + totalPages + ' ページ' + (totalPages !== 1 ? 's' : '') +
+        ' (' + formatSize(blob.size) + ').';
+
+      mergeBtn.disabled = false;
+      showToast('結合完了！');
+    }, 400);
+
+  } catch (err) {
+    console.error('Merge error:', err);
+    progress.classList.remove('active');
+    mergeBtn.disabled = false;
+
+    let errorMsg = '結合に失敗しました。';
+    if (err.message.includes('encrypted') || err.message.includes('password')) {
+      errorMsg += 'いずれかのPDFがパスワード保護されています。まずロックを解除してください。';
+    } else if (err.message.includes('Invalid')) {
+      errorMsg += 'いずれかのファイルが破損しているようです。';
+    } else {
+      errorMsg += 'ファイルを確認してもう一度お試しください。';
+    }
+    showToast(errorMsg, true);
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "無料オンラインPDF結合ツール",
+  "url": "https://toolify.com/pdf-merge",
+  "description": "PDFファイルを無料でオンライン結合。アップロード不要—すべての処理はブラウザ内で完結。複数のPDFを1つに結合、並べ替え、高速・安全。",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

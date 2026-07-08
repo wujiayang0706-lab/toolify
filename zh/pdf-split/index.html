@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费PDF拆分工具 — 在线拆分PDF，无需上传</title>
+<meta name="description" content="免费在线拆分PDF文件。提取特定页面或拆分为单个文件。无需上传—所有处理在浏览器中完成。快速、安全、无需注册。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/pdf-split">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/pdf-split">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/pdf-split">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/pdf-split">
+<link rel="canonical"> href="https://toolify.com/pdf-split/">
+<meta property="og:title" content="免费PDF拆分工具 — 无需上传，浏览器内拆分">
+<meta property="og:description" content="免费在线拆分PDF文件。提取页面，按范围拆分。无需上传、无需注册、完全隐私。">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="/assets/common.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;--bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;--danger:#ef4444;--success:#10b981;--warning:#f59e0b;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);--shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06)}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+.hero{text-align:center;padding:40px 0 24px}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+.upload-section{padding:0 0 24px}
+.upload-area{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-area.drag-over{transform:scale(1.01)}
+.upload-icon{margin-bottom:16px;display:flex;justify-content:center}
+.upload-icon svg{width:56px;height:56px;color:var(--primary)}
+.upload-area h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.upload-area p{font-size:14px;color:var(--text-muted)}
+.upload-area .或-divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:var(--text-muted);font-size:12px}
+.upload-area .或-divider::before,.upload-area .或-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-browse{display:inline-block;padding:10px 28px;background:var(--primary);color:#fff;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-browse:hover{background:var(--primary-hover)}
+.upload-area input[type=个文件]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-area.has-个文件{border-style:solid;border-color:var(--primary);background:var(--primary-light)}
+.个文件-preview{display:none;margin-top:16px}
+.个文件-preview.active{display:block}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.preview-icon{width:52px;height:52px;border-radius:10px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.preview-info{flex:1;min-width:0}
+.preview-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-meta{font-size:13px;color:var(--text-muted);margin-top:2px}
+.btn-remove{background:none;border:none;padding:6px 8px;color:var(--text-muted);cursor:pointer;border-radius:6px}
+.btn-remove:hover{color:var(--danger);background:#fef2f2}
+.split-section{display:none;padding:0 0 24px}
+.split-section.active{display:block}
+.split-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.split-mode-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:16px 20px;cursor:pointer;transition:all .15s}
+.split-mode-card:hover{border-color:var(--border-hover)}
+.split-mode-card.selected{border-color:var(--primary);background:var(--primary-light)}
+.split-mode-icon{font-size:24px;margin-bottom:8px}
+.split-mode-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.split-mode-card p{font-size:12px;color:var(--text-muted)}
+.split-input{margin-bottom:20px}
+.split-input label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.split-input input[type=text]{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;outline:none;transition:border-color .15s}
+.split-input input[type=text]:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.split-input .hint{font-size:12px;color:var(--text-muted);margin-top:6px}
+.split-input .hint code{background:var(--bg);padding:2px 6px;border-radius:4px;font-size:12px}
+.页-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:8px;margin-bottom:20px;max-height:300px;overflow-y:auto;padding:4px}
+.页-chip{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:8px;border:2px solid var(--border);font-size:14px;font-weight:600;cursor:pointer;transition:all .12s;user-select:none}
+.页-chip:hover{border-color:var(--primary)}
+.页-chip.selected{background:var(--primary);border-color:var(--primary);color:#fff}
+.split-actions{text-align:center;padding:0 0 40px;display:none}
+.split-actions.active{display:block}
+.btn-split{display:inline-flex;align-items:center;gap:8px;padding:16px 48px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(37,99,235,.3)}
+.btn-split:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.4)}
+.btn-split:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-split svg{width:22px;height:22px}
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{width:100%;max-width:400px;height:6px;background:var(--border);border-radius:3px;margin:0 auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:3px;width:0%;transition:width .3s ease}
+.progress-text{font-size:13px;color:var(--text-secondary);margin-top:8px}
+.result{display:none;padding:0 0 40px}
+.result.active{display:block}
+.result-card{background:var(--surface);border:1px solid var(--success);border-radius:var(--radius);padding:32px 24px;text-align:center}
+.result-icon{margin-bottom:12px}
+.result-icon svg{width:56px;height:56px;color:var(--success)}
+.result-card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.result-card p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.result-files{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto 20px}
+.result-个文件{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg);border-radius:var(--radius-sm);font-size:14px}
+.result-个文件-icon{width:36px;height:36px;border-radius:8px;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.result-个文件-name{flex:1;text-align:left;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.result-个文件-size{font-size:12px;color:var(--text-muted)}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-again{display:inline-block;margin-left:12px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.btn-again:hover{border-color:var(--border-hover);background:#f8fafc}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul{padding-left:20px;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+@media(max-width:640px){.hero h1{font-size:22px}.nav{display:none}.upload-area{padding:32px 16px}.steps{grid-template-columns:1fr}.split-modes{grid-template-columns:1fr}.btn-split{padding:14px 32px;font-size:15px}}
+
+.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
+.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
+.lang-link:hover{background:var(--primary-light);color:var(--primary)}
+.lang-link.active{background:var(--primary);color:#fff}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/zh/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/zh/">全部工具</a>
+      <a href="/zh/pdf-to-word/">PDF转Word</a>
+      <a href="/zh/pdf-merge/">PDF合并</a>
+      <a href="/zh/currency-converter/">Currency</a>
+      <a href="/zh/pricing/">定价</a>
+      <a href="/zh/support/">支持</a>
+    <div class="lang-switcher"><a href="/pdf-split/" class="lang-link">EN</a><a href="/zh/pdf-split/" class="lang-link active">中文</a><a href="/ja/pdf-split/" class="lang-link">日本語</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>免费PDF拆分工具</h1>
+    <p>将PDF文件拆分为更小的部分—提取特定页面或拆分为单个文件。所有处理在浏览器中完成，无需上传，完全隐私。</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>无需上传</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>快速免费</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>无需注册</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>无水印</span>
+    </div>
+  </section>
+
+  <section class="upload-section container">
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+      </div>
+      <h3>将PDF文件拖放到此处</h3>
+      <p>Split any PDF into 页 或 ranges — up to 50MB</p>
+      <div class="或-divider">或</div>
+      <span class="btn-browse">选择文件</span>
+      <input type="个文件" id="fileInput" accept=".pdf">
+    </div>
+
+    <div class="个文件-preview" id="filePreview">
+      <div class="preview-card">
+        <div class="preview-icon">PDF</div>
+        <div class="preview-info">
+          <div class="preview-name" id="fileName">—</div>
+          <div class="preview-meta" id="fileMeta">—</div>
+        </div>
+        <button class="btn-remove" onclick="removeFile()" title="Remove">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="split-section container" id="splitSection">
+    <div class="split-modes">
+      <div class="split-mode-card selected" data-mode="ranges" onclick="selectMode('ranges')">
+        <div class="split-mode-icon">✂️</div>
+        <h4>按范围拆分</h4>
+        <p>将页面范围提取为单独文件</p>
+      </div>
+      <div class="split-mode-card" data-mode="extract" onclick="selectMode('extract')">
+        <div class="split-mode-icon">📋</div>
+        <h4>提取页面</h4>
+        <p>选择特定页面合并为一个PDF</p>
+      </div>
+      <div class="split-mode-card" data-mode="individual" onclick="selectMode('individual')">
+        <div class="split-mode-icon">📄</div>
+        <h4>逐页拆分</h4>
+        <p>将每页拆分为单独文件</p>
+      </div>
+    </div>
+
+    <div class="split-input" id="rangeInput">
+      <label>页面范围</label>
+      <input type="text" id="rangeText" placeholder="1-3, 5, 7-10" oninput="updatePreview()">
+      <div class="hint">用逗号分隔范围。示例： <code>1-3, 5, 7-10</code> 创建3个文件</div>
+    </div>
+
+    <div class="split-input" id="extractInput" style="display:none">
+      <label>选择要提取的页面</label>
+      <div class="页-grid" id="pageGrid"></div>
+      <div class="hint">点击页面选择。选中的页面将合并为一个PDF。</div>
+    </div>
+
+    <div id="individualInfo" style="display:none;text-align:center;padding:12px;background:var(--primary-light);border-radius:var(--radius-sm);margin-bottom:20px">
+      <p style="font-size:14px;color:var(--primary);font-weight:600" id="individualInfoText"></p>
+    </div>
+  </div>
+
+  <div class="split-actions container" id="splitActions">
+    <button class="btn-split" id="splitBtn" onclick="splitPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      拆分PDF
+    </button>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-text" id="progressText">正在拆分...</p>
+    </div>
+  </div>
+
+  <div class="result container" id="result">
+    <div class="result-card">
+      <div class="result-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>拆分完成！</h3>
+      <p id="resultMsg">您的PDF已拆分。</p>
+      <div class="result-files" id="resultFiles"></div>
+      <a class="btn-download" id="downloadBtn" href="#" download="">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span id="downloadLabel">Download</span>
+      </a>
+      <button class="btn-again" onclick="resetAll()">拆分另一个文件</button>
+    </div>
+  </div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>如何在线拆分PDF文件—免费且安全</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>上传PDF</h4><p>Drag and drop 或 browse to select your PDF 个文件. Supports files up to 50MB.</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>选择模式</h4><p>选择按范围拆分、提取特定页面或拆分为单个页面。</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>拆分并下载</h4><p>点击拆分—处理在浏览器中完成。即时下载。</p></div>
+    </div>
+
+    <h3>什么是PDF拆分？</h3>
+    <p>PDF splitting is the process 共 dividing a single PDF document into multiple smaller PDFs. This is useful when you need to share only certain 页, extract specific sections, 或 break a large document into manageable parts. Our tool performs this operation entirely in your browser, so your files never leave your device.</p>
+
+    <h3>Why Use Our 免费PDF拆分工具?</h3>
+    <ul>
+      <li><strong>100%隐私安全：</strong> Your PDFs are processed locally in your browser. Nothing is uploaded to any server.</li>
+      <li><strong>Three Split Modes:</strong> Split by 页 ranges, extract specific 页 into one 个文件, 或 split every 页 into individual files.</li>
+      <li><strong>无水印：</strong> The output PDFs are clean — no branding 或 watermarks.</li>
+      <li><strong>无需注册：</strong> Start splitting immediately. No email, no account.</li>
+      <li><strong>全平台支持：</strong> Fully responsive — works on desktop, tablet, and mobile.</li>
+    </ul>
+
+    <h3>常见使用场景</h3>
+    <ul>
+      <li><strong>Extract specific 页:</strong> Pull out 页 3-7 from a 50-页 report to share only the relevant section.</li>
+      <li><strong>Split large documents:</strong> Break a 100-页 manual into smaller chapters for easier handling.</li>
+      <li><strong>Separate forms:</strong> Split a multi-form PDF into individual files for separate submission.</li>
+      <li><strong>Extract invoices:</strong> Pull individual invoices from a combined statement PDF.</li>
+      <li><strong>Share partial content:</strong> Send only the 页 you need without sharing the entire document.</li>
+    </ul>
+
+    <div id="faq">
+      <h3>常见问题解答</h3>
+      <div class="faq-item"><h4>Is this PDF splitter really free?</h4><p>是的，完全免费且无限制。我们通过页面上的非侵入式广告维持运营。</p></div>
+      <div class="faq-item"><h4>我的文件会上传到服务器吗？</h4><p>No. All splitting happens locally in your browser using JavaScript. Your files never leave your device.</p></div>
+      <div class="faq-item"><h4>How do I specify 页 ranges?</h4><p>Use the format "1-3, 5, 7-10" where hyphens indicate ranges and commas separate them. Each range becomes a separate PDF 个文件.</p></div>
+      <div class="faq-item"><h4>What happens when I split into individual 页?</h4><p>Each 页 共 your PDF becomes a separate PDF 个文件. Since this creates multiple files, they are packaged as a ZIP for download.</p></div>
+      <div class="faq-item"><h4>最大文件大小是多少？</h4><p>We recommend files up to 50MB. Since processing happens in your browser, larger files may be slower.</p></div>
+      <div class="faq-item"><h4>在手机上能用吗？</h4><p>Yes! Our splitter works on iOS, Android, and any modern mobile browser.</p></div>
+      <div class="faq-item"><h4>质量会受影响吗？</h4><p>No. Splitting simply extracts 页 — no re-encoding 或 compression. Your 页 look exactly as they did in the original.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/zh/pdf-to-word/">PDF转Word</a>
+      <a href="/zh/pdf-merge/">PDF合并</a>
+      <a href="/zh/pdf-split/">PDF拆分</a>
+      <a href="/zh/currency-converter/">汇率换算</a>
+      <a href="/zh/pricing/">定价</a>
+      <a href="/zh/support/">支持</a>
+    </div>
+    <p>&copy; 2026 Toolify. 所有工具均在浏览器本地运行。 <a href="#">隐私政策</a> &middot; <a href="#">条款</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+var uploadArea = document.getElementById('uploadArea');
+var fileInput = document.getElementById('fileInput');
+var filePreview = document.getElementById('filePreview');
+var splitSection = document.getElementById('splitSection');
+var splitActions = document.getElementById('splitActions');
+var result = document.getElementById('result');
+var progress = document.getElementById('progress');
+var progressFill = document.getElementById('progressFill');
+var progressText = document.getElementById('progressText');
+var splitBtn = document.getElementById('splitBtn');
+var toast = document.getElementById('toast');
+var selectedFile = null;
+var totalPages = 0;
+var splitMode = 'ranges';
+var selectedPages = new Set();
+var resultBlobs = [];
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function selectFile(个文件) {
+  if (个文件.type !== 'application/pdf' && !个文件.name.toLowerCase().endsWith('.pdf')) {
+    showToast('请选择PDF文件。', true); return;
+  }
+  if (个文件.size > 50 * 1024 * 1024) {
+    showToast('文件过大。请使用50MB以下的PDF。', true); return;
+  }
+  selectedFile = 个文件;
+  document.getElementById('fileName').textContent = 个文件.name;
+  document.getElementById('fileMeta').textContent = formatSize(个文件.size);
+  uploadArea.classList.add('has-个文件');
+  filePreview.classList.add('active');
+  splitSection.classList.add('active');
+  splitActions.classList.add('active');
+  result.classList.remove('active');
+
+  // Get 页 count
+  个文件.arrayBuffer().then(function(buf) {
+    return PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+  }).then(function(doc) {
+    totalPages = doc.getPageCount();
+    document.getElementById('fileMeta').textContent = formatSize(个文件.size) + ' \u00b7 ' + totalPages + ' 页';
+    renderPageGrid();
+    updateIndividualInfo();
+    updatePreview();
+  }).catch(function(err) {
+    showToast('Could not read PDF: ' + err.message, true);
+  });
+}
+
+function removeFile() {
+  selectedFile = null;
+  totalPages = 0;
+  selectedPages.clear();
+  uploadArea.classList.remove('has-个文件');
+  filePreview.classList.remove('active');
+  splitSection.classList.remove('active');
+  splitActions.classList.remove('active');
+  result.classList.remove('active');
+  fileInput.value = '';
+  resultBlobs.forEach(function(b) { URL.revokeObjectURL(b.url); });
+  resultBlobs = [];
+}
+
+function resetAll() { removeFile(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function selectMode(mode) {
+  splitMode = mode;
+  document.querySelectorAll('.split-mode-card').forEach(function(c) { c.classList.remove('selected'); });
+  document.querySelector('[data-mode="' + mode + '"]').classList.add('selected');
+
+  document.getElementById('rangeInput').style.display = (mode === 'ranges') ? 'block' : 'none';
+  document.getElementById('extractInput').style.display = (mode === 'extract') ? 'block' : 'none';
+  document.getElementById('individualInfo').style.display = (mode === 'individual') ? 'block' : 'none';
+
+  updateIndividualInfo();
+  updatePreview();
+}
+
+function renderPageGrid() {
+  var grid = document.getElementById('pageGrid');
+  grid.innerHTML = '';
+  for (var i = 1; i <= totalPages; i++) {
+    (function(pageNum) {
+      var chip = document.createElement('div');
+      chip.className = '页-chip';
+      chip.textContent = pageNum;
+      chip.onclick = function() {
+        if (selectedPages.has(pageNum)) {
+          selectedPages.delete(pageNum);
+          chip.classList.remove('selected');
+        } else {
+          selectedPages.add(pageNum);
+          chip.classList.add('selected');
+        }
+        updatePreview();
+      };
+      grid.appendChild(chip);
+    })(i);
+  }
+}
+
+function updateIndividualInfo() {
+  if (splitMode === 'individual' && totalPages > 0) {
+    document.getElementById('individualInfoText').textContent =
+      'This will create ' + totalPages + ' individual PDF files, packaged as a ZIP.';
+  }
+}
+
+function updatePreview() {
+  var valid = false;
+  if (splitMode === 'ranges') {
+    var text = document.getElementById('rangeText').value.trim();
+    valid = text.length > 0 && /\d/.test(text);
+  } else if (splitMode === 'extract') {
+    valid = selectedPages.size > 0;
+  } else if (splitMode === 'individual') {
+    valid = totalPages > 0;
+  }
+  splitBtn.disabled = !valid;
+}
+
+// Parse range string like "1-3, 5, 7-10" into array 共 [start, end] pairs
+function parseRanges(text) {
+  var parts = text.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+  var ranges = [];
+  for (var i = 0; i < parts.length; i++) {
+    var m = parts[i].match(/^(\d+)\s*-\s*(\d+)$/);
+    if (m) {
+      var start = parseInt(m[1]), end = parseInt(m[2]);
+      if (start > end) { var t = start; start = end; end = t; }
+      if (start < 1) start = 1;
+      if (end > totalPages) end = totalPages;
+      ranges.push([start, end]);
+    } else {
+      var n = parseInt(parts[i]);
+      if (n >= 1 && n <= totalPages) ranges.push([n, n]);
+    }
+  }
+  return ranges;
+}
+
+uploadArea.addEventListener('click', function(e) {
+  if (e.target === fileInput || e.target.closest('.btn-browse')) return;
+  fileInput.click();
+});
+uploadArea.addEventListener('dragover', function(e) { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', function() { uploadArea.classList.remove('drag-over'); });
+uploadArea.addEventListener('drop', function(e) {
+  e.preventDefault(); uploadArea.classList.remove('drag-over');
+  if (e.dataTransfer.files.length > 0) selectFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', function(e) {
+  if (e.target.files.length > 0) selectFile(e.target.files[0]);
+});
+
+async function splitPDF() {
+  if (!selectedFile) return;
+  splitBtn.disabled = true;
+  progress.classList.add('active');
+  result.classList.remove('active');
+
+  try {
+    var arrayBuffer = await selectedFile.arrayBuffer();
+    var srcDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    var resultFiles = [];
+
+    if (splitMode === 'ranges') {
+      var ranges = parseRanges(document.getElementById('rangeText').value);
+      if (ranges.length === 0) throw new Error('No valid 页 ranges');
+
+      for (var i = 0; i < ranges.length; i++) {
+        progressFill.style.width = Math.round((i / ranges.length) * 90) + '%';
+        progressText.textContent = 'Creating 个文件 ' + (i + 1) + ' 共 ' + ranges.length + '...';
+
+        var start = ranges[i][0], end = ranges[i][1];
+        var indices = [];
+        for (var p = start - 1; p < end; p++) indices.push(p);
+
+        var newDoc = await PDFLib.PDFDocument.create();
+        var 页 = await newDoc.copyPages(srcDoc, indices);
+        页.forEach(function(pg) { newDoc.addPage(pg); });
+
+        var bytes = await newDoc.save();
+        var name = start === end ? '页_' + start + '.pdf' : '页_' + start + '-' + end + '.pdf';
+        resultFiles.push({ name: name, bytes: bytes, blob: new Blob([bytes], { type: 'application/pdf' }) });
+      }
+
+    } else if (splitMode === 'extract') {
+      var 页 = Array.from(selectedPages).sort(function(a, b) { return a - b; });
+      var indices = 页.map(function(p) { return p - 1; });
+
+      progressFill.style.width = '50%';
+      progressText.textContent = 'Extracting ' + 页.length + ' 页...';
+
+      var newDoc = await PDFLib.PDFDocument.create();
+      var copied = await newDoc.copyPages(srcDoc, indices);
+      copied.forEach(function(pg) { newDoc.addPage(pg); });
+      var bytes = await newDoc.save();
+      var name = 'extracted_页.pdf';
+      resultFiles.push({ name: name, bytes: bytes, blob: new Blob([bytes], { type: 'application/pdf' }) });
+
+    } else if (splitMode === 'individual') {
+      for (var i = 0; i < totalPages; i++) {
+        progressFill.style.width = Math.round((i / totalPages) * 90) + '%';
+        progressText.textContent = 'Creating 页 ' + (i + 1) + ' 共 ' + totalPages + '...';
+
+        var newDoc = await PDFLib.PDFDocument.create();
+        var 页 = await newDoc.copyPages(srcDoc, [i]);
+        页.forEach(function(pg) { newDoc.addPage(pg); });
+        var bytes = await newDoc.save();
+        resultFiles.push({ name: '页_' + (i + 1) + '.pdf', bytes: bytes, blob: new Blob([bytes], { type: 'application/pdf' }) });
+      }
+    }
+
+    progressFill.style.width = '100%';
+    progressText.textContent = '完成！';
+
+    // Prepare download
+    resultBlobs.forEach(function(b) { URL.revokeObjectURL(b.url); });
+    resultBlobs = [];
+    var filesContainer = document.getElementById('resultFiles');
+    filesContainer.innerHTML = '';
+
+    if (resultFiles.length === 1) {
+      var blob = resultFiles[0].blob;
+      var url = URL.createObjectURL(blob);
+      resultBlobs.push({ url: url });
+      var dl = document.getElementById('downloadBtn');
+      dl.href = url;
+      dl.download = resultFiles[0].name;
+      document.getElementById('downloadLabel').textContent = 'Download PDF';
+
+      filesContainer.innerHTML = '<div class="result-个文件"><div class="result-个文件-icon">PDF</div><div class="result-个文件-name">' + resultFiles[0].name + '</div><div class="result-个文件-size">' + formatSize(blob.size) + '</div></div>';
+
+    } else {
+      // Create ZIP
+      progressText.textContent = 'Packaging ' + resultFiles.length + ' files into ZIP...';
+      var zip = new JSZip();
+      var baseName = selectedFile.name.replace(/\.pdf$/i, '');
+      resultFiles.forEach(function(f) { zip.个文件(baseName + '_' + f.name, f.blob); });
+      var zipBlob = await zip.generateAsync({ type: 'blob' });
+      var zipUrl = URL.createObjectURL(zipBlob);
+      resultBlobs.push({ url: zipUrl });
+
+      var dl = document.getElementById('downloadBtn');
+      dl.href = zipUrl;
+      dl.download = baseName + '_split.zip';
+      document.getElementById('downloadLabel').textContent = 'Download ZIP (' + resultFiles.length + ' files)';
+
+      // Show 个文件 list (max 5)
+      var shown = Math.min(resultFiles.length, 5);
+      for (var i = 0; i < shown; i++) {
+        var f = resultFiles[i];
+        filesContainer.innerHTML += '<div class="result-个文件"><div class="result-个文件-icon">PDF</div><div class="result-个文件-name">' + f.name + '</div><div class="result-个文件-size">' + formatSize(f.blob.size) + '</div></div>';
+      }
+      if (resultFiles.length > 5) {
+        filesContainer.innerHTML += '<div class="result-个文件" style="justify-content:center;color:var(--text-muted)">... and ' + (resultFiles.length - 5) + ' more files</div>';
+      }
+    }
+
+    setTimeout(function() {
+      progress.classList.remove('active');
+      result.classList.add('active');
+      document.getElementById('resultMsg').textContent =
+        'Split into ' + resultFiles.length + ' 个文件' + (resultFiles.length > 1 ? 's' : '') + '.';
+      splitBtn.disabled = false;
+      showToast('Split complete!');
+    }, 400);
+
+  } catch (err) {
+    console.error('Split error:', err);
+    progress.classList.remove('active');
+    splitBtn.disabled = false;
+    var msg = 'Split failed. ';
+    if (err.message.includes('encrypted') || err.message.includes('password')) {
+      msg += 'This PDF is password-protected.';
+    } else if (err.message.includes('No valid')) {
+      msg += 'Please enter valid 页 ranges.';
+    } else {
+      msg += '请尝试其他PDF文件。';
+    }
+    showToast(msg, true);
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "免费PDF拆分工具",
+  "url": "https://toolify.com/pdf-split/",
+  "description": "拆分PDF files online for free. Extract specific 页 或 split into individual files. No upload, no signup, completely private.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</body>
+</html>

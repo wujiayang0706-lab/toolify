@@ -1,0 +1,177 @@
+/**
+ * Toolify Common Styles
+ * Auth modal, user menu, login buttons, shared components.
+ * Included on every page alongside page-specific styles.
+ */
+
+/* ---- Login Button (header) ---- */
+.btn-login{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;
+  background:var(--primary);color:#fff;border:none;cursor:pointer;
+  transition:all .15s;text-decoration:none;
+}
+.btn-login:hover{background:var(--primary-hover);transform:translateY(-1px)}
+
+/* ---- User Menu (header) ---- */
+.user-menu{position:relative;display:flex;align-items:center}
+.user-trigger{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 8px 4px 4px;border-radius:20px;border:none;
+  background:transparent;cursor:pointer;transition:all .15s;
+}
+.user-trigger:hover{background:var(--primary-light)}
+.user-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;overflow:hidden;flex-shrink:0;
+}
+.user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.user-name{font-size:13px;font-weight:600;color:var(--text);max-width:100px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-menu.premium .user-avatar{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.user-menu.premium .user-trigger{background:#fffbeb}
+.user-menu.premium .user-trigger:hover{background:#fef3c7}
+
+/* ---- User Dropdown ---- */
+.user-dropdown{
+  display:none;position:absolute;top:100%;right:0;margin-top:8px;
+  min-width:220px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);z-index:200;
+  padding:8px;
+}
+.user-dropdown.active{display:block}
+.user-dropdown-header{padding:8px 12px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.user-status{font-size:12px;font-weight:600;color:var(--text-muted)}
+.user-menu.premium .user-status{color:#f59e0b}
+.user-dropdown-item{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  font-size:14px;font-weight:500;color:var(--text-secondary);
+  background:none;border:none;cursor:pointer;text-decoration:none;
+  transition:all .12s;text-align:left;
+}
+.user-dropdown-item:hover{background:var(--primary-light);color:var(--primary)}
+.upgrade-link{color:#f59e0b;font-weight:600}
+.upgrade-link:hover{background:#fffbeb;color:#d97706}
+
+/* ---- Login Modal ---- */
+.login-modal{display:none;position:fixed;inset:0;z-index:1000}
+.login-modal.active{display:block}
+.login-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px)}
+.login-dialog{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--surface);border-radius:16px;padding:40px 36px;
+  width:90%;max-width:400px;box-shadow:var(--shadow-lg);
+  text-align:center;animation:loginSlideIn .25s ease;
+}
+@keyframes loginSlideIn{from{transform:translate(-50%,-45%);opacity:0}to{transform:translate(-50%,-50%);opacity:1}}
+.login-close{
+  position:absolute;top:12px;right:16px;background:none;border:none;
+  font-size:28px;color:var(--text-muted);cursor:pointer;line-height:1;
+}
+.login-close:hover{color:var(--text)}
+.login-title{font-size:24px;font-weight:800;margin-bottom:8px}
+.login-subtitle{font-size:14px;color:var(--text-secondary);margin-bottom:28px;line-height:1.5}
+.login-buttons{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.login-provider-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px 20px;border-radius:10px;font-size:15px;font-weight:600;
+  cursor:pointer;transition:all .15s;border:2px solid var(--border);
+  background:var(--surface);color:var(--text);
+}
+.login-provider-btn:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+.google-btn:hover{background:#f8faf9;border-color:#4285F4}
+.line-btn:hover{background:#f0fdf4;border-color:#06C755}
+.login-note{font-size:12px;color:var(--text-muted)}
+.login-demo-banner{background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:12px;padding:10px 14px;border-radius:8px;margin-bottom:20px;line-height:1.5}
+.demo-checkout-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:20px}
+.demo-checkout-row{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.demo-checkout-row strong{color:var(--primary);font-size:18px}
+.demo-pay-btn{background:var(--primary,#2563eb)!important;color:#fff!important;border-color:var(--primary,#2563eb)!important;font-weight:600}
+.demo-pay-btn:hover{background:var(--primary-hover,#1d4ed8)!important;border-color:var(--primary-hover,#1d4ed8)!important}
+.demo-cancel-btn{background:none;border:none;color:var(--text-muted,#94a3b8);font-size:13px;cursor:pointer;padding:8px;margin-top:4px}
+.demo-cancel-btn:hover{color:var(--text-secondary,#475569)}
+
+/* Google renders its own button inside #google-login-btn */
+#google-login-btn{overflow:hidden;border-radius:10px}
+#google-login-btn > div{width:100%!important}
+#google-login-btn > div > div{width:100%!important;justify-content:center!important}
+
+/* ---- Pricing Cards (used on pricing page) ---- */
+.pricing-section{padding:40px 0 60px}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:800px;margin:0 auto}
+.pricing-card{
+  background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);
+  padding:32px 28px;display:flex;flex-direction:column;gap:16px;position:relative;transition:all .2s;
+}
+.pricing-card:hover{border-color:var(--border-hover);box-shadow:var(--shadow-lg)}
+.pricing-card.featured{border-color:var(--primary);box-shadow:0 8px 30px rgba(37,99,235,.12)}
+.pricing-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  padding:4px 16px;border-radius:20px;font-size:12px;font-weight:700;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;white-space:nowrap;
+}
+.pricing-plan-name{font-size:20px;font-weight:700;text-align:center}
+.pricing-price{text-align:center}
+.pricing-price .amount{font-size:42px;font-weight:800;color:var(--text)}
+.pricing-price .period{font-size:16px;color:var(--text-muted)}
+.pricing-features{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+.pricing-features li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--text-secondary)}
+.pricing-features li svg{width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:1px}
+.pricing-features li.disabled{color:var(--text-muted);opacity:.6}
+.pricing-features li.disabled svg{color:var(--text-muted)}
+.pricing-cta{
+  display:block;text-align:center;padding:14px;border-radius:50px;
+  font-size:16px;font-weight:700;cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.pricing-cta.primary{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 4px 18px rgba(37,99,235,.3)}
+.pricing-cta.primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.4)}
+.pricing-cta.secondary{background:var(--surface);color:var(--primary);border:2px solid var(--primary)}
+.pricing-cta.secondary:hover{background:var(--primary-light)}
+
+/* ---- FAQ Accordion (support page) ---- */
+.faq-accordion{display:flex;flex-direction:column;gap:12px}
+.faq-accordion-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;
+}
+.faq-accordion-q{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);
+  user-select:none;
+}
+.faq-accordion-q svg{width:20px;height:20px;color:var(--text-muted);transition:transform .2s;flex-shrink:0;margin-left:12px}
+.faq-accordion-item.open .faq-accordion-q svg{transform:rotate(180deg)}
+.faq-accordion-a{display:none;padding:0 20px 16px;font-size:14px;color:var(--text-secondary);line-height:1.7}
+.faq-accordion-item.open .faq-accordion-a{display:block}
+
+/* ---- Contact Card (support page) ---- */
+.contact-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.contact-icon{
+  width:64px;height:64px;border-radius:50%;background:var(--primary-light);
+  color:var(--primary);display:flex;align-items:center;justify-content:center;
+}
+.contact-icon svg{width:32px;height:32px}
+.contact-card h3{font-size:20px;font-weight:700}
+.contact-card p{font-size:14px;color:var(--text-secondary);max-width:400px}
+.contact-email{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;background:var(--primary);color:#fff;border-radius:50px;
+  font-size:16px;font-weight:600;text-decoration:none;transition:all .15s;
+  box-shadow:0 4px 14px rgba(37,99,235,.25);
+}
+.contact-email:hover{background:var(--primary-hover);transform:translateY(-1px)}
+
+/* ---- Responsive ---- */
+@media(max-width:640px){
+  .login-dialog{padding:32px 24px}
+  .pricing-grid{grid-template-columns:1fr}
+  .user-name{display:none}
+  .btn-login span{display:none}
+  .btn-login{padding:8px 10px}
+}
