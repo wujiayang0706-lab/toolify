@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing — Toolify Premium | Unlock Unlimited Tools</title>
-<meta name="description" content="Upgrade to Toolify Premium for just $9.99/month. Unlimited PDF conversions, no ads, 50MB file limit, and priority processing. Cancel anytime.">
+<title>Toolify — Free Online Tools</title>
+<meta name="description" content="All Toolify tools are free to use. PDF tools, QR codes, image conversion, and more — right in your browser.">
 <meta name="robots" content="index, follow">
 <link rel="alternate" hreflang="en" href="https://toolify.com/pricing">
 <link rel="alternate" hreflang="zh" href="https://toolify.com/zh/pricing">
 <link rel="alternate" hreflang="ja" href="https://toolify.com/ja/pricing">
 <link rel="alternate" hreflang="x-default" href="https://toolify.com/pricing">
 <link rel="canonical"> href="https://toolify.com/pricing/">
-<meta property="og:title" content="Toolify Pricing — Premium for $9.99/month">
+<meta property="og:title" content="Toolify — Free Online Tools">
 <meta property="og:description" content="Unlock unlimited PDF tools, no ads, and priority processing. Just $9.99/month.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="/assets/common.css">
@@ -53,11 +54,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
 @media(max-width:640px){.hero h1{font-size:24px}.nav{display:none}.compare-table{font-size:12px}.compare-table th,.compare-table td{padding:10px 12px}}
 
-.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
-.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
-.lang-link:hover{background:var(--primary-light);color:var(--primary)}
-.lang-link.active{background:var(--primary);color:#fff}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
 
+.billing-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:5px;margin:14px auto 20px;gap:4px;box-shadow:var(--shadow)}
+.billing-option{padding:10px 22px;border:none;background:transparent;border-radius:50px;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;position:relative}
+.billing-option.active{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 3px 12px rgba(37,99,235,.3)}
+.billing-option:hover:not(.active){background:var(--surface);color:var(--text)}
+.save-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:#ecfdf5;color:var(--success)}
+.billing-option.active .save-badge{background:rgba(255,255,255,.3);color:#fff}
+.best-value{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;padding:2px 10px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;white-space:nowrap;letter-spacing:.02em}
+.price-sub{font-size:13px;font-weight:600;color:var(--success);margin-top:6px;min-height:18px}
 </style>
 </head>
 <body>
@@ -70,15 +84,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <a href="/pdf-to-word/">PDF to Word</a>
       <a href="/pdf-merge/">PDF Merge</a>
       <a href="/support/">Support</a>
-    <div class="lang-switcher"><a href="/pricing/" class="lang-link active">EN</a><a href="/zh/pricing/" class="lang-link">中文</a><a href="/ja/pricing/" class="lang-link">日本語</a></div>
+    <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/pricing/" class="lang-option active">English</a>
+        <a href="/zh/pricing/" class="lang-option">中文</a>
+        <a href="/ja/pricing/" class="lang-option">日本語</a>
+      </div>
+    </div>
     </nav>
   </div>
 </header>
 
 <main>
   <section class="hero container">
-    <h1>Simple, Transparent Pricing</h1>
-    <p>Start free forever. Upgrade when you need more power. Cancel anytime.</p>
+    <h1>Pricing</h1>
+    <p>All tools are free to use. No account required.</p>
   </section>
 
   <section class="pricing-section container">
@@ -87,7 +108,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <div class="pricing-plan-name">Free</div>
         <div class="pricing-price">
           <span class="amount">$0</span>
-          <span class="period">/forever</span>
+          <span class="period">/month</span>
         </div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>3 merges / 3 conversions per day</li>
@@ -103,10 +124,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="pricing-card featured">
         <span class="pricing-badge">Most Popular</span>
         <div class="pricing-plan-name">Premium</div>
+        <div class="billing-toggle">
+          <button class="billing-option active" data-cycle="monthly" onclick="switchBilling('monthly')">Monthly</button>
+          <button class="billing-option" data-cycle="annual" onclick="switchBilling('annual')">Annual <span class="best-value">Best Value</span></button>
+        </div>
         <div class="pricing-price" id="priceDisplay">
           <span class="amount" id="priceAmount">$9.99</span>
           <span class="period" id="pricePeriod">/month</span>
         </div>
+        <div class="price-sub" id="priceSub"></div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Unlimited merges &amp; conversions</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Up to 50MB per file</li>
@@ -136,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <tr><td>Processing speed</td><td>Standard</td><td class="check">Priority</td></tr>
         <tr><td>Support</td><td>Community</td><td class="check">Email priority</td></tr>
         <tr><td>Data privacy</td><td class="check">100% local</td><td class="check">100% local</td></tr>
-        <tr><td>Price</td><td>Free</td><td>$9.99 / mo</td></tr>
+        <tr><td>Price</td><td>Free</td><td>$9.99/mo or $99.90/yr</td></tr>
       </tbody>
     </table>
   </section>
@@ -158,7 +184,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <a href="/pricing/">Pricing</a>
       <a href="/support/">Support</a>
     </div>
-    <p>&copy; 2026 Toolify. All tools run locally in your browser. <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser.</p>
+    <p style="font-size:13px;margin-top:8px">Questions or feedback? <a href="javascript:void(0)" onclick="this.style.display='none';this.nextElementSibling.style.display='inline'" style="color:var(--primary);text-decoration:none;cursor:pointer">Click to reveal email</a><span style="display:none"> <a href="mailto:Jeff198510010011@163.com" style="color:var(--primary);text-decoration:none">Jeff198510010011@163.com</a></span></p> <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
   </div>
 </footer>
 
@@ -176,21 +203,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   // FAQ items
   var faqs = {
     en: [
-      ['Can I cancel anytime?', 'Yes. You can cancel your subscription at any time from your account settings or by contacting support. You will keep premium access until the end of your billing period.'],
       ['What payment methods do you accept?', 'We accept all major credit cards, PayPal, and Apple Pay through Lemon Squeezy — our payment processor.'],
       ['Do you offer refunds?', 'If you are not satisfied within the first 7 days, contact us for a full refund. No questions asked.'],
       ['Is my payment secure?', 'Absolutely. All payments are processed by Lemon Squeezy, a PCI-compliant payment processor. We never see or store your card details.'],
-      ['Can I switch between monthly and annual?', 'Currently we offer monthly billing only. Annual plans are coming soon with a discount.']
+      ['Can I switch between monthly and annual?', 'Yes! Toggle between Monthly and Annual on this page. Annual billing saves about 17% versus monthly. You can switch or cancel anytime from your account.']
     ],
     zh: [
-      ['可以随时取消吗？', '可以。您随时可以在账户设置中取消订阅或联系支持。取消后您仍可在当前计费周期结束前使用高级功能。'],
       ['接受哪些支付方式？', '通过 Lemon Squeezy 接受所有主流信用卡、PayPal 和 Apple Pay。'],
       ['可以退款吗？', '前7天内如果您不满意，联系我们即可获得全额退款。'],
       ['支付安全吗？', '绝对安全。所有支付由 PCI 合规的 Lemon Squeezy 处理。我们不会看到或存储您的卡片信息。'],
       ['可以在月付和年付之间切换吗？', '目前仅提供月付。年付方案即将推出并附带折扣。']
     ],
     ja: [
-      ['いつでもキャンセルできますか？', 'はい。アカウント設定またはサポートへの連絡でいつでもキャンセルできます。請求期間の終了までプレミアムアクセスが維持されます。'],
       ['どんな支払い方法に対応していますか？', 'Lemon Squeezyを通じて、主要なクレジットカード、PayPal、Apple Payに対応しています。'],
       ['返金は可能ですか？', '最初の7日以内にご満足いただけない場合、全額返金いたします。お問い合わせください。'],
       ['支払いは安全ですか？', 'はい。すべての支払いはPCI準拠のLemon Squeezyによって処理されます。カード情報を保存することはありません。'],
@@ -215,6 +239,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   });
 })();
 
+var currentCycle = 'monthly';
+
+function switchBilling(cycle) {
+  currentCycle = cycle;
+  var lang = document.documentElement.lang || 'en';
+  var monthly = cycle === 'monthly';
+  var amountEl = document.getElementById('priceAmount');
+  var periodEl = document.getElementById('pricePeriod');
+  var subEl = document.getElementById('priceSub');
+  if (lang === 'ja') {
+    amountEl.textContent = monthly ? CONFIG.PRICE_JPY : CONFIG.PRICE_JPY_YEARLY;
+    periodEl.textContent = monthly ? '/月' : '/年';
+    subEl.textContent = monthly ? '' : '¥3,000お得・月額¥1,250';
+  } else if (lang === 'zh') {
+    amountEl.textContent = monthly ? CONFIG.PRICE_USD : CONFIG.PRICE_USD_YEARLY;
+    periodEl.textContent = monthly ? '/月' : '/年';
+    subEl.textContent = monthly ? '' : '年付省 $20 · 仅 $8.33/月';
+  } else {
+    amountEl.textContent = monthly ? CONFIG.PRICE_USD : CONFIG.PRICE_USD_YEARLY;
+    periodEl.textContent = monthly ? '/month' : '/year';
+    subEl.textContent = monthly ? '' : 'Save $20/year · just $8.33/month';
+  }
+  document.querySelectorAll('.billing-option').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.cycle === cycle);
+  });
+}
+
+// Default to monthly
+switchBilling('monthly');
+
 // Checkout handler
 function isPaymentDemoMode() {
   return CONFIG.LEMON_SQUEEZY_USD_URL.indexOf('PRODUCT') !== -1 ||
@@ -238,7 +292,12 @@ function handleCheckout(e) {
   }
 
   // Real checkout: redirect to Lemon Squeezy
-  var url = lang === 'ja' ? CONFIG.LEMON_SQUEEZY_JPY_URL : CONFIG.LEMON_SQUEEZY_USD_URL;
+  var url;
+  if (lang === 'ja') {
+    url = currentCycle === 'annual' ? CONFIG.LEMON_SQUEEZY_JPY_YEARLY_URL : CONFIG.LEMON_SQUEEZY_JPY_URL;
+  } else {
+    url = currentCycle === 'annual' ? CONFIG.LEMON_SQUEEZY_USD_YEARLY_URL : CONFIG.LEMON_SQUEEZY_USD_URL;
+  }
   window.location.href = url;
 }
 
@@ -248,7 +307,7 @@ function openDemoCheckout(lang) {
   var existing = document.getElementById('demoCheckoutModal');
   if (existing) existing.remove();
 
-  var price = lang === 'ja' ? CONFIG.PRICE_JPY + ' / \u6708' : CONFIG.PRICE_USD + ' / month';
+  var price = document.getElementById('priceAmount').textContent + ' ' + document.getElementById('pricePeriod').textContent;
   var demoTexts = {
     en: {
       title: 'Demo Checkout', subtitle: 'Payment is not connected yet. This simulates a successful subscription so you can preview the premium experience.',
@@ -329,9 +388,16 @@ function simulatePaymentSuccess(lang) {
   "operatingSystem": "Any",
   "offers": [
     {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD"},
-    {"@type": "Offer", "name": "Premium", "price": "9.99", "priceCurrency": "USD", "billingDuration": "P1M"}
+    {"@type": "Offer", "name": "Premium Monthly", "price": "9.99", "priceCurrency": "USD", "billingDuration": "P1M"},
+    {"@type": "Offer", "name": "Premium Annual", "price": "99.90", "priceCurrency": "USD", "billingDuration": "P1Y"}
   ]
 }
+</script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
 </script>
 </body>
 </html>

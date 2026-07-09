@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Toolify — 免费在线工具 | PDF、图片、文本工具</title>
@@ -88,10 +89,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   .tools-grid{grid-template-columns:1fr}
 }
 
-.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
-.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
-.lang-link:hover{background:var(--primary-light);color:var(--primary)}
-.lang-link.active{background:var(--primary);color:#fff}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
 
 </style>
     <link rel="stylesheet" href="/assets/common.css">
@@ -106,7 +112,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="#why">Why Toolify</a>
     <a href="/zh/pricing/">定价</a>
       <a href="/zh/support/">支持</a>
-      <div class="lang-switcher"><a href="/" class="lang-link">EN</a><a href="/zh/" class="lang-link active">中文</a><a href="/ja/" class="lang-link">日本語</a></div>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">中文 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/" class="lang-option">English</a>
+        <a href="/zh/" class="lang-option active">中文</a>
+        <a href="/ja/" class="lang-option">日本語</a>
+      </div>
+    </div>
     </nav>
   </div>
 </header>
@@ -125,12 +138,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   <section class="tools-section container" id="tools">
     <h2 class="section-title">全部工具</h2>
     <p class="section-subtitle">浏览我们不断增长的免费浏览器工具集</p>
-    <div class="tools-grid">
+        <div class="tools-grid">
 
       <a href="/zh/pdf-to-word/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF转Word</h3>
         <p>将PDF文件转换为可编辑的Word (DOCX)文档。在浏览器中进行真实文本提取。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
+
+      <a href="/zh/word-to-pdf/" class="tool-card available">
+        <div class="tool-icon pdf">DOCX</div>
+        <h3>Word转PDF</h3>
+        <p>将Word文档(.docx)转换为PDF。输出干净、无水印——全部在浏览器中完成。</p>
         <span class="tool-tag live">可用</span>
       </a>
 
@@ -141,20 +161,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">可用</span>
       </a>
 
-      <a href="/zh/currency-converter/" class="tool-card available">
-        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
-        <h3>汇率换算</h3>
-        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
-        <span class="tool-tag live">可用</span>
-      </a>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>PDF压缩</h3>
-        <p>在保持质量的同时减小PDF文件大小。非常适合邮件附件和网页上传。</p>
-        <span class="tool-tag soon">即将推出</span>
-      </div>
-
       <a href="/zh/pdf-split/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF拆分</h3>
@@ -162,45 +168,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">可用</span>
       </a>
 
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>PDF转JPG</h3>
-        <p>将每个PDF页面转换为高质量JPG图片。适合缩略图和预览。</p>
-        <span class="tool-tag soon">即将推出</span>
-      </div>
+      <a href="/zh/heic-to-jpg/" class="tool-card available">
+        <div class="tool-icon image">HEIC</div>
+        <h3>HEIC转JPG</h3>
+        <p>在浏览器中将iPhone HEIC/HEIF照片转换为JPG。批量转换，无需上传，无水印。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/zh/qr-code-generator/" class="tool-card available">
+        <div class="tool-icon" style="background:#eff6ff;color:#2563eb">QR</div>
+        <h3>二维码生成</h3>
+        <p>为网址和文本创建自定义二维码。选择尺寸、颜色和纠错级别。下载为PNG。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
+
+      <a href="/zh/json-formatter/" class="tool-card available">
+        <div class="tool-icon dev">DEV</div>
+        <h3>JSON格式化</h3>
+        <p>格式化、验证和压缩JSON数据。即时错误检测，全部在浏览器中完成。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
+
+      <a href="/zh/currency-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
+        <h3>汇率换算</h3>
+        <p>160+货币的实时汇率。以美元为基准，每分钟更新。即时换算。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
+
+      <a href="/zh/time-zone-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#f0fdf4;color:#16a34a">TZ</div>
+        <h3>时区转换器</h3>
+        <p>即时转换任意时区时间。自动处理夏令时，50+城市。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
+
+      <a href="/zh/jpg-to-pdf/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>JPG转PDF</h3>
         <p>将多张图片合并为单个PDF文档。支持JPG、PNG和WebP。</p>
-        <span class="tool-tag soon">即将推出</span>
-      </div>
+        <span class="tool-tag live">可用</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/zh/image-compressor/" class="tool-card available">
         <div class="tool-icon image">IMG</div>
         <h3>图片压缩</h3>
-        <p>Compress JPG, PNG, and WebP images without visible quality loss. Reduce 个文件 sizes by up to 80%.</p>
-        <span class="tool-tag soon">即将推出</span>
-      </div>
+        <p>压缩JPG、PNG和WebP图片，无明显质量损失。文件大小最多减小80%。</p>
+        <span class="tool-tag live">可用</span>
+      </a>
 
       <div class="tool-card coming-soon">
         <div class="tool-icon image">IMG</div>
         <h3>图片缩放</h3>
-        <p>将图片调整为精确尺寸或百分比。批量处理多个文件。</p>
+        <p>按精确尺寸或百分比缩放图片。批量处理多个文件。</p>
         <span class="tool-tag soon">即将推出</span>
       </div>
 
       <div class="tool-card coming-soon">
         <div class="tool-icon text">TXT</div>
         <h3>字数统计</h3>
-        <p>统计单词、字符、句子和段落数。包含阅读时间估算。</p>
-        <span class="tool-tag soon">即将推出</span>
-      </div>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon dev">DEV</div>
-        <h3>JSON格式化</h3>
-        <p>格式化、验证和压缩JSON数据。语法高亮和树形视图。</p>
+        <p>统计字数、字符数、句子和段落。包含阅读时间估算。</p>
         <span class="tool-tag soon">即将推出</span>
       </div>
 
@@ -242,15 +269,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="/zh/pdf-merge/">PDF合并</a>
       <a href="#">PDF压缩</a>
       <a href="#">JPG转PDF</a>
-      <a href="#">Word转PDF</a>
+      <a href="/zh/word-to-pdf/">Word转PDF</a>
       <a href="#">图片压缩</a>
-      <a href="#">二维码生成</a>
+      <a href="/zh/qr-code-generator/">二维码生成</a>
+      <a href="/zh/heic-to-jpg/">HEIC转JPG</a>
+      <a href="/zh/json-formatter/">JSON格式化</a>
+      <a href="/zh/time-zone-converter/">时区转换器</a>
+      <a href="/zh/currency-converter/">汇率换算</a>
     </div>
-    <p>&copy; 2026 Toolify. 所有工具均在浏览器本地运行。 <a href="#">隐私政策</a> &middot; <a href="#">条款</a></p>
+    <p>&copy; 2026 Toolify. 所有工具均在浏览器本地运行。</p>
+    <p style="font-size:13px;margin-top:8px">问题反馈：<a href="javascript:void(0)" onclick="this.style.display='none';this.nextElementSibling.style.display='inline'" style="color:var(--primary);text-decoration:none;cursor:pointer">点击查看邮箱</a><span style="display:none"> <a href="mailto:Jeff198510010011@163.com" style="color:var(--primary);text-decoration:none">Jeff198510010011@163.com</a></span></p> <a href="#">隐私政策</a> &middot; <a href="#">条款</a></p>
   </div>
 </footer>
 
 <script src="/assets/config.js"></script>
 <script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
 </body>
 </html>

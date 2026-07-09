@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online JSON Formatter — Format, Validate & Minify JSON in Browser</title>
+<meta name="description" content="Format, validate, and minify JSON online for free. All in your browser, no upload. Beautiful indentation, instant error detection with clear messages.">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/json-formatter">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/json-formatter">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/json-formatter">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/json-formatter">
+<link rel="canonical" href="https://toolify.com/json-formatter">
+<meta property="og:title" content="Free Online JSON Formatter — No Upload, Format in Browser">
+<meta property="og:description" content="Format, validate, and minify JSON online for free. No upload, no signup. Instant error detection.">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+.editor-section{padding:0 0 24px}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.panel-head h3{font-size:15px;font-weight:700}
+.panel-tools{display:flex;gap:6px;align-items:center}
+.indenter{display:flex;gap:4px}
+.indenter label{font-size:12px;color:var(--text-muted);align-self:center;margin-right:2px}
+.indenter select{padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);cursor:pointer}
+
+.code-area{width:100%;min-height:360px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text);background:var(--bg);resize:vertical;outline:none;tab-size:2;white-space:pre;overflow:auto}
+.code-area:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.code-out{white-space:pre-wrap;word-break:break-word}
+
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{padding:9px 18px;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.btn svg{width:15px;height:15px}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 3px 12px rgba(37,99,235,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(37,99,235,.35)}
+.btn-secondary{background:var(--surface);color:var(--text-secondary);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.btn-ghost{background:transparent;color:var(--text-muted)}
+.btn-ghost:hover{color:var(--danger);background:#fef2f2}
+
+.status-bar{margin-top:10px;padding:9px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;display:none}
+.status-bar.active{display:block}
+.status-bar.valid{background:#ecfdf5;color:var(--success);border:1px solid #a7f3d0}
+.status-bar.invalid{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+.status-bar.info{background:var(--primary-light);color:var(--primary);border:1px solid #bfdbfe}
+.status-bar code{font-family:'SF Mono',Monaco,Consolas,monospace;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+
+.stats{display:flex;gap:16px;font-size:12px;color:var(--text-muted);margin-top:8px}
+.stats span strong{color:var(--text-secondary)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.seo-section code{font-family:'SF Mono',Monaco,Consolas,monospace;background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:13px;color:#2563eb}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .nav{display:none}
+  .steps{grid-template-columns:1fr}
+  .editor-grid{grid-template-columns:1fr}
+  .code-area{min-height:240px}
+}
+
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/">All Tools</a>
+      <a href="#how-to">How to Use</a>
+      <a href="#faq">FAQ</a>
+    <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/json-formatter/" class="lang-option active">English</a>
+        <a href="/zh/json-formatter/" class="lang-option">中文</a>
+        <a href="/ja/json-formatter/" class="lang-option">日本語</a>
+      </div>
+    </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>Free Online JSON Formatter</h1>
+    <p>Format, validate, and minify JSON — right in your browser. No upload, no signup. Instant error detection with clear, helpful messages.</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>No Upload</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Instant</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Free Forever</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>No Signup</span>
+    </div>
+  </section>
+
+  <section class="editor-section container">
+    <div class="editor-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>JSON Input</h3>
+          <div class="panel-tools">
+            <div class="indenter">
+              <label for="indent">Indent</label>
+              <select id="indent">
+                <option value="2" selected>2 spaces</option>
+                <option value="4">4 spaces</option>
+                <option value="tab">Tab</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <textarea class="code-area" id="input" placeholder='Paste your JSON here, e.g.&#10;{"name":"Toolify","tools":["PDF","QR"],"free":true}' spellcheck="false"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="formatJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Format
+          </button>
+          <button class="btn btn-secondary" onclick="minifyJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>Minify
+          </button>
+          <button class="btn btn-secondary" onclick="validateJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Validate
+          </button>
+          <button class="btn btn-ghost" onclick="clearAll()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Output</h3>
+          <button class="btn btn-secondary" onclick="copyOutput()" style="padding:6px 14px;font-size:12px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy
+          </button>
+        </div>
+        <pre class="code-area code-out" id="output"></pre>
+        <div class="status-bar" id="statusBar"></div>
+        <div class="stats" id="stats" style="display:none">
+          <span>Size: <strong id="statSize"></strong></span>
+          <span>Keys: <strong id="statKeys"></strong></span>
+          <span>Depth: <strong id="statDepth"></strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><div class="ad-slot">[ AdSense Ad Unit — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>How to Format JSON Online — Free & Private</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>Paste JSON</h4><p>Paste your raw, minified, or messy JSON into the input box.</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>Format or Minify</h4><p>Click Format to beautify with indentation, or Minify to compress to one line.</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>Copy Output</h4><p>Review the result and copy it — all processing happens in your browser.</p></div>
+    </div>
+
+    <h3>What is JSON Formatting?</h3>
+    <p>JSON (JavaScript Object Notation) is the standard data format for APIs and config files. When sent between systems, it's usually <em>minified</em> — all whitespace stripped to save bytes — which makes it unreadable for humans. <strong>Formatting</strong> (also called beautifying or pretty-printing) adds line breaks and indentation so the structure is clear at a glance. <strong>Minifying</strong> does the reverse, removing all non-essential whitespace to produce the smallest possible valid JSON — useful before deploying or sending over the network.</p>
+
+    <h3>Why Use Our Free JSON Formatter?</h3>
+    <ul>
+      <li><strong>100% Private:</strong> Your JSON is parsed and re-serialized entirely in your browser. Nothing is uploaded to a server — safe for sensitive configs and API responses.</li>
+      <li><strong>Instant Validation:</strong> If your JSON has a syntax error, you get a clear message pointing to the problem — no more guessing where the missing comma is.</li>
+      <li><strong>Format &amp; Minify:</strong> Beautify with 2 spaces, 4 spaces, or tabs. Or compress to a single line for production. One click each.</li>
+      <li><strong>Useful Stats:</strong> See the size, key count, and nesting depth of your JSON at a glance.</li>
+      <li><strong>Free Forever:</strong> No signup, no limits, no subscription. The tool is sustained through non-intrusive ads on the page.</li>
+    </ul>
+
+    <h3>Common JSON Errors (and How to Fix Them)</h3>
+    <ul>
+      <li><strong>Trailing comma:</strong> <code>{"a":1,}</code> — remove the comma after the last item. JSON doesn't allow trailing commas.</li>
+      <li><strong>Single quotes:</strong> <code>{'a':1}</code> — JSON requires double quotes. Use <code>{"a":1}</code>.</li>
+      <li><strong>Unquoted keys:</strong> <code>{a:1}</code> — keys must be in double quotes: <code>{"a":1}</code>.</li>
+      <li><strong>Comments:</strong> <code>// note</code> — JSON has no comments. Remove them or use JSONC.</li>
+      <li><strong>Special characters:</strong> Unescaped tabs or newlines in strings — escape them as <code>\t</code> and <code>\n</code>.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <ul>
+      <li><strong>Reading API responses:</strong> Paste a minified API response to make it readable.</li>
+      <li><strong>Debugging:</strong> Spot structural mistakes in the JSON your code produces.</li>
+      <li><strong>Config files:</strong> Tidy up <code>tsconfig.json</code>, <code>package.json</code>, or other JSON configs.</li>
+      <li><strong>Preparing for deploy:</strong> Minify large JSON before shipping to reduce payload size.</li>
+      <li><strong>Learning:</strong> See how nested objects and arrays are structured.</li>
+    </ul>
+
+    <div id="faq">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item"><h4>Is this JSON formatter really free?</h4><p>Yes, completely free with no limits. We sustain the tool through non-intrusive advertising on the page.</p></div>
+      <div class="faq-item"><h4>Is my JSON uploaded to a server?</h4><p>No. All parsing, formatting, and minifying happens locally in your browser using JavaScript. Your data never leaves your device.</p></div>
+      <div class="faq-item"><h4>Does it handle large JSON files?</h4><p>Yes, it handles files of several megabytes. Since processing is in-browser, very large files may take a moment but work fine on modern devices.</p></div>
+      <div class="faq-item"><h4>Does it support JSONC or JSON5 (with comments)?</h4><p>No — this tool follows strict JSON (RFC 8259). Comments, single quotes, and trailing commas will be flagged as errors. Strip them first if you need strict JSON output.</p></div>
+      <div class="faq-item"><h4>What indentation should I use?</h4><p>2 spaces is the most common convention. 4 spaces is more readable for deeply nested data. Tabs are valid too — pick whichever your team prefers.</p></div>
+      <div class="faq-item"><h4>Can it fix my broken JSON automatically?</h4><p>Not automatically — it tells you exactly what's wrong so you can fix it. Auto-repair risks silently changing your data's meaning, so we report errors precisely instead.</p></div>
+      <div class="faq-item"><h4>Does it work on mobile?</h4><p>Yes! The formatter works on iOS, Android, and any modern mobile browser.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/pdf-to-word/">PDF to Word</a>
+      <a href="/word-to-pdf/">Word to PDF</a>
+      <a href="/pdf-merge/">PDF Merge</a>
+      <a href="/pdf-split/">PDF Split</a>
+      <a href="/qr-code-generator/">QR Code Generator</a>
+      <a href="/heic-to-jpg/">HEIC to JPG</a>
+      <a href="/json-formatter/">JSON Formatter</a>
+      <a href="/currency-converter/">Currency Converter</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+    </div>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser. <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const inputEl = document.getElementById('input');
+const outputEl = document.getElementById('output');
+const indentEl = document.getElementById('indent');
+const statusBar = document.getElementById('statusBar');
+const statsEl = document.getElementById('stats');
+const statSize = document.getElementById('statSize');
+const statKeys = document.getElementById('statKeys');
+const statDepth = document.getElementById('statDepth');
+const toast = document.getElementById('toast');
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function getIndent() {
+  const v = indentEl.value;
+  return v === 'tab' ? '\t' : parseInt(v, 10);
+}
+
+function setStatus(type, msg) {
+  statusBar.className = 'status-bar active ' + type;
+  statusBar.innerHTML = msg;
+}
+
+function clearStatus() {
+  statusBar.className = 'status-bar';
+  statusBar.innerHTML = '';
+}
+
+function countKeys(obj, depth) {
+  let keys = 0, maxDepth = depth;
+  if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+    for (const k in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, k)) {
+        keys++;
+        const r = countKeys(obj[k], depth + 1);
+        keys += r.keys;
+        if (r.depth > maxDepth) maxDepth = r.depth;
+      }
+    }
+  } else if (Array.isArray(obj)) {
+    for (const item of obj) {
+      const r = countKeys(item, depth + 1);
+      keys += r.keys;
+      if (r.depth > maxDepth) maxDepth = r.depth;
+    }
+  }
+  return { keys, depth: maxDepth };
+}
+
+function showStats(str, obj) {
+  const bytes = new Blob([str]).size;
+  statSize.textContent = bytes < 1024 ? bytes + ' B' : (bytes / 1024).toFixed(1) + ' KB';
+  const r = countKeys(obj, 0);
+  statKeys.textContent = r.keys;
+  statDepth.textContent = r.depth;
+  statsEl.style.display = 'flex';
+}
+
+function parseInput() {
+  const text = inputEl.value.trim();
+  if (!text) {
+    setStatus('invalid', 'Input is empty. Paste some JSON to format.');
+    return { error: true };
+  }
+  try {
+    const obj = JSON.parse(text);
+    return { obj, error: false };
+  } catch (err) {
+    // Try to extract position from error message
+    let msg = err.message;
+    const posMatch = msg.match(/position (\d+)/i);
+    if (posMatch) {
+      const pos = parseInt(posMatch[1], 10);
+      const before = inputEl.value.substring(0, pos);
+      const line = before.split('\n').length;
+      const col = pos - before.lastIndexOf('\n');
+      msg += ' (line ' + line + ', column ' + col + ')';
+    }
+    setStatus('invalid', 'Invalid JSON: ' + msg);
+    outputEl.textContent = '';
+    statsEl.style.display = 'none';
+    return { error: true };
+  }
+}
+
+function formatJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj, null, getIndent());
+  outputEl.textContent = out;
+  setStatus('valid', 'Valid JSON — formatted successfully.');
+  showStats(out, r.obj);
+  showToast('Formatted');
+}
+
+function minifyJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj);
+  outputEl.textContent = out;
+  setStatus('valid', 'Valid JSON — minified to one line.');
+  showStats(out, r.obj);
+  showToast('Minified');
+}
+
+function validateJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj, null, getIndent());
+  outputEl.textContent = out;
+  setStatus('valid', 'Valid JSON ✓ — no syntax errors found.');
+  showStats(JSON.stringify(r.obj), r.obj);
+  showToast('JSON is valid');
+}
+
+function clearAll() {
+  inputEl.value = '';
+  outputEl.textContent = '';
+  clearStatus();
+  statsEl.style.display = 'none';
+  inputEl.focus();
+}
+
+function copyOutput() {
+  const text = outputEl.textContent;
+  if (!text) {
+    showToast('Nothing to copy. Format some JSON first.', true);
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Copied to clipboard');
+    }).catch(() => { fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('Copied to clipboard');
+  } catch (e) {
+    showToast('Copy failed. Please copy manually.', true);
+  }
+  document.body.removeChild(ta);
+}
+
+// Seed with a sample so the page demonstrates itself
+window.addEventListener('DOMContentLoaded', function() {
+  inputEl.value = '{"name":"Toolify","tagline":"Free browser tools","tools":[{"id":"pdf-merge","live":true},{"id":"qr-code","live":true}],"stats":{"users":"847K","uptime":"99.9%"},"free":true}';
+  formatJSON();
+});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online JSON Formatter",
+  "url": "https://toolify.com/json-formatter",
+  "description": "Format, validate, and minify JSON online for free. All in your browser, no upload. Beautiful indentation, instant error detection with clear messages.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+</body>
+</html>

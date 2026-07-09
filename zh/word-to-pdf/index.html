@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费在线Word转PDF转换器 — 浏览器内转换，无需上传</title>
+<meta name="description" content="免费在线将Word文档(.docx)转换为PDF。无需上传—所有处理在浏览器中完成。快速、安全、无水印。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/word-to-pdf">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/word-to-pdf">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/word-to-pdf">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/word-to-pdf">
+<link rel="canonical" href="https://toolify.com/zh/word-to-pdf">
+<meta property="og:title" content="免费在线Word转PDF转换器 — 无需上传，浏览器内转换">
+<meta property="og:description" content="免费在线将Word文档转换为PDF。无需上传、无需注册、完全隐私。所有处理在浏览器中完成。">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+.upload-section{padding:0 0 24px}
+.upload-area{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-area.drag-over{transform:scale(1.01)}
+.upload-icon{margin-bottom:16px;display:flex;justify-content:center}
+.upload-icon svg{width:56px;height:56px;color:var(--primary)}
+.upload-area h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.upload-area p{font-size:14px;color:var(--text-muted)}
+.upload-area .or-divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:var(--text-muted);font-size:12px}
+.upload-area .or-divider::before,.upload-area .or-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.btn-browse{display:inline-block;padding:10px 28px;background:var(--primary);color:#fff;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-browse:hover{background:var(--primary-hover)}
+.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-area.has-file{border-style:solid;border-color:var(--primary);background:var(--primary-light)}
+
+.file-info-card{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.file-info-card.active{display:flex}
+.file-icon{width:44px;height:44px;border-radius:10px;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
+.btn-remove{background:none;border:none;padding:6px 8px;color:var(--text-muted);cursor:pointer;border-radius:6px;flex-shrink:0}
+.btn-remove:hover{color:var(--danger);background:#fef2f2}
+.btn-remove svg{width:18px;height:18px}
+
+.convert-section{text-align:center;padding:0 0 40px;display:none}
+.convert-section.active{display:block}
+.btn-convert{display:inline-flex;align-items:center;gap:8px;padding:16px 48px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(37,99,235,.3)}
+.btn-convert:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.4)}
+.btn-convert:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-convert svg{width:22px;height:22px}
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{width:100%;max-width:400px;height:6px;background:var(--border);border-radius:3px;margin:0 auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:3px;width:0%;transition:width .3s ease}
+.progress-text{font-size:13px;color:var(--text-secondary);margin-top:8px}
+
+.result{display:none;padding:0 0 40px}
+.result.active{display:block}
+.result-card{background:var(--surface);border:1px solid var(--success);border-radius:var(--radius);padding:32px 24px;text-align:center}
+.result-icon{margin-bottom:12px}
+.result-icon svg{width:56px;height:56px;color:var(--success)}
+.result-card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.result-card p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-again{display:inline-block;margin-left:12px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.btn-again:hover{border-color:var(--border-hover);background:#f8fafc}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .upload-area{padding:32px 16px}
+  .nav{display:none}
+  .steps{grid-template-columns:1fr}
+  .btn-convert{padding:14px 32px;font-size:15px}
+}
+
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+
+#docRender{position:absolute;left:-9999px;top:0;width:210mm;padding:20mm}
+#docRender h1,#docRender h2,#docRender h3{margin:0 0 8px}
+#docRender p{margin:0 0 10px;font-size:14px;line-height:1.6}
+#docRender table{border-collapse:collapse;width:100%;margin:8px 0}
+#docRender td,#docRender th{border:1px solid #ccc;padding:6px 8px;font-size:13px}
+#docRender img{max-width:100%}
+#docRender ul,#docRender ol{padding-left:20px;margin:0 0 10px}
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/">所有工具</a>
+      <a href="#how-to">使用方法</a>
+      <a href="#faq">常见问题</a>
+    <a href="/pricing/">定价</a>
+      <a href="/support/">支持</a>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">中文 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/word-to-pdf/" class="lang-option">English</a>
+        <a href="/zh/word-to-pdf/" class="lang-option active">中文</a>
+        <a href="/ja/word-to-pdf/" class="lang-option">日本語</a>
+      </div>
+    </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>免费在线Word转PDF转换器</h1>
+    <p>将Word文档(.docx)转换为PDF—完全在浏览器中完成。无需上传、无需注册、无水印。文档不会离开您的设备。</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>无需上传</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>快速免费</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>无需注册</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>无水印</span>
+    </div>
+  </section>
+
+  <section class="upload-section container">
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h3>拖放Word文件到此处转换</h3>
+      <p>选择 .docx 文件 — 最大50MB</p>
+      <div class="or-divider">或</div>
+      <span class="btn-browse">浏览文件</span>
+      <input type="file" id="fileInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="file-info-card" id="fileInfoCard">
+      <div class="file-icon">DOCX</div>
+      <div class="file-info">
+        <div class="file-name" id="fileName"></div>
+        <div class="file-meta" id="fileMeta"></div>
+      </div>
+      <button class="btn-remove" id="btnRemove" title="移除">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <div class="convert-section container" id="convertSection">
+    <button class="btn-convert" id="convertBtn" onclick="convertToPdf()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      转换为PDF
+    </button>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-text" id="progressText">正在转换...</p>
+    </div>
+  </div>
+
+  <div class="result container" id="result">
+    <div class="result-card">
+      <div class="result-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>转换完成！</h3>
+      <p id="resultMsg">您的PDF已就绪。</p>
+      <a class="btn-download" id="downloadBtn" href="#" download="converted.pdf">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        下载PDF
+      </a>
+      <button class="btn-again" onclick="resetAll()">重新开始</button>
+    </div>
+  </div>
+
+  <div class="container"><div class="ad-slot">[ AdSense 广告位 — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>如何在线将Word转换为PDF — 免费且私密</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>上传Word</h4><p>拖放或浏览选择您要转换的 .docx 文件。</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>转换</h4><p>点击转换—文档完全在浏览器中渲染为PDF。</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>下载PDF</h4><p>PDF即时生成。下载即可—无水印、无需注册。</p></div>
+    </div>
+
+    <h3>什么是Word转PDF？</h3>
+    <p>Word转PDF是将Microsoft Word文档(.docx)转换为便携文档格式(.pdf)文件的过程。PDF是分享文档的通用标准，因为它能保留格式并在每台设备上显示一致—非常适合简历、合同、报告和表单。我们的转换器完全在浏览器中完成，文档不会离开您的设备。</p>
+
+    <h3>为什么使用我们的免费Word转PDF转换器？</h3>
+    <ul>
+      <li><strong>100%私密安全：</strong>您的Word文档在浏览器本地处理，不会上传到任何服务器—机密文件始终留在您的电脑上。</li>
+      <li><strong>无水印：</strong>生成的PDF干干净净—没有品牌标识、没有水印、文档中不嵌入广告。</li>
+      <li><strong>无需注册：</strong>打开页面即可转换。无需账户、无需邮箱、转换次数不限。</li>
+      <li><strong>全平台支持：</strong>桌面、平板或手机—我们的转换器可在任何现代浏览器上运行。</li>
+      <li><strong>永久免费：</strong>无试用、无订阅、无隐藏费用。工具通过页面上的非侵入式广告维持运营。</li>
+    </ul>
+
+    <h3>常见使用场景</h3>
+    <ul>
+      <li><strong>简历：</strong>将简历转为PDF，发送给雇主时格式保持完美。</li>
+      <li><strong>合同与协议：</strong>以PDF分享法律文件，防止意外修改。</li>
+      <li><strong>报告与方案：</strong>分发在任意屏幕上都显示一致的精美报告。</li>
+      <li><strong>表单与信函：</strong>以任何人都能打开的格式发送表单和正式信函。</li>
+    </ul>
+
+    <div id="faq">
+      <h3>常见问题</h3>
+      <div class="faq-item"><h4>这个Word转PDF转换器真的免费吗？</h4><p>是的，完全免费且无限制。我们通过页面上的非侵入式广告维持运营。</p></div>
+      <div class="faq-item"><h4>我的文档会上传到服务器吗？</h4><p>不会。所有转换都在浏览器中通过JavaScript本地完成。文件不会离开您的设备，适合处理机密文档。</p></div>
+      <div class="faq-item"><h4>支持旧版 .doc 格式吗？</h4><p>本工具支持现代 .docx 格式（Office 2007及以上）。旧版 .doc 使用不同的二进制结构，暂不支持。</p></div>
+      <div class="faq-item"><h4>格式会保留吗？</h4><p>文本、标题、列表、表格和基本格式会保留。复杂布局、嵌入字体或高级Word功能可能渲染略有不同，因为转换过程不依赖Microsoft Word。</p></div>
+      <div class="faq-item"><h4>最大文件大小是多少？</h4><p>建议文件不超过50MB。由于转换在浏览器中进行，可用内存是超大文档的限制因素。</p></div>
+      <div class="faq-item"><h4>手机上能用吗？</h4><p>可以！我们的转换器支持iOS、Android及任何现代移动浏览器。</p></div>
+      <div class="faq-item"><h4>文档里的图片会保留吗？</h4><p>嵌入在 .docx 中的内联图片会渲染到PDF中。链接到外部位置的图片不会包含。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/pdf-to-word/">PDF转Word</a>
+      <a href="/word-to-pdf/">Word转PDF</a>
+      <a href="/pdf-merge/">PDF合并</a>
+      <a href="/pdf-split/">PDF拆分</a>
+      <a href="/currency-converter/">汇率换算</a>
+      <a href="/pricing/">定价</a>
+      <a href="/support/">支持</a>
+    </div>
+    <p>&copy; 2026 Toolify. 所有工具均在浏览器本地运行。 <a href="#">隐私政策</a> &middot; <a href="#">条款</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<div id="docRender"></div>
+
+<!-- mammoth.js: 在浏览器中从 .docx 提取 HTML -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<!-- html2pdf.js: 将 HTML 渲染为 PDF (html2canvas + jsPDF) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+const uploadArea = document.getElementById('uploadArea');
+const fileInput  = document.getElementById('fileInput');
+const fileInfoCard = document.getElementById('fileInfoCard');
+const fileName = document.getElementById('fileName');
+const fileMeta = document.getElementById('fileMeta');
+const convertSection = document.getElementById('convertSection');
+const convertBtn = document.getElementById('convertBtn');
+const result    = document.getElementById('result');
+const progress  = document.getElementById('progress');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const toast     = document.getElementById('toast');
+const docRender = document.getElementById('docRender');
+let wordFile = null;
+let resultBlob = null;
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function setFile(file) {
+  if (!file) return;
+  const name = file.name.toLowerCase();
+  const isDocx = name.endsWith('.docx') ||
+    file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  if (!isDocx) {
+    showToast('请选择一个 .docx 文件。', true);
+    return;
+  }
+  if (file.size > 50 * 1024 * 1024) {
+    showToast('文件超过50MB，请选择较小的文件。', true);
+    return;
+  }
+  wordFile = file;
+  fileName.textContent = file.name;
+  fileMeta.textContent = formatSize(file.size);
+  uploadArea.classList.add('has-file');
+  fileInfoCard.classList.add('active');
+  convertSection.classList.add('active');
+  result.classList.remove('active');
+  fileInput.value = '';
+  showToast('已添加文件');
+}
+
+function resetAll() {
+  wordFile = null;
+  if (resultBlob) { URL.revokeObjectURL(resultBlob); resultBlob = null; }
+  uploadArea.classList.remove('has-file');
+  fileInfoCard.classList.remove('active');
+  convertSection.classList.remove('active');
+  result.classList.remove('active');
+  fileInput.value = '';
+  docRender.innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('btnRemove').addEventListener('click', resetAll);
+
+uploadArea.addEventListener('click', (e) => {
+  if (e.target === fileInput || e.target.closest('.btn-browse')) return;
+  fileInput.click();
+});
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault(); uploadArea.classList.remove('drag-over');
+  if (e.dataTransfer.files.length > 0) setFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) setFile(e.target.files[0]);
+});
+
+// ============================================================
+//  使用 mammoth.js + html2pdf.js 将 Word 转为 PDF
+// ============================================================
+async function convertToPdf() {
+  if (!wordFile) {
+    showToast('请先选择一个Word文件。', true);
+    return;
+  }
+
+  convertBtn.disabled = true;
+  progress.classList.add('active');
+  result.classList.remove('active');
+
+  try {
+    progressFill.style.width = '15%';
+    progressText.textContent = '正在读取文档...';
+
+    const arrayBuffer = await wordFile.arrayBuffer();
+
+    progressFill.style.width = '35%';
+    progressText.textContent = '正在提取内容...';
+
+    const conversion = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+    const html = conversion.value;
+
+    if (!html || !html.trim()) {
+      throw new Error('The document appears to be empty.');
+    }
+
+    progressFill.style.width = '60%';
+    progressText.textContent = '正在生成PDF...';
+
+    docRender.innerHTML = html;
+
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: wordFile.name.replace(/\.docx$/i, '') + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    const worker = html2pdf().set(opt).from(docRender);
+
+    const pdfBlob = await worker.toPdf().output('blob');
+    const blobUrl = URL.createObjectURL(pdfBlob);
+
+    resultBlob = blobUrl;
+    progressFill.style.width = '100%';
+    progressText.textContent = '完成！';
+
+    setTimeout(() => {
+      progress.classList.remove('active');
+      result.classList.add('active');
+      const downloadBtn = document.getElementById('downloadBtn');
+      downloadBtn.href = resultBlob;
+      downloadBtn.setAttribute('download', opt.filename);
+      document.getElementById('resultMsg').textContent =
+        '已将 "' + wordFile.name + '" 转换为PDF (' + formatSize(pdfBlob.size) + ')。';
+      convertBtn.disabled = false;
+      showToast('转换完成！');
+    }, 400);
+
+  } catch (err) {
+    console.error('Conversion error:', err);
+    progress.classList.remove('active');
+    convertBtn.disabled = false;
+    let errorMsg = '转换失败。';
+    if (err.message.includes('empty')) {
+      errorMsg = '文档似乎是空的。';
+    } else if (err.message.includes('zip') || err.message.includes('archive')) {
+      errorMsg += '该文件似乎不是有效的 .docx 文件。';
+    } else {
+      errorMsg += '请检查文件后重试。';
+    }
+    showToast(errorMsg, true);
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "免费在线Word转PDF转换器",
+  "url": "https://toolify.com/zh/word-to-pdf",
+  "description": "免费在线将Word文档(.docx)转换为PDF。无需上传—所有处理在浏览器中完成。快速、安全、无水印。",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+</body>
+</html>

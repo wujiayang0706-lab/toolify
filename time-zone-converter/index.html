@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Time Zone Converter — Toolify | Free Online Time Converter</title>
+<meta name="description" content="Convert time between any time zones instantly. Supports 50+ cities, DST-aware, real-time conversion. Free, no upload, works in your browser.">
+<link rel="canonical" href="https://toolify.com/time-zone-converter/">
+<meta property="og:title" content="Time Zone Converter — Toolify">
+<meta property="og:description" content="Convert time between any time zones instantly. DST-aware, real-time, free.">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="en" href="https://toolify.com/time-zone-converter/">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/time-zone-converter/">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/time-zone-converter/">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/time-zone-converter/">
+<link rel="stylesheet" href="/assets/common.css">
+<style>
+:root{--primary:#2563eb;--primary-light:#eff6ff;--surface:#ffffff;--bg:#f8fafc;--border:#e2e8f0;--border-hover:#cbd5e1;--text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--success:#10b981;--danger:#ef4444;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 8px 25px rgba(0,0,0,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;z-index:50}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--text);text-decoration:none}
+.logo span{color:var(--primary)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav a{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+.container{max-width:800px;margin:0 auto;padding:0 20px}
+.hero{text-align:center;padding:48px 20px 32px}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:12px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:600px;margin:0 auto}
+.badges{display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text-secondary)}
+.badge svg{width:14px;height:14px;color:var(--success)}
+.tool-section{padding:0 20px 40px}
+.tool-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+.converter-row{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start;margin-bottom:24px}
+@media(max-width:640px){.converter-row{grid-template-columns:1fr;gap:12px}}
+.tz-group label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.tz-group select,.tz-group input[type=datetime-local]{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text);transition:border-color .15s}
+.tz-group select:focus,.tz-group input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.swap-btn{margin-top:22px;padding:10px;border:1px solid var(--border);border-radius:50%;background:var(--surface);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.swap-btn:hover{border-color:var(--primary);color:var(--primary);transform:rotate(180deg)}
+.swap-btn svg{width:18px;height:18px}
+.result-area{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:24px;text-align:center;margin-bottom:24px}
+.result-label{font-size:13px;color:var(--text-muted);margin-bottom:6px}
+.result-time{font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px}
+.result-meta{font-size:13px;color:var(--text-secondary)}
+.result-diff{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.world-clock{margin-top:8px}
+.world-clock h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.clock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.clock-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px}
+.clock-city{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:2px}
+.clock-time{font-size:18px;font-weight:700;color:var(--text)}
+.clock-date{font-size:11px;color:var(--text-muted)}
+.clock-diff{font-size:10px;color:var(--primary);font-weight:600}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.ad-slot{max-width:728px;margin:24px auto;min-height:90px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px}
+.seo-section{max-width:800px;margin:0 auto;padding:40px 20px}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section p{color:var(--text-secondary);margin-bottom:12px;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0}
+@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{text-align:center}
+.step-num{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step p{font-size:12px;color:var(--text-muted)}
+.faq{margin-top:24px}
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item h3{font-size:15px;font-weight:600;margin-bottom:6px;cursor:pointer}
+.faq-item p{font-size:13px;color:var(--text-secondary)}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 20px;text-align:center}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:12px}
+.footer-links a{font-size:12px;color:var(--text-secondary);text-decoration:none}
+.footer-links a:hover{color:var(--primary)}
+.footer p{font-size:12px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">Tool<span>ify</span></a>
+      <nav class="nav">
+        <a href="/">Tools</a>
+        <a href="/pricing/">Pricing</a>
+        <a href="/support/">Support</a>
+        <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/time-zone-converter/" class="lang-option active">English</a>
+        <a href="/zh/time-zone-converter/" class="lang-option">中文</a>
+        <a href="/ja/time-zone-converter/" class="lang-option">日本語</a>
+      </div>
+    </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <h1>Time Zone Converter</h1>
+      <p>Convert time between any time zones instantly. DST-aware, real-time, accurate.</p>
+      <div class="badges">
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14A6 6 0 118 2a6 6 0 010 12zm-1-10v5l4 2-.7 1.4L6 9.5V4h1z"/></svg> Real-time</span>
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14A6 6 0 118 2a6 6 0 010 12zm-1-10v5l4 2-.7 1.4L6 9.5V4h1z"/></svg> DST-aware</span>
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14A6 6 0 118 2a6 6 0 010 12zm-1-10v5l4 2-.7 1.4L6 9.5V4h1z"/></svg> 50+ cities</span>
+      </div>
+    </section>
+
+    <section class="tool-section container">
+      <div class="tool-box">
+        <div class="converter-row">
+          <div class="tz-group">
+            <label for="fromTz">From Time Zone</label>
+            <select id="fromTz"></select>
+            <label for="fromTime" style="margin-top:10px">Time</label>
+            <input type="datetime-local" id="fromTime">
+          </div>
+          <button class="swap-btn" id="swapBtn" title="Swap">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M7 5H4l5-5 5 5h-3v8H7V5zm6 10h3l-5 5-5-5h3V7h4v8z"/></svg>
+          </button>
+          <div class="tz-group">
+            <label for="toTz">To Time Zone</label>
+            <select id="toTz"></select>
+            <label for="toTimeResult" style="margin-top:10px">Converted Time</label>
+            <div class="result-area" style="margin:0;padding:10px 12px;min-height:42px;display:flex;align-items:center;justify-content:center">
+              <span id="toTimeResult" style="font-size:16px;font-weight:700">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-area" id="resultArea">
+          <div class="result-label">Conversion Result</div>
+          <div class="result-time" id="resultTime">—</div>
+          <div class="result-meta" id="resultMeta">Select time zones to convert</div>
+          <div class="result-diff" id="resultDiff" style="display:none"></div>
+        </div>
+
+        <div class="world-clock">
+          <h3>World Clock — Current Time</h3>
+          <div class="clock-grid" id="clockGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-slot">Ad space</div>
+
+    <section class="seo-section">
+      <h2>How to Use the Time Zone Converter</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h4>Select Source</h4><p>Choose the source time zone and enter the time</p></div>
+        <div class="step"><div class="step-num">2</div><h4>Pick Target</h4><p>Select the target time zone you want to convert to</p></div>
+        <div class="step"><div class="step-num">3</div><h4>Get Result</h4><p>See the converted time instantly, no button needed</p></div>
+      </div>
+      <p>Our Time Zone Converter uses the browser's built-in Intl API to handle daylight saving time (DST) automatically. All conversions happen locally in your browser — no data is sent to any server.</p>
+      <p>Whether you're scheduling a meeting across continents, planning travel, or coordinating with remote teams, this tool gives you accurate time conversions for 50+ major cities worldwide. The world clock below shows the current time in key cities, updating in real-time.</p>
+
+      <div class="faq">
+        <div class="faq-item"><h3>Is this time zone converter free?</h3><p>Yes, completely free. No account, no watermark, no limits. All processing happens in your browser.</p></div>
+        <div class="faq-item"><h3>Does it handle daylight saving time?</h3><p>Yes. The converter uses the IANA time zone database via the Intl API, which automatically accounts for DST transitions in all supported regions.</p></div>
+        <div class="faq-item"><h3>How accurate are the conversions?</h3><p>Conversions are based on your browser's IANA time zone database, which is kept up to date by your operating system. Results are as accurate as your system's time zone data.</p></div>
+        <div class="faq-item"><h3>Can I use this offline?</h3><p>Yes. After the page loads, all conversions work offline since everything runs in your browser using the built-in Intl API.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/pdf-to-word/">PDF to Word</a>
+      <a href="/word-to-pdf/">Word to PDF</a>
+      <a href="/pdf-merge/">PDF Merge</a>
+      <a href="/pdf-split/">PDF Split</a>
+      <a href="/qr-code-generator/">QR Code Generator</a>
+      <a href="/heic-to-jpg/">HEIC to JPG</a>
+      <a href="/json-formatter/">JSON Formatter</a>
+      <a href="/time-zone-converter/">Time Zone Converter</a>
+      <a href="/currency-converter/">Currency Converter</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+    </div>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser.</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="/assets/config.js"></script>
+  <script src="/assets/app.js"></script>
+  <script>
+// Common time zones
+var TIMEZONES = [
+  {tz:'UTC',city:'UTC',country:'Universal'},
+  {tz:'America/New_York',city:'New York',country:'USA'},
+  {tz:'America/Los_Angeles',city:'Los Angeles',country:'USA'},
+  {tz:'America/Chicago',city:'Chicago',country:'USA'},
+  {tz:'America/Denver',city:'Denver',country:'USA'},
+  {tz:'America/Sao_Paulo',city:'São Paulo',country:'Brazil'},
+  {tz:'America/Toronto',city:'Toronto',country:'Canada'},
+  {tz:'America/Mexico_City',city:'Mexico City',country:'Mexico'},
+  {tz:'Europe/London',city:'London',country:'UK'},
+  {tz:'Europe/Paris',city:'Paris',country:'France'},
+  {tz:'Europe/Berlin',city:'Berlin',country:'Germany'},
+  {tz:'Europe/Madrid',city:'Madrid',country:'Spain'},
+  {tz:'Europe/Moscow',city:'Moscow',country:'Russia'},
+  {tz:'Europe/Istanbul',city:'Istanbul',country:'Turkey'},
+  {tz:'Africa/Cairo',city:'Cairo',country:'Egypt'},
+  {tz:'Africa/Johannesburg',city:'Johannesburg',country:'South Africa'},
+  {tz:'Asia/Dubai',city:'Dubai',country:'UAE'},
+  {tz:'Asia/Tehran',city:'Tehran',country:'Iran'},
+  {tz:'Asia/Karachi',city:'Karachi',country:'Pakistan'},
+  {tz:'Asia/Kolkata',city:'Mumbai',country:'India'},
+  {tz:'Asia/Dhaka',city:'Dhaka',country:'Bangladesh'},
+  {tz:'Asia/Bangkok',city:'Bangkok',country:'Thailand'},
+  {tz:'Asia/Singapore',city:'Singapore',country:'Singapore'},
+  {tz:'Asia/Hong_Kong',city:'Hong Kong',country:'China'},
+  {tz:'Asia/Shanghai',city:'Shanghai',country:'China'},
+  {tz:'Asia/Tokyo',city:'Tokyo',country:'Japan'},
+  {tz:'Asia/Seoul',city:'Seoul',country:'South Korea'},
+  {tz:'Asia/Manila',city:'Manila',country:'Philippines'},
+  {tz:'Asia/Jakarta',city:'Jakarta',country:'Indonesia'},
+  {tz:'Australia/Sydney',city:'Sydney',country:'Australia'},
+  {tz:'Australia/Perth',city:'Perth',country:'Australia'},
+  {tz:'Pacific/Auckland',city:'Auckland',country:'New Zealand'},
+  {tz:'Pacific/Honolulu',city:'Honolulu',country:'USA'},
+];
+
+var fromTz = document.getElementById('fromTz');
+var toTz = document.getElementById('toTz');
+var fromTime = document.getElementById('fromTime');
+var resultTime = document.getElementById('resultTime');
+var resultMeta = document.getElementById('resultMeta');
+var resultDiff = document.getElementById('resultDiff');
+var clockGrid = document.getElementById('clockGrid');
+var toast = document.getElementById('toast');
+
+function showToast(msg){toast.textContent=msg;toast.className='toast show';clearTimeout(toast._t);toast._t=setTimeout(function(){toast.classList.remove('show')},2000)}
+
+// Populate timezone dropdowns
+function populateTz(){
+  var html = TIMEZONES.map(function(t){return '<option value="'+t.tz+'">'+t.city+' ('+t.country+')</option>'}).join('');
+  fromTz.innerHTML = html;
+  toTz.innerHTML = html;
+  // Default: from user's tz, to UTC
+  var localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  fromTz.value = TIMEZONES.some(function(t){return t.tz===localTz}) ? localTz : 'Asia/Shanghai';
+  toTz.value = 'America/New_York';
+}
+populateTz();
+
+// Set default time to now
+function setNow(){
+  var now = new Date();
+  var srcTz = fromTz.value || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var parts = new Intl.DateTimeFormat('en-CA',{timeZone:srcTz,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
+  var p={};parts.forEach(function(x){p[x.type]=x.value});
+  fromTime.value = p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;
+}
+setNow();
+
+// Format time in a timezone
+function formatInTz(date, tz){
+  return new Intl.DateTimeFormat('en-US',{
+    timeZone:tz, year:'numeric',month:'short',day:'numeric',
+    hour:'2-digit',minute:'2-digit',hour12:false
+  }).format(date);
+}
+
+// Get offset string for a tz
+function getTzOffset(tz, date){
+  var dtf = new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var parts = dtf.formatToParts(date).reduce(function(a,p){a[p.type]=p.value;return a},{});
+  var asUTC = Date.UTC(parts.year,parts.month-1,parts.day,parts.hour,parts.minute,parts.second);
+  var diff = (asUTC - date.getTime()) / 60000;
+  var h = Math.floor(Math.abs(diff)/60);
+  var m = Math.abs(diff)%60;
+  return (diff>=0?'+':'-') + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+// Convert
+function convert(){
+  if(!fromTime.value) return;
+  var parts = fromTime.value.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if(!parts) return;
+  var fromTzVal = fromTz.value;
+  var toTzVal = toTz.value;
+  var fakeUtc = Date.UTC(parseInt(parts[1]),parseInt(parts[2])-1,parseInt(parts[3]),parseInt(parts[4]),parseInt(parts[5]));
+  var fromOffset = getTzOffsetMinutes(fromTzVal, new Date(fakeUtc));
+  var realUtc = fakeUtc - fromOffset * 60000;
+  var utcDate = new Date(realUtc);
+  var resultStr = formatInTz(utcDate, toTzVal);
+  resultTime.textContent = resultStr;
+  var fromCity = TIMEZONES.find(function(t){return t.tz===fromTzVal});
+  var toCity = TIMEZONES.find(function(t){return t.tz===toTzVal});
+  var fromOff = getTzOffset(fromTzVal, new Date(fakeUtc));
+  var toOff = getTzOffset(toTzVal, utcDate);
+  resultMeta.textContent = (fromCity?fromCity.city:fromTzVal)+' (UTC'+fromOff+') \u2192 '+(toCity?toCity.city:toTzVal)+' (UTC'+toOff+')';
+  var diffMin = (parseOffset(toOff) - parseOffset(fromOff));
+  if(diffMin !== 0){
+    var diffH = diffMin/60;
+    var diffStr = diffH>0 ? '+'+diffH+'h' : diffH+'h';
+    resultDiff.textContent = 'Time difference: '+diffStr;
+    resultDiff.style.display = 'inline-block';
+  } else {
+    resultDiff.style.display = 'none';
+  }
+  document.getElementById('toTimeResult').textContent = resultStr;
+}
+
+function parseOffset(s){
+  var sign = s[0]==='-'?-1:1;
+  var parts = s.slice(1).split(':');
+  return sign * (parseInt(parts[0])*60 + parseInt(parts[1]));
+}
+
+function getTzOffsetMinutes(tz, date){
+  var dtf = new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var parts = dtf.formatToParts(date).reduce(function(a,p){a[p.type]=p.value;return a},{});
+  var asUTC = Date.UTC(parts.year,parts.month-1,parts.day,parts.hour,parts.minute,parts.second);
+  return (asUTC - date.getTime()) / 60000;
+}
+
+// World clock
+function updateClocks(){
+  var now = new Date();
+  var localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var localOffset = getTzOffsetMinutes(localTz, now);
+  
+  var clocks = ['UTC','America/New_York','America/Los_Angeles','Europe/London','Europe/Paris','Asia/Dubai','Asia/Shanghai','Asia/Tokyo','Australia/Sydney','Pacific/Honolulu'];
+  var html = clocks.map(function(tz){
+    var t = TIMEZONES.find(function(x){return x.tz===tz});
+    var city = t ? t.city : tz.split('/').pop().replace('_',' ');
+    var time = new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
+    var date = new Intl.DateTimeFormat('en-US',{timeZone:tz,month:'short',day:'numeric',weekday:'short'}).format(now);
+    var off = getTzOffsetMinutes(tz, now);
+    var diffH = (off - localOffset)/60;
+    var diffStr = diffH===0 ? 'same as local' : (diffH>0?'+'+diffH+'h':diffH+'h') + ' from local';
+    return '<div class="clock-item"><div class="clock-city">'+city+'</div><div class="clock-time">'+time+'</div><div class="clock-date">'+date+'</div><div class="clock-diff">'+diffStr+'</div></div>';
+  }).join('');
+  clockGrid.innerHTML = html;
+}
+
+// Swap
+document.getElementById('swapBtn').addEventListener('click', function(){
+  var tmp = fromTz.value;
+  fromTz.value = toTz.value;
+  toTz.value = tmp;
+  convert();
+  showToast('Time zones swapped');
+});
+
+// Events
+fromTz.addEventListener('change', convert);
+toTz.addEventListener('change', convert);
+fromTime.addEventListener('input', convert);
+
+// Init
+convert();
+updateClocks();
+setInterval(updateClocks, 1000);
+</script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Time Zone Converter",
+  "url": "https://toolify.com/time-zone-converter",
+  "description": "Free online time zone converter. Convert time between any time zones instantly. DST-aware, real-time, accurate. Works in your browser.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Image Compressor — Toolify | Free Online Image Compression</title>
+<meta name="description" content="Compress JPG, PNG, and WebP images online for free. Reduce file size by up to 80% without visible quality loss. No upload, works in your browser.">
+<link rel="canonical" href="https://toolify.com/image-compressor/">
+<meta property="og:title" content="Image Compressor — Toolify">
+<meta property="og:description" content="Compress images online. JPG, PNG, WebP. Free, no upload.">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="en" href="https://toolify.com/image-compressor/">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/image-compressor/">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/image-compressor/">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/image-compressor/">
+<link rel="stylesheet" href="/assets/common.css">
+<style>
+:root{--primary:#2563eb;--primary-light:#eff6ff;--surface:#ffffff;--bg:#f8fafc;--border:#e2e8f0;--border-hover:#cbd5e1;--text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--success:#10b981;--danger:#ef4444;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 8px 25px rgba(0,0,0,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;z-index:50}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--text);text-decoration:none}.logo span{color:var(--primary)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav a{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}.lang-option.active{background:var(--primary);color:#fff}
+.container{max-width:800px;margin:0 auto;padding:0 20px}
+.hero{text-align:center;padding:48px 20px 32px}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:12px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:600px;margin:0 auto}
+.badges{display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text-secondary)}
+.badge svg{width:14px;height:14px;color:var(--success)}
+.tool-section{padding:0 20px 40px}
+.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-icon{margin-bottom:12px}.upload-icon svg{width:48px;height:48px;color:var(--text-muted)}
+.upload-area p{color:var(--text-secondary);font-size:15px}
+.upload-area .hint{font-size:12px;color:var(--text-muted);margin-top:4px}
+.or-divider{text-align:center;margin:16px 0;color:var(--text-muted);font-size:13px;position:relative}
+.or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}.or-divider::before{left:0}.or-divider::after{right:0}
+.controls{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-top:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.control-group{flex:1;min-width:200px}
+.control-group label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.control-group input[type=range]{width:100%;accent-color:var(--primary)}
+.quality-value{font-size:14px;font-weight:700;color:var(--primary)}
+.control-group select{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text)}
+.file-list{margin-top:20px}
+.file-item{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:10px}
+.file-thumb{width:56px;height:56px;border-radius:6px;object-fit:cover;background:var(--bg)}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-sizes{font-size:12px;color:var(--text-muted);margin-top:2px}
+.file-sizes .saved{color:var(--success);font-weight:600}
+.file-sizes .larger{color:var(--danger);font-weight:600}
+.compressed-thumb{width:56px;height:56px;border-radius:6px;object-fit:cover;border:2px solid var(--success)}
+.file-download{padding:8px 16px;background:var(--success);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none}
+.file-download:hover{background:#059669}
+.file-download.disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed}
+.btn-download-all{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--success);color:#fff;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:16px}
+.btn-download-all:hover{background:#059669;transform:translateY(-1px)}.btn-download-all:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.summary{text-align:center;margin-top:16px;font-size:14px;color:var(--text-secondary)}
+.summary strong{color:var(--success)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}.toast.show{transform:translateX(-50%) translateY(0)}.toast.error{background:var(--danger)}
+.ad-slot{max-width:728px;margin:24px auto;min-height:90px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px}
+.seo-section{max-width:800px;margin:0 auto;padding:40px 20px}.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}.seo-section p{color:var(--text-secondary);margin-bottom:12px;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0}@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{text-align:center}.step-num{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:4px}.step p{font-size:12px;color:var(--text-muted)}
+.faq{margin-top:24px}.faq-item{border-bottom:1px solid var(--border);padding:14px 0}.faq-item h3{font-size:15px;font-weight:600;margin-bottom:6px}.faq-item p{font-size:13px;color:var(--text-secondary)}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 20px;text-align:center}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:12px}.footer-links a{font-size:12px;color:var(--text-secondary);text-decoration:none}.footer-links a:hover{color:var(--primary)}.footer p{font-size:12px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="/" class="logo">Tool<span>ify</span></a><nav class="nav"><a href="/">Tools</a><a href="/pricing/">Pricing</a><a href="/support/">Support</a><div class="lang-switcher"><button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button><div class="lang-menu" id="langMenu" style="display:none"><a href="/image-compressor/" class="lang-option active">English</a><a href="/zh/image-compressor/" class="lang-option">中文</a><a href="/ja/image-compressor/" class="lang-option">日本語</a></div></div></nav></div></header>
+<main>
+<section class="hero container"><h1>Image Compressor</h1><p>Compress JPG, PNG, and WebP images by up to 80% without visible quality loss. No upload, all in your browser.</p>
+<div class="badges"><span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0z"/></svg> Up to 80% smaller</span><span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0z"/></svg> No upload</span><span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0z"/></svg> Batch convert</span></div></section>
+<section class="tool-section container">
+<div class="upload-area" id="uploadArea"><div class="upload-icon"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4l12 12h-8v16h-8V16h-8L24 4zM4 36h40v8H4v-8z"/></svg></div><p>Drop images here or click to browse</p><p class="hint">JPG, PNG, WebP — up to 50MB each</p><input type="file" id="fileInput" accept="image/*" multiple style="display:none"></div>
+<div class="or-divider">or</div>
+<div class="controls" id="controls" style="display:none">
+<div class="control-group"><label>Quality: <span class="quality-value" id="qualityValue">75</span>%</label><input type="range" id="qualitySlider" min="10" max="100" value="75"></div>
+<div class="control-group"><label>Output Format</label><select id="formatSelect"><option value="auto">Keep original</option><option value="jpeg">JPEG (smaller)</option><option value="webp">WebP (smallest)</option></select></div>
+</div>
+<div class="file-list" id="fileList"></div>
+<button class="btn-download-all" id="downloadAllBtn" disabled>Download All</button>
+<div class="summary" id="summary" style="display:none"></div>
+</section>
+<div class="ad-slot">Ad space</div>
+<section class="seo-section"><h2>How to Compress Images</h2>
+<div class="steps"><div class="step"><div class="step-num">1</div><h4>Upload</h4><p>Select or drag images</p></div><div class="step"><div class="step-num">2</div><h4>Adjust</h4><p>Set quality and format</p></div><div class="step"><div class="step-num">3</div><h4>Download</h4><p>Save compressed images</p></div></div>
+<p>Our image compressor uses the browser's Canvas API to re-encode images at your chosen quality level. Everything happens locally — your images are never uploaded to any server.</p>
+<p>For photos, JPEG at 75% quality typically reduces file size by 60-80% with minimal visible quality loss. For graphics with transparency, PNG is preserved. WebP offers the best compression but may not be supported by all browsers for viewing.</p>
+<div class="faq"><div class="faq-item"><h3>Is this image compressor free?</h3><p>Yes, completely free. No account, no watermark, no limits.</p></div><div class="faq-item"><h3>Are my images uploaded?</h3><p>No. All compression happens in your browser using the Canvas API. Images never leave your device.</p></div><div class="faq-item"><h3>What quality should I use?</h3><p>For web use, 70-80% is recommended. For archival, use 90%+. Below 50% may show visible artifacts.</p></div><div class="faq-item"><h3>Why is my compressed file larger?</h3><p>Small or already-compressed images may get larger when re-encoded. The tool shows this in red so you can skip those.</p></div></div>
+</section>
+</main>
+<footer class="footer"><div class="footer-links"><a href="/pdf-to-word/">PDF to Word</a><a href="/word-to-pdf/">Word to PDF</a><a href="/pdf-merge/">PDF Merge</a><a href="/pdf-split/">PDF Split</a><a href="/qr-code-generator/">QR Code Generator</a><a href="/heic-to-jpg/">HEIC to JPG</a><a href="/json-formatter/">JSON Formatter</a><a href="/time-zone-converter/">Time Zone Converter</a><a href="/jpg-to-pdf/">JPG to PDF</a><a href="/image-compressor/">Image Compressor</a><a href="/currency-converter/">Currency Converter</a><a href="/pricing/">Pricing</a><a href="/support/">Support</a></div><p>&copy; 2026 Toolify. All tools run locally in your browser.</p></footer>
+<div class="toast" id="toast"></div>
+<script src="/assets/config.js"></script><script src="/assets/app.js"></script>
+<script>
+var uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),fileList=document.getElementById('fileList'),controls=document.getElementById('controls'),qualitySlider=document.getElementById('qualitySlider'),qualityValue=document.getElementById('qualityValue'),formatSelect=document.getElementById('formatSelect'),downloadAllBtn=document.getElementById('downloadAllBtn'),summary=document.getElementById('summary'),toast=document.getElementById('toast');
+var images=[];
+function showToast(m,e){toast.textContent=m;toast.className='toast'+(e?' error':'')+' show';clearTimeout(toast._t);toast._t=setTimeout(function(){toast.classList.remove('show')},2500)}
+function formatSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
+function handleFiles(files){var added=0;for(var i=0;i<files.length;i++){var f=files[i];if(!f.type.startsWith('image/'))continue;if(f.size>50*1024*1024){showToast('"'+f.name+'" exceeds 50MB',true);continue}images.push({file:f,name:f.name,origSize:f.size,origUrl:URL.createObjectURL(f),compBlob:null,compUrl:null,compSize:0});added++}if(added>0){controls.style.display='flex';renderList();compressAll();showToast(added+' image(s) added')}}
+function compressImage(img,quality,format){return new Promise(function(resolve){var reader=new FileReader();reader.onload=function(e){var i=new Image();i.onload=function(){var c=document.createElement('canvas');c.width=i.naturalWidth;c.height=i.naturalHeight;var ctx=c.getContext('2d');if(format==='jpeg'||(format==='auto'&&(img.file.type==='image/jpeg'||img.file.type==='image/jpg'))){ctx.fillStyle='#fff';ctx.drawImage(i,0,0)}else{ctx.drawImage(i,0,0)}var mime=format==='jpeg'?'image/jpeg':format==='webp'?'image/webp':img.file.type||'image/jpeg';c.toBlob(function(blob){resolve(blob)},mime,quality/100)};i.src=e.target.result};reader.readAsDataURL(img.file)})}
+async function compressAll(){var q=parseInt(qualitySlider.value);var fmt=formatSelect.value;var totalOrig=0,totalComp=0;for(var i=0;i<images.length;i++){var blob=await compressImage(images[i],q,fmt);if(images[i].compUrl)URL.revokeObjectURL(images[i].compUrl);images[i].compBlob=blob;images[i].compUrl=URL.createObjectURL(blob);images[i].compSize=blob.size;totalOrig+=images[i].origSize;totalComp+=blob.size}renderList();var saved=totalOrig-totalComp;var pct=totalOrig>0?Math.round(saved/totalOrig*100):0;summary.style.display='block';if(saved>0){summary.innerHTML='Total: '+formatSize(totalOrig)+' → <strong>'+formatSize(totalComp)+'</strong> (saved '+pct+'%)';downloadAllBtn.disabled=false}else{summary.innerHTML='Some images may be larger after compression. Try lower quality.';downloadAllBtn.disabled=true}}
+function renderList(){var html='';for(var i=0;i<images.length;i++){var img=images[i];var saved=img.origSize-img.compSize;var pct=img.origSize>0?Math.round(saved/img.origSize*100):0;var cls=saved>0?'saved':'larger';var sizeText=img.compSize>0?formatSize(img.origSize)+' → '+formatSize(img.compSize)+' <span class="'+cls+'">'+(saved>0?'-'+pct+'%':'+'+Math.abs(pct)+'%')+'</span>':formatSize(img.origSize)+' (processing...)';html+='<div class="file-item">';html+='<img class="file-thumb" src="'+img.origUrl+'" alt="">';if(img.compUrl){html+='<img class="compressed-thumb" src="'+img.compUrl+'" alt="">'}else{html+='<div class="compressed-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--bg)"><svg width="20" height="20" viewBox="0 0 20 20" fill="var(--text-muted)"><circle cx="10" cy="10" r="3"/></svg></div>'}html+='<div class="file-info"><div class="file-name">'+img.name+'</div><div class="file-sizes">'+sizeText+'</div></div>';if(img.compBlob&&saved>0){html+='<a class="file-download" href="'+img.compUrl+'" download="'+img.name.replace(/\.[^.]+$/,'')+'_compressed.'+(img.compBlob.type.split('/')[1]||'jpg')+'">Download</a>'}else{html+='<span class="file-download disabled">Skip</span>'}html+='</div>'}fileList.innerHTML=html}
+uploadArea.addEventListener('click',function(){fileInput.click()});
+fileInput.addEventListener('change',function(e){handleFiles(e.target.files);fileInput.value=''});
+uploadArea.addEventListener('dragover',function(e){e.preventDefault();uploadArea.classList.add('drag-over')});
+uploadArea.addEventListener('dragleave',function(){uploadArea.classList.remove('drag-over')});
+uploadArea.addEventListener('drop',function(e){e.preventDefault();uploadArea.classList.remove('drag-over');handleFiles(e.dataTransfer.files)});
+qualitySlider.addEventListener('input',function(){qualityValue.textContent=qualitySlider.value});
+qualitySlider.addEventListener('change',compressAll);
+formatSelect.addEventListener('change',compressAll);
+downloadAllBtn.addEventListener('click',function(){for(var i=0;i<images.length;i++){if(images[i].compBlob&&images[i].origSize>images[i].compSize){(function(img,idx){setTimeout(function(){var a=document.createElement('a');a.href=img.compUrl;a.download=img.name.replace(/\.[^.]+$/,'')+'_compressed.'+(img.compBlob.type.split('/')[1]||'jpg');a.click()},idx*350)})(images[i],i)}}showToast('Downloading all compressed images...')});
+</script>
+<script>document.addEventListener('click',function(e){var m=document.getElementById('langMenu');if(m&&!e.target.closest('.lang-switcher'))m.style.display='none'});</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor","url":"https://toolify.com/image-compressor","description":"Compress JPG, PNG, and WebP images online for free. Reduce file size by up to 80%. No upload, works in your browser.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</body>
+</html>

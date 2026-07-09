@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Toolify — 無料オンラインツール | PDF、画像、テキストユーティリティ</title>
@@ -88,10 +89,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   .tools-grid{grid-template-columns:1fr}
 }
 
-.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
-.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
-.lang-link:hover{background:var(--primary-light);color:var(--primary)}
-.lang-link.active{background:var(--primary);color:#fff}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
 
 </style>
     <link rel="stylesheet" href="/assets/common.css">
@@ -106,7 +112,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="#why">Why Toolify</a>
     <a href="/ja/pricing/">料金</a>
       <a href="/ja/support/">サポート</a>
-      <div class="lang-switcher"><a href="/" class="lang-link">EN</a><a href="/zh/" class="lang-link">中文</a><a href="/ja/" class="lang-link active">日本語</a></div>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">日本語 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/" class="lang-option">English</a>
+        <a href="/zh/" class="lang-option">中文</a>
+        <a href="/ja/" class="lang-option active">日本語</a>
+      </div>
+    </div>
     </nav>
   </div>
 </header>
@@ -125,12 +138,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   <section class="tools-section container" id="tools">
     <h2 class="section-title">すべてのツール</h2>
     <p class="section-subtitle">無料のブラウザベースユーティリティのコレクションをご覧ください</p>
-    <div class="tools-grid">
+        <div class="tools-grid">
 
       <a href="/ja/pdf-to-word/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF to Word</h3>
         <p>PDFファイルを編集可能なWord（DOCX）文書に変換。ブラウザ内で実際のテキスト抽出。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/word-to-pdf/" class="tool-card available">
+        <div class="tool-icon pdf">DOCX</div>
+        <h3>Word to PDF</h3>
+        <p>Word文書（.docx）をPDFに変換。クリーンな出力、透かしなし — すべてブラウザ内で。</p>
         <span class="tool-tag live">利用可能</span>
       </a>
 
@@ -141,20 +161,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">利用可能</span>
       </a>
 
-      <a href="/ja/currency-converter/" class="tool-card available">
-        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
-        <h3>為替レート変換</h3>
-        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
-        <span class="tool-tag live">利用可能</span>
-      </a>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>PDF圧縮</h3>
-        <p>品質を維持しながらPDFファイルサイズを縮小。メール添付やウェブアップロードに最適。</p>
-        <span class="tool-tag soon">近日公開</span>
-      </div>
-
       <a href="/ja/pdf-split/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF分割</h3>
@@ -162,45 +168,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">利用可能</span>
       </a>
 
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>PDF to JPG</h3>
-        <p>各PDFページを高品質JPG画像に変換。サムネイルやプレビューに最適。</p>
-        <span class="tool-tag soon">近日公開</span>
-      </div>
+      <a href="/ja/heic-to-jpg/" class="tool-card available">
+        <div class="tool-icon image">HEIC</div>
+        <h3>HEICをJPGに</h3>
+        <p>iPhoneのHEIC/HEIF写真をブラウザ内でJPGに変換。一括変換、アップロード不要、透かしなし。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/ja/qr-code-generator/" class="tool-card available">
+        <div class="tool-icon" style="background:#eff6ff;color:#2563eb">QR</div>
+        <h3>QRコード生成</h3>
+        <p>URLやテキストのカスタムQRコードを作成。サイズ、色、誤り訂正レベルを選択。PNGでダウンロード。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/json-formatter/" class="tool-card available">
+        <div class="tool-icon dev">DEV</div>
+        <h3>JSONフォーマッター</h3>
+        <p>JSONデータのフォーマット、検証、圧縮。即座のエラー検出、すべてブラウザ内で。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/currency-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
+        <h3>通貨換算</h3>
+        <p>160以上の通貨のリアルタイム為替レート。USDベース、毎分更新。即座に換算。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/time-zone-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#f0fdf4;color:#16a34a">TZ</div>
+        <h3>タイムゾーン変換</h3>
+        <p>任意のタイムゾーン間の時刻を即座に変換。夏時間対応、50+都市。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
+
+      <a href="/ja/jpg-to-pdf/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
-        <h3>JPG to PDF</h3>
+        <h3>JPGをPDFに</h3>
         <p>複数の画像を1つのPDF文書に結合。JPG、PNG、WebPに対応。</p>
-        <span class="tool-tag soon">近日公開</span>
-      </div>
+        <span class="tool-tag live">利用可能</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/ja/image-compressor/" class="tool-card available">
         <div class="tool-icon image">IMG</div>
         <h3>画像圧縮</h3>
-        <p>Compress JPG, PNG, and WebP images without visible quality loss. Reduce ファイル sizes by up to 80%.</p>
-        <span class="tool-tag soon">近日公開</span>
-      </div>
+        <p>JPG、PNG、WebP画像を目立つ品質低下なしで圧縮。ファイルサイズを最大80%削減。</p>
+        <span class="tool-tag live">利用可能</span>
+      </a>
 
       <div class="tool-card coming-soon">
         <div class="tool-icon image">IMG</div>
         <h3>画像リサイズ</h3>
-        <p>画像を正確なサイズまたはパーセンテージにリサイズ。複数ファイルを一括処理。</p>
+        <p>画像を正確なサイズまたはパーセンテージでリサイズ。複数ファイルの一括処理。</p>
         <span class="tool-tag soon">近日公開</span>
       </div>
 
       <div class="tool-card coming-soon">
         <div class="tool-icon text">TXT</div>
-        <h3>文字数カウンター</h3>
-        <p>単語、文字、文、段落をカウント。読了時間の見積もり付き。</p>
-        <span class="tool-tag soon">近日公開</span>
-      </div>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon dev">DEV</div>
-        <h3>JSONフォーマッター</h3>
-        <p>JSONデータのフォーマット、検証、圧縮。シンタックスハイライトとツリービュー。</p>
+        <h3>文字カウンター</h3>
+        <p>単語、文字、文、段落をカウント。読書時間の推定も含む。</p>
         <span class="tool-tag soon">近日公開</span>
       </div>
 
@@ -242,15 +269,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="/ja/pdf-merge/">PDF結合</a>
       <a href="#">PDF圧縮</a>
       <a href="#">JPG to PDF</a>
-      <a href="#">Word to PDF</a>
+      <a href="/ja/word-to-pdf/">Word to PDF</a>
       <a href="#">画像圧縮</a>
-      <a href="#">QR生成</a>
+      <a href="/ja/qr-code-generator/">QRコード生成</a>
+      <a href="/ja/heic-to-jpg/">HEICをJPGに</a>
+      <a href="/ja/json-formatter/">JSONフォーマッター</a>
+      <a href="/ja/time-zone-converter/">タイムゾーン変換</a>
+      <a href="/ja/currency-converter/">通貨換算</a>
     </div>
-    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。 <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
+    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。</p>
+    <p style="font-size:13px;margin-top:8px">お問い合わせ：<a href="javascript:void(0)" onclick="this.style.display='none';this.nextElementSibling.style.display='inline'" style="color:var(--primary);text-decoration:none;cursor:pointer">クリックして表示</a><span style="display:none"> <a href="mailto:Jeff198510010011@163.com" style="color:var(--primary);text-decoration:none">Jeff198510010011@163.com</a></span></p> <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
   </div>
 </footer>
 
 <script src="/assets/config.js"></script>
 <script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
 </body>
 </html>

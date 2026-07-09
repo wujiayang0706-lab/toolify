@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online QR Code Generator — Create QR Codes in Browser, No Upload</title>
+<meta name="description" content="Generate QR codes online for free. Customize size, colors, and error correction. Download as PNG instantly — all in your browser, no upload, no signup.">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/qr-code-generator">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/qr-code-generator">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/qr-code-generator">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/qr-code-generator">
+<link rel="canonical" href="https://toolify.com/qr-code-generator">
+<meta property="og:title" content="Free Online QR Code Generator — No Upload, Create in Browser">
+<meta property="og:description" content="Generate custom QR codes for URLs, text, and more. No upload, no signup. Download as PNG instantly.">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+.generator-section{padding:0 0 24px}
+.generator-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.input-panel,.preview-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.input-panel h3,.preview-panel h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.form-field textarea,.form-field select,.form-field input[type=text]{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;color:var(--text);background:var(--surface);transition:border-color .15s;outline:none;font-family:inherit}
+.form-field textarea{min-height:96px;resize:vertical}
+.form-field textarea:focus,.form-field select:focus,.form-field input[type=text]:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.color-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.color-field{display:flex;flex-direction:column;gap:6px}
+.color-field label{font-size:13px;font-weight:600;color:var(--text-secondary)}
+.color-field input[type=color]{width:100%;height:42px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--surface);padding:3px}
+
+.preview-panel{text-align:center}
+.preview-stage{min-height:260px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:20px;margin-bottom:16px}
+#qrHolder img{display:none}
+#qrHolder canvas{max-width:100%;height:auto;border-radius:var(--radius-sm);display:block;margin:0 auto}
+.preview-empty{color:var(--text-muted);font-size:14px;text-align:center}
+.preview-empty svg{width:48px;height:48px;margin:0 auto 10px;display:block;color:var(--text-muted);opacity:.5}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:13px 32px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-download:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-download svg{width:18px;height:18px}
+.hint{font-size:12px;color:var(--text-muted);margin-top:10px}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .nav{display:none}
+  .steps{grid-template-columns:1fr}
+  .generator-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/">All Tools</a>
+      <a href="#how-to">How to Use</a>
+      <a href="#faq">FAQ</a>
+    <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/qr-code-generator/" class="lang-option active">English</a>
+        <a href="/zh/qr-code-generator/" class="lang-option">中文</a>
+        <a href="/ja/qr-code-generator/" class="lang-option">日本語</a>
+      </div>
+    </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>Free Online QR Code Generator</h1>
+    <p>Create custom QR codes for URLs, text, Wi-Fi, and more — right in your browser. No upload, no signup. Download as PNG instantly.</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>No Upload</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Instant</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Free Forever</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>No Watermark</span>
+    </div>
+  </section>
+
+  <section class="generator-section container">
+    <div class="generator-grid">
+      <div class="input-panel">
+        <h3>QR Code Content</h3>
+        <div class="form-field">
+          <label for="qrText">Enter text or URL</label>
+          <textarea id="qrText" placeholder="https://example.com&#10;or any text..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="qrSize">Size</label>
+            <select id="qrSize">
+              <option value="256">256 × 256 (Small)</option>
+              <option value="384" selected>384 × 384 (Medium)</option>
+              <option value="512">512 × 512 (Large)</option>
+              <option value="768">768 × 768 (Extra Large)</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="qrError">Error Correction</label>
+            <select id="qrError">
+              <option value="L">Low (7%)</option>
+              <option value="M" selected>Medium (15%)</option>
+              <option value="Q">Quartile (25%)</option>
+              <option value="H">High (30%)</option>
+            </select>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-field">
+            <label for="qrFg">Foreground</label>
+            <input type="color" id="qrFg" value="#000000">
+          </div>
+          <div class="color-field">
+            <label for="qrBg">Background</label>
+            <input type="color" id="qrBg" value="#ffffff">
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-panel">
+        <h3>Preview</h3>
+        <div class="preview-stage" id="previewStage">
+          <div id="qrHolder"></div>
+          <div class="preview-empty" id="previewEmpty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+            Enter text to generate your QR code
+          </div>
+        </div>
+        <a class="btn-download" id="downloadBtn" href="#" download="qrcode.png" onclick="return false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PNG
+        </a>
+        <p class="hint">Generated instantly in your browser — nothing is uploaded.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><div class="ad-slot">[ AdSense Ad Unit — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>How to Generate a QR Code Online — Free & Private</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>Enter Content</h4><p>Type a URL or any text you want to encode into the QR code.</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>Customize</h4><p>Adjust size, error correction level, and foreground/background colors.</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>Download PNG</h4><p>Your QR code updates instantly — download it as a high-quality PNG.</p></div>
+    </div>
+
+    <h3>What is a QR Code?</h3>
+    <p>A QR (Quick Response) code is a two-dimensional barcode that stores information — URLs, plain text, contact details, Wi-Fi credentials, and more. When scanned with a phone camera, it instantly opens the encoded content. QR codes are widely used on menus, posters, packaging, business cards, and tickets. Our generator creates them entirely in your browser, so nothing you encode is ever sent to a server.</p>
+
+    <h3>Why Use Our Free QR Code Generator?</h3>
+    <ul>
+      <li><strong>100% Private:</strong> The QR code is generated locally in your browser. Whatever you type never leaves your device — safe for sensitive links.</li>
+      <li><strong>No Watermark:</strong> The downloaded PNG is clean. No logos, no branding, no ads embedded in your QR code.</li>
+      <li><strong>Customizable:</strong> Choose from four sizes, four error correction levels, and any foreground/background color.</li>
+      <li><strong>Instant Preview:</strong> The QR code updates in real time as you type — no clicking "generate" repeatedly.</li>
+      <li><strong>Free Forever:</strong> No signup, no limits, no subscription. The tool is sustained through non-intrusive ads on the page.</li>
+    </ul>
+
+    <h3>Understanding Error Correction</h3>
+    <p>QR codes use Reed-Solomon error correction, which means a damaged or partially obscured code can still scan. Higher levels add redundant data so the code tolerates more damage — but make it denser. <strong>Low (7%)</strong> is fine for clean digital display; <strong>High (30%)</strong> is best for printed codes that may get scratched or dirty, or when you want to overlay a small logo in the center.</p>
+
+    <h3>Common Use Cases</h3>
+    <ul>
+      <li><strong>Website links:</strong> Put a QR code on a poster or flyer that opens your site.</li>
+      <li><strong>Wi-Fi sharing:</strong> Encode your network name and password so guests can connect by scanning.</li>
+      <li><strong>Contact info:</strong> Share a vCard so people can save your details with one scan.</li>
+      <li><strong>Menus &amp; labels:</strong> Restaurant menus, product labels, and event tickets.</li>
+      <li><strong>App downloads:</strong> Direct mobile users to the right app store.</li>
+    </ul>
+
+    <div id="faq">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-item"><h4>Is this QR code generator really free?</h4><p>Yes, completely free with no limits. We sustain the tool through non-intrusive advertising on the page.</p></div>
+      <div class="faq-item"><h4>Is my data uploaded to a server?</h4><p>No. The QR code is generated entirely in your browser using JavaScript. Whatever you type stays on your device.</p></div>
+      <div class="faq-item"><h4>What format is the download?</h4><p>PNG. The image is high-resolution (up to 768×768) with a transparent-friendly background you can customize.</p></div>
+      <div class="faq-item"><h4>Do the QR codes expire?</h4><p>No. A QR code is just an image encoding your text — it never expires and works forever, as long as the content behind a URL stays online.</p></div>
+      <div class="faq-item"><h4>Can I add a logo in the center?</h4><p>Direct logo overlay isn't built in, but if you set error correction to High, a standard QR scanner can still read the code with a small logo placed manually on top of the downloaded PNG.</p></div>
+      <div class="faq-item"><h4>Is there a scan limit?</h4><p>No. Since the QR code simply encodes text, it can be scanned unlimited times. There's no tracking or analytics behind it.</p></div>
+      <div class="faq-item"><h4>Does it work on mobile?</h4><p>Yes! The generator works on iOS, Android, and any modern mobile browser.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/pdf-to-word/">PDF to Word</a>
+      <a href="/word-to-pdf/">Word to PDF</a>
+      <a href="/pdf-merge/">PDF Merge</a>
+      <a href="/pdf-split/">PDF Split</a>
+      <a href="/qr-code-generator/">QR Code Generator</a>
+      <a href="/currency-converter/">Currency Converter</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/support/">Support</a>
+    </div>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser. <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- qrcodejs: generate QR codes in browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const qrText = document.getElementById('qrText');
+const qrSize = document.getElementById('qrSize');
+const qrError = document.getElementById('qrError');
+const qrFg = document.getElementById('qrFg');
+const qrBg = document.getElementById('qrBg');
+const qrHolder = document.getElementById('qrHolder');
+const previewEmpty = document.getElementById('previewEmpty');
+const downloadBtn = document.getElementById('downloadBtn');
+const toast = document.getElementById('toast');
+let debounceTimer = null;
+let qrReady = false;
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function generateQR() {
+  const text = qrText.value.trim();
+  qrHolder.innerHTML = '';
+  if (!text) {
+    previewEmpty.style.display = 'block';
+    qrReady = false;
+    downloadBtn.classList.add('disabled');
+    downloadBtn.style.pointerEvents = 'none';
+    return;
+  }
+  if (text.length > 2900) {
+    showToast('Text too long for a QR code. Please shorten it.', true);
+    previewEmpty.style.display = 'block';
+    qrReady = false;
+    return;
+  }
+  previewEmpty.style.display = 'none';
+  const size = parseInt(qrSize.value, 10);
+  const lvlMap = {
+    L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M,
+    Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H
+  };
+  new QRCode(qrHolder, {
+    text: text,
+    width: size,
+    height: size,
+    colorDark: qrFg.value,
+    colorLight: qrBg.value,
+    correctLevel: lvlMap[qrError.value] || QRCode.CorrectLevel.M
+  });
+  qrReady = true;
+  downloadBtn.classList.remove('disabled');
+  downloadBtn.style.pointerEvents = 'auto';
+}
+
+function onInput() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(generateQR, 180);
+}
+
+qrText.addEventListener('input', onInput);
+qrSize.addEventListener('change', generateQR);
+qrError.addEventListener('change', generateQR);
+qrFg.addEventListener('input', onInput);
+qrBg.addEventListener('input', onInput);
+
+downloadBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  if (!qrReady) { return; }
+  const canvas = qrHolder.querySelector('canvas');
+  if (!canvas) { showToast('QR code not ready yet.', true); return; }
+  try {
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qrcode.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('Download started');
+  } catch (err) {
+    showToast('Download failed. Please try again.', true);
+  }
+});
+
+// Seed with a sample so the preview isn't empty on load
+window.addEventListener('DOMContentLoaded', function() {
+  qrText.value = 'https://toolify.com';
+  generateQR();
+});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Online QR Code Generator",
+  "url": "https://toolify.com/qr-code-generator",
+  "description": "Generate QR codes online for free. Customize size, colors, and error correction. Download as PNG instantly — all in your browser, no upload, no signup.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Toolify — Free Online Tools | PDF, Image, Text Utilities</title>
@@ -88,10 +89,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   .tools-grid{grid-template-columns:1fr}
 }
 
-.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
-.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
-.lang-link:hover{background:var(--primary-light);color:var(--primary)}
-.lang-link.active{background:var(--primary);color:#fff}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
 
 </style>
     <link rel="stylesheet" href="/assets/common.css">
@@ -106,7 +112,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="#why">Why Toolify</a>
     <a href="/pricing/">Pricing</a>
       <a href="/support/">Support</a>
-      <div class="lang-switcher"><a href="/" class="lang-link active">EN</a><a href="/zh/" class="lang-link">中文</a><a href="/ja/" class="lang-link">日本語</a></div>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">EN <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/" class="lang-option active">English</a>
+        <a href="/zh/" class="lang-option">中文</a>
+        <a href="/ja/" class="lang-option">日本語</a>
+      </div>
+    </div>
     </nav>
   </div>
 </header>
@@ -125,12 +138,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   <section class="tools-section container" id="tools">
     <h2 class="section-title">All Tools</h2>
     <p class="section-subtitle">Browse our growing collection of free browser-based utilities</p>
-    <div class="tools-grid">
+        <div class="tools-grid">
 
       <a href="/pdf-to-word/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF to Word</h3>
         <p>Convert PDF files to editable Word (DOCX) documents. Real text extraction, right in your browser.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/word-to-pdf/" class="tool-card available">
+        <div class="tool-icon pdf">DOCX</div>
+        <h3>Word to PDF</h3>
+        <p>Convert Word documents (.docx) to PDF. Clean output, no watermarks — all in your browser.</p>
         <span class="tool-tag live">Available</span>
       </a>
 
@@ -141,20 +161,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">Available</span>
       </a>
 
-      <a href="/currency-converter/" class="tool-card available">
-        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
-        <h3>Currency Converter</h3>
-        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
-        <span class="tool-tag live">Available</span>
-      </a>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>Compress PDF</h3>
-        <p>Reduce PDF file size while maintaining quality. Perfect for email attachments and web uploads.</p>
-        <span class="tool-tag soon">Coming Soon</span>
-      </div>
-
       <a href="/pdf-split/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>PDF Split</h3>
@@ -162,26 +168,54 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <span class="tool-tag live">Available</span>
       </a>
 
-      <div class="tool-card coming-soon">
-        <div class="tool-icon pdf">PDF</div>
-        <h3>PDF to JPG</h3>
-        <p>Convert each PDF page into a high-quality JPG image. Great for thumbnails and previews.</p>
-        <span class="tool-tag soon">Coming Soon</span>
-      </div>
+      <a href="/heic-to-jpg/" class="tool-card available">
+        <div class="tool-icon image">HEIC</div>
+        <h3>HEIC to JPG</h3>
+        <p>Convert iPhone HEIC/HEIF photos to JPG in your browser. Batch convert, no upload, no watermark.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/qr-code-generator/" class="tool-card available">
+        <div class="tool-icon" style="background:#eff6ff;color:#2563eb">QR</div>
+        <h3>QR Code Generator</h3>
+        <p>Create custom QR codes for URLs and text. Choose size, colors, and error correction. Download as PNG.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/json-formatter/" class="tool-card available">
+        <div class="tool-icon dev">DEV</div>
+        <h3>JSON Formatter</h3>
+        <p>Format, validate, and minify JSON data. Instant error detection, all in your browser.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/currency-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#fffbeb;color:#f59e0b">FX</div>
+        <h3>Currency Converter</h3>
+        <p>Real-time exchange rates for 160+ currencies. USD-based, updated every minute. Convert money instantly.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/time-zone-converter/" class="tool-card available">
+        <div class="tool-icon" style="background:#f0fdf4;color:#16a34a">TZ</div>
+        <h3>Time Zone Converter</h3>
+        <p>Convert time between any time zones instantly. DST-aware, real-time, 50+ cities.</p>
+        <span class="tool-tag live">Available</span>
+      </a>
+
+      <a href="/jpg-to-pdf/" class="tool-card available">
         <div class="tool-icon pdf">PDF</div>
         <h3>JPG to PDF</h3>
         <p>Combine multiple images into a single PDF document. Supports JPG, PNG, and WebP.</p>
-        <span class="tool-tag soon">Coming Soon</span>
-      </div>
+        <span class="tool-tag live">Available</span>
+      </a>
 
-      <div class="tool-card coming-soon">
+      <a href="/image-compressor/" class="tool-card available">
         <div class="tool-icon image">IMG</div>
         <h3>Image Compressor</h3>
         <p>Compress JPG, PNG, and WebP images without visible quality loss. Reduce file sizes by up to 80%.</p>
-        <span class="tool-tag soon">Coming Soon</span>
-      </div>
+        <span class="tool-tag live">Available</span>
+      </a>
 
       <div class="tool-card coming-soon">
         <div class="tool-icon image">IMG</div>
@@ -194,13 +228,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
         <div class="tool-icon text">TXT</div>
         <h3>Word Counter</h3>
         <p>Count words, characters, sentences, and paragraphs. Reading time estimation included.</p>
-        <span class="tool-tag soon">Coming Soon</span>
-      </div>
-
-      <div class="tool-card coming-soon">
-        <div class="tool-icon dev">DEV</div>
-        <h3>JSON Formatter</h3>
-        <p>Format, validate, and minify JSON data. Syntax highlighting and tree view.</p>
         <span class="tool-tag soon">Coming Soon</span>
       </div>
 
@@ -242,15 +269,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
       <a href="/pdf-merge/">PDF Merge</a>
       <a href="#">Compress PDF</a>
       <a href="#">JPG to PDF</a>
-      <a href="#">Word to PDF</a>
+      <a href="/word-to-pdf/">Word to PDF</a>
       <a href="#">Image Compressor</a>
-      <a href="#">QR Generator</a>
+      <a href="/qr-code-generator/">QR Code Generator</a>
+      <a href="/heic-to-jpg/">HEIC to JPG</a>
+      <a href="/json-formatter/">JSON Formatter</a>
+      <a href="/time-zone-converter/">Time Zone Converter</a>
+      <a href="/currency-converter/">Currency Converter</a>
     </div>
-    <p>&copy; 2026 Toolify. All tools run locally in your browser. <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
+    <p>&copy; 2026 Toolify. All tools run locally in your browser.</p>
+    <p style="font-size:13px;margin-top:8px">Questions or feedback? <a href="javascript:void(0)" onclick="this.style.display='none';this.nextElementSibling.style.display='inline'" style="color:var(--primary);text-decoration:none;cursor:pointer">Click to reveal email</a><span style="display:none"> <a href="mailto:Jeff198510010011@163.com" style="color:var(--primary);text-decoration:none">Jeff198510010011@163.com</a></span></p> <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a></p>
   </div>
 </footer>
 
 <script src="/assets/config.js"></script>
 <script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
 </body>
 </html>

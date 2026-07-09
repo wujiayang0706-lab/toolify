@@ -20,6 +20,8 @@ const CONFIG = {
   // Create two products in Lemon Squeezy: one in USD, one in JPY
   LEMON_SQUEEZY_USD_URL: 'https://toolify.lemonsqueezy.com/checkout/buy-PRODUCT-USD',
   LEMON_SQUEEZY_JPY_URL: 'https://toolify.lemonsqueezy.com/checkout/buy-PRODUCT-JPY',
+  LEMON_SQUEEZY_USD_YEARLY_URL: 'https://toolify.lemonsqueezy.com/checkout/buy-PRODUCT-USD-YEARLY',
+  LEMON_SQUEEZY_JPY_YEARLY_URL: 'https://toolify.lemonsqueezy.com/checkout/buy-PRODUCT-JPY-YEARLY',
 
   // ---- Support ----
   SUPPORT_EMAIL: 'support@toolify.com',
@@ -41,6 +43,8 @@ const CONFIG = {
 
   // ---- Pricing ----
   PRICE_USD: '$9.99',
+  PRICE_USD_YEARLY: '$99.90',
+  PRICE_JPY_YEARLY: '¥15,000',
   PRICE_JPY: '\u00a51,500',
 };
 

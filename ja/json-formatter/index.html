@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料オンラインJSONフォーマッター — ブラウザ内でフォーマット・検証・圧縮</title>
+<meta name="description" content="無料でオンラインでJSONをフォーマット・検証・圧縮。すべてブラウザ内で完結、アップロード不要。美しいインデント、即時エラー検出、分かりやすいメッセージ。">
+<meta name="robots" content="index, follow">
+<link rel="alternate" hreflang="en" href="https://toolify.com/json-formatter">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/json-formatter">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/json-formatter">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/json-formatter">
+<link rel="canonical" href="https://toolify.com/ja/json-formatter">
+<meta property="og:title" content="無料オンラインJSONフォーマッター — アップロード不要、ブラウザ内でフォーマット">
+<meta property="og:description" content="無料でオンラインでJSONをフォーマット・検証・圧縮。アップロード不要、登録不要。即時エラー検出。">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
+  --bg:#f8fafc;--surface:#fff;--text:#0f172a;--text-secondary:#475569;
+  --text-muted:#94a3b8;--border:#e2e8f0;--border-hover:#cbd5e1;
+  --danger:#ef4444;--success:#10b981;--warning:#f59e0b;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+.logo-text{font-size:18px;font-weight:700}
+.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav a{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:8px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:560px;margin:0 auto 16px}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--primary-light);color:var(--primary)}
+.badge svg{width:14px;height:14px}
+
+.editor-section{padding:0 0 24px}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.panel-head h3{font-size:15px;font-weight:700}
+.panel-tools{display:flex;gap:6px;align-items:center}
+.indenter{display:flex;gap:4px}
+.indenter label{font-size:12px;color:var(--text-muted);align-self:center;margin-right:2px}
+.indenter select{padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);cursor:pointer}
+
+.code-area{width:100%;min-height:360px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text);background:var(--bg);resize:vertical;outline:none;tab-size:2;white-space:pre;overflow:auto}
+.code-area:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.code-out{white-space:pre-wrap;word-break:break-word}
+
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{padding:9px 18px;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.btn svg{width:15px;height:15px}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 3px 12px rgba(37,99,235,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(37,99,235,.35)}
+.btn-secondary{background:var(--surface);color:var(--text-secondary);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.btn-ghost{background:transparent;color:var(--text-muted)}
+.btn-ghost:hover{color:var(--danger);background:#fef2f2}
+
+.status-bar{margin-top:10px;padding:9px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;display:none}
+.status-bar.active{display:block}
+.status-bar.valid{background:#ecfdf5;color:var(--success);border:1px solid #a7f3d0}
+.status-bar.invalid{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+.status-bar.info{background:var(--primary-light);color:var(--primary);border:1px solid #bfdbfe}
+.status-bar code{font-family:'SF Mono',Monaco,Consolas,monospace;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+
+.stats{display:flex;gap:16px;font-size:12px;color:var(--text-muted);margin-top:8px}
+.stats span strong{color:var(--text-secondary)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+
+.seo-section{padding:40px 0 60px;border-top:1px solid var(--border)}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.seo-section p,.seo-section li{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:10px}
+.seo-section ul,.seo-section ol{padding-left:20px;margin-bottom:16px}
+.seo-section code{font-family:'SF Mono',Monaco,Consolas,monospace;background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:13px;color:#2563eb}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.step-number{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:10px}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-card p{font-size:13px;color:var(--text-muted)}
+.faq-item{margin-bottom:16px}
+.faq-item h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.faq-item p{font-size:14px;color:var(--text-secondary)}
+
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:13px;color:var(--text-muted)}
+.footer a{color:var(--primary);text-decoration:none}
+.footer-tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.footer-tools a{font-size:13px;color:var(--text-secondary);text-decoration:none;padding:4px 10px;border-radius:16px;transition:all .15s}
+.footer-tools a:hover{background:var(--primary-light);color:var(--primary)}
+.ad-slot{margin:24px 0;padding:16px;text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:12px}
+
+@media(max-width:640px){
+  .hero h1{font-size:22px}
+  .nav{display:none}
+  .steps{grid-template-columns:1fr}
+  .editor-grid{grid-template-columns:1fr}
+  .code-area{min-height:240px}
+}
+
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+</style>
+    <link rel="stylesheet" href="/assets/common.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><div class="logo-icon">T</div><span class="logo-text">Toolify</span></a>
+    <nav class="nav">
+      <a href="/">すべてのツール</a>
+      <a href="#how-to">使い方</a>
+      <a href="#faq">よくある質問</a>
+    <a href="/pricing/">料金</a>
+      <a href="/support/">サポート</a>
+      <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">日本語 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/json-formatter/" class="lang-option">English</a>
+        <a href="/zh/json-formatter/" class="lang-option">中文</a>
+        <a href="/ja/json-formatter/" class="lang-option active">日本語</a>
+      </div>
+    </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <h1>無料オンラインJSONフォーマッター</h1>
+    <p>JSONのフォーマット・検証・圧縮—すべてブラウザ内で完結。アップロード不要、登録不要。即時エラー検出、分かりやすいメッセージ。</p>
+    <div class="badges">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>アップロード不要</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>即時処理</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>永久無料</span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>登録不要</span>
+    </div>
+  </section>
+
+  <section class="editor-section container">
+    <div class="editor-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>JSON入力</h3>
+          <div class="panel-tools">
+            <div class="indenter">
+              <label for="indent">インデント</label>
+              <select id="indent">
+                <option value="2" selected>2スペース</option>
+                <option value="4">4スペース</option>
+                <option value="tab">Tab</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <textarea class="code-area" id="input" placeholder='ここにJSONをペースト、例&#10;{"name":"Toolify","tools":["PDF","QR"],"free":true}' spellcheck="false"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="formatJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>フォーマット
+          </button>
+          <button class="btn btn-secondary" onclick="minifyJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>圧縮
+          </button>
+          <button class="btn btn-secondary" onclick="validateJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>検証
+          </button>
+          <button class="btn btn-ghost" onclick="clearAll()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>クリア
+          </button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>出力</h3>
+          <button class="btn btn-secondary" onclick="copyOutput()" style="padding:6px 14px;font-size:12px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>コピー
+          </button>
+        </div>
+        <pre class="code-area code-out" id="output"></pre>
+        <div class="status-bar" id="statusBar"></div>
+        <div class="stats" id="stats" style="display:none">
+          <span>サイズ: <strong id="statSize"></strong></span>
+          <span>キー数: <strong id="statKeys"></strong></span>
+          <span>深さ: <strong id="statDepth"></strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><div class="ad-slot">[ AdSense 広告ユニット — 728x90 ]</div></div>
+
+  <section class="seo-section container" id="how-to">
+    <h2>JSONをオンラインでフォーマットする方法 — 無料・プライベート</h2>
+    <div class="steps">
+      <div class="step-card"><div class="step-number">1</div><h4>JSONをペースト</h4><p>生の・圧縮済み・乱れたJSONを入力ボックスにペースト。</p></div>
+      <div class="step-card"><div class="step-number">2</div><h4>フォーマットまたは圧縮</h4><p>フォーマットでインデント美化、または圧縮で1行化。</p></div>
+      <div class="step-card"><div class="step-number">3</div><h4>出力をコピー</h4><p>結果を確認してコピー—すべての処理はブラウザ内で完結。</p></div>
+    </div>
+
+    <h3>JSONフォーマットとは？</h3>
+    <p>JSON（JavaScript Object Notation）はAPIや設定ファイルの標準データ形式です。システム間転送時は通常<em>圧縮</em>されており—バイト数削減のため空白が全削除され—人間には読めません。<strong>フォーマット</strong>（美化・整形とも）は改行とインデントを追加し、構造を一目で分かりやすくします。<strong>圧縮</strong>はその逆で、不要な空白を全削除して最小の有効JSONを生成—デプロイ前やネットワーク送信に適しています。</p>
+
+    <h3>当無料JSONフォーマッターを使う理由</h3>
+    <ul>
+      <li><strong>100%プライベート：</strong>JSONはブラウザ内で完全に解析・再シリアライズされ、サーバーにアップロードされません—機密設定やAPI応答にも安全。</li>
+      <li><strong>即時検証：</strong>JSONに構文エラーがあれば、問題箇所を指す明確なメッセージを表示—カンマ忘れの場所当て不再。</li>
+      <li><strong>フォーマット＆圧縮：</strong>2スペース・4スペース・Tabで美化。または1行に圧縮。各ワンクリック。</li>
+      <li><strong>有用な統計：</strong>JSONのサイズ・キー数・ネスト深度を一目で確認。</li>
+      <li><strong>永久無料：</strong>登録不要、制限なし、サブスクなし。ツールはページ上の控えめな広告で運営されています。</li>
+    </ul>
+
+    <h3>よくあるJSONエラー（と修正方法）</h3>
+    <ul>
+      <li><strong>末尾カンマ：</strong><code>{"a":1,}</code>—最後の項目の後のカンマを削除。JSONは末尾カンマを許可しません。</li>
+      <li><strong>シングルクォート：</strong><code>{'a':1}</code>—JSONはダブルクォート必須。<code>{"a":1}</code>を使用。</li>
+      <li><strong>クォートなしキー：</strong><code>{a:1}</code>—キーはダブルクォート必須：<code>{"a":1}</code>。</li>
+      <li><strong>コメント：</strong><code>// コメント</code>—JSONにコメントはありません。削除するかJSONCを使用。</li>
+      <li><strong>特殊文字：</strong>文字列内の未エスケープのTabや改行—<code>\t</code>や<code>\n</code>としてエスケープ。</li>
+    </ul>
+
+    <h3>よくある用途</h3>
+    <ul>
+      <li><strong>API応答の閲覧：</strong>圧縮されたAPI応答をペーストして読みやすく。</li>
+      <li><strong>デバッグ：</strong>コードが生成するJSONの構造ミスを発見。</li>
+      <li><strong>設定ファイル：</strong><code>tsconfig.json</code>や<code>package.json</code>などJSON設定を整理。</li>
+      <li><strong>デプロイ準備：</strong>大型JSONを公開前に圧縮してペイロード削減。</li>
+      <li><strong>学習：</strong>ネストしたオブジェクトや配列の構造を確認。</li>
+    </ul>
+
+    <div id="faq">
+      <h3>よくある質問</h3>
+      <div class="faq-item"><h4>このJSONフォーマッターは本当に無料ですか？</h4><p>はい、完全無料で制限なし。ツールはページ上の控えめな広告で運営しています。</p></div>
+      <div class="faq-item"><h4>JSONはサーバーにアップロードされますか？</h4><p>いいえ。すべての解析・フォーマット・圧縮はJavaScriptによりブラウザ内でローカルに行われます。データがデバイスから外に出ることはありません。</p></div>
+      <div class="faq-item"><h4>大型JSONファイルに対応しますか？</h4><p>はい、数MBのファイルに対応します。ブラウザ内処理のため超大ファイルは少し時間がかかりますが、モダンデバイスで問題なく動作します。</p></div>
+      <div class="faq-item"><h4>JSONCやJSON5（コメント付き）に対応していますか？</h4><p>いいえ—当ツールは厳密なJSON（RFC 8259）に従います。コメント・シングルクォート・末尾カンマはエラーとしてフラグ付けされます。厳密なJSON出力が必要なら先に削除してください。</p></div>
+      <div class="faq-item"><h4>どのインデントを使うべき？</h4><p>2スペースが最も一般的な慣習。4スペースは深くネストしたデータに読みやすい。Tabも有効—チームの好みで。</p></div>
+      <div class="faq-item"><h4>壊れたJSONを自動修復できますか？</h4><p>自動修復はしません—何が悪いか正確に通知し、あなたが修正できます。自動修復はデータの意味を暗黙に変えるリスクがあるため、エラーを正確に報告します。</p></div>
+      <div class="faq-item"><h4>モバイルで使えますか？</h4><p>はい！フォーマッターはiOS、Android、モダンなモバイルブラウザすべてで動作します。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-tools">
+      <a href="/pdf-to-word/">PDFをWordに</a>
+      <a href="/word-to-pdf/">WordをPDFに</a>
+      <a href="/pdf-merge/">PDF結合</a>
+      <a href="/pdf-split/">PDF分割</a>
+      <a href="/qr-code-generator/">QRコード生成</a>
+      <a href="/heic-to-jpg/">HEICをJPGに</a>
+      <a href="/json-formatter/">JSONフォーマッター</a>
+      <a href="/currency-converter/">通貨換算</a>
+      <a href="/pricing/">料金</a>
+      <a href="/support/">サポート</a>
+    </div>
+    <p>&copy; 2026 Toolify. すべてのツールはブラウザ内でローカル実行されます。 <a href="#">プライバシーポリシー</a> &middot; <a href="#">利用規約</a></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const inputEl = document.getElementById('input');
+const outputEl = document.getElementById('output');
+const indentEl = document.getElementById('indent');
+const statusBar = document.getElementById('statusBar');
+const statsEl = document.getElementById('stats');
+const statSize = document.getElementById('statSize');
+const statKeys = document.getElementById('statKeys');
+const statDepth = document.getElementById('statDepth');
+const toast = document.getElementById('toast');
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function getIndent() {
+  const v = indentEl.value;
+  return v === 'tab' ? '\t' : parseInt(v, 10);
+}
+
+function setStatus(type, msg) {
+  statusBar.className = 'status-bar active ' + type;
+  statusBar.innerHTML = msg;
+}
+
+function clearStatus() {
+  statusBar.className = 'status-bar';
+  statusBar.innerHTML = '';
+}
+
+function countKeys(obj, depth) {
+  let keys = 0, maxDepth = depth;
+  if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+    for (const k in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, k)) {
+        keys++;
+        const r = countKeys(obj[k], depth + 1);
+        keys += r.keys;
+        if (r.depth > maxDepth) maxDepth = r.depth;
+      }
+    }
+  } else if (Array.isArray(obj)) {
+    for (const item of obj) {
+      const r = countKeys(item, depth + 1);
+      keys += r.keys;
+      if (r.depth > maxDepth) maxDepth = r.depth;
+    }
+  }
+  return { keys, depth: maxDepth };
+}
+
+function showStats(str, obj) {
+  const bytes = new Blob([str]).size;
+  statSize.textContent = bytes < 1024 ? bytes + ' B' : (bytes / 1024).toFixed(1) + ' KB';
+  const r = countKeys(obj, 0);
+  statKeys.textContent = r.keys;
+  statDepth.textContent = r.depth;
+  statsEl.style.display = 'flex';
+}
+
+function parseInput() {
+  const text = inputEl.value.trim();
+  if (!text) {
+    setStatus('invalid', '入力が空です。JSONをペーストしてフォーマットしてください。');
+    return { error: true };
+  }
+  try {
+    const obj = JSON.parse(text);
+    return { obj, error: false };
+  } catch (err) {
+    let msg = err.message;
+    const posMatch = msg.match(/position (\d+)/i);
+    if (posMatch) {
+      const pos = parseInt(posMatch[1], 10);
+      const before = inputEl.value.substring(0, pos);
+      const line = before.split('\n').length;
+      const col = pos - before.lastIndexOf('\n');
+      msg += '（' + line + '行目、' + col + '列目）';
+    }
+    setStatus('invalid', '無効なJSON：' + msg);
+    outputEl.textContent = '';
+    statsEl.style.display = 'none';
+    return { error: true };
+  }
+}
+
+function formatJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj, null, getIndent());
+  outputEl.textContent = out;
+  setStatus('valid', '有効なJSON—フォーマット成功。');
+  showStats(out, r.obj);
+  showToast('フォーマットしました');
+}
+
+function minifyJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj);
+  outputEl.textContent = out;
+  setStatus('valid', '有効なJSON—1行に圧縮しました。');
+  showStats(out, r.obj);
+  showToast('圧縮しました');
+}
+
+function validateJSON() {
+  const r = parseInput();
+  if (r.error) return;
+  const out = JSON.stringify(r.obj, null, getIndent());
+  outputEl.textContent = out;
+  setStatus('valid', '有効なJSON ✓—構文エラーは見つかりませんでした。');
+  showStats(JSON.stringify(r.obj), r.obj);
+  showToast('JSONは有効です');
+}
+
+function clearAll() {
+  inputEl.value = '';
+  outputEl.textContent = '';
+  clearStatus();
+  statsEl.style.display = 'none';
+  inputEl.focus();
+}
+
+function copyOutput() {
+  const text = outputEl.textContent;
+  if (!text) {
+    showToast('コピー対象がありません。先にJSONをフォーマットしてください。', true);
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('クリップボードにコピーしました');
+    }).catch(() => { fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('クリップボードにコピーしました');
+  } catch (e) {
+    showToast('コピーに失敗しました。手動でコピーしてください。', true);
+  }
+  document.body.removeChild(ta);
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  inputEl.value = '{"name":"Toolify","tagline":"無料ブラウザツール","tools":[{"id":"pdf-merge","live":true},{"id":"qr-code","live":true}],"stats":{"users":"847K","uptime":"99.9%"},"free":true}';
+  formatJSON();
+});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "無料オンラインJSONフォーマッター",
+  "url": "https://toolify.com/ja/json-formatter",
+  "description": "無料でオンラインでJSONをフォーマット・検証・圧縮。すべてブラウザ内で完結、アップロード不要。美しいインデント、即時エラー検出、分かりやすいメッセージ。",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="/assets/config.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+</body>
+</html>

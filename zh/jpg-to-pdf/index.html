@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>JPG转PDF — Toolify | 免费在线图片转PDF</title>
+<meta name="description" content="免费在线将JPG、PNG、WebP图片转换为PDF。批量转换，拖拽排序，无需上传，无水印。在浏览器中运行。">
+<link rel="canonical" href="https://toolify.com/zh/jpg-to-pdf/">
+<meta property="og:title" content="JPG转PDF — Toolify">
+<meta property="og:description" content="Convert images to PDF. JPG, PNG, WebP supported. Batch, free, no upload.">
+<meta property="og:type" content="website">
+<link rel="alternate" hreflang="en" href="https://toolify.com/jpg-to-pdf/">
+<link rel="alternate" hreflang="zh" href="https://toolify.com/zh/jpg-to-pdf/">
+<link rel="alternate" hreflang="ja" href="https://toolify.com/ja/jpg-to-pdf/">
+<link rel="alternate" hreflang="x-default" href="https://toolify.com/jpg-to-pdf/">
+<link rel="stylesheet" href="/assets/common.css">
+<style>
+:root{--primary:#2563eb;--primary-light:#eff6ff;--surface:#ffffff;--bg:#f8fafc;--border:#e2e8f0;--border-hover:#cbd5e1;--text:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--success:#10b981;--danger:#ef4444;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 8px 25px rgba(0,0,0,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;z-index:50}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--text);text-decoration:none}
+.logo span{color:var(--primary)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav a{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-secondary);text-decoration:none;transition:all .15s}
+.nav a:hover{background:var(--primary-light);color:var(--primary)}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
+.container{max-width:800px;margin:0 auto;padding:0 20px}
+.hero{text-align:center;padding:48px 20px 32px}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:12px}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:600px;margin:0 auto}
+.badges{display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text-secondary)}
+.badge svg{width:14px;height:14px;color:var(--success)}
+.tool-section{padding:0 20px 40px}
+.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.upload-icon{margin-bottom:12px}
+.upload-icon svg{width:48px;height:48px;color:var(--text-muted)}
+.upload-area p{color:var(--text-secondary);font-size:15px}
+.upload-area .hint{font-size:12px;color:var(--text-muted);margin-top:4px}
+.or-divider{text-align:center;margin:16px 0;color:var(--text-muted);font-size:13px;position:relative}
+.or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
+.or-divider::before{left:0}.or-divider::after{right:0}
+.file-list{margin-top:20px}
+.file-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px;transition:all .15s}
+.file-item:hover{border-color:var(--border-hover)}
+.file-handle{cursor:grab;color:var(--text-muted)}
+.file-handle:active{cursor:grabbing}
+.file-handle svg{width:18px;height:18px}
+.file-thumb{width:48px;height:48px;border-radius:6px;object-fit:cover;background:var(--bg)}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-meta{font-size:11px;color:var(--text-muted)}
+.file-remove{padding:4px 8px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;border-radius:4px;font-size:18px}
+.file-remove:hover{color:var(--danger);background:#fef2f2}
+.btn-convert{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:16px}
+.btn-convert:hover{background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.btn-convert:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.progress{display:none;margin-top:16px}
+.progress.active{display:block}
+.progress-bar{width:100%;max-width:400px;height:6px;background:var(--border);border-radius:3px;margin:0 auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:3px;width:0%;transition:width .3s ease}
+.progress-text{font-size:13px;color:var(--text-secondary);margin-top:8px;text-align:center}
+.result{display:none;padding:0 0 40px}
+.result.active{display:block}
+.result-card{background:var(--surface);border:1px solid var(--success);border-radius:var(--radius);padding:32px 24px;text-align:center}
+.result-icon{margin-bottom:12px}
+.result-icon svg{width:56px;height:56px;color:var(--success)}
+.result-card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.result-card p{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--success);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;box-shadow:0 4px 14px rgba(16,185,129,.3)}
+.btn-download:hover{background:#059669;transform:translateY(-1px)}
+.btn-again{display:inline-block;margin-left:12px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;font-size:14px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .15s}
+.btn-again:hover{border-color:var(--border-hover);background:#f8fafc}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s ease;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--danger)}
+.ad-slot{max-width:728px;margin:24px auto;min-height:90px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px}
+.seo-section{max-width:800px;margin:0 auto;padding:40px 20px}
+.seo-section h2{font-size:22px;font-weight:700;margin-bottom:16px}
+.seo-section p{color:var(--text-secondary);margin-bottom:12px;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0}
+@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{text-align:center}
+.step-num{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step p{font-size:12px;color:var(--text-muted)}
+.faq{margin-top:24px}
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+.faq-item h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.faq-item p{font-size:13px;color:var(--text-secondary)}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 20px;text-align:center}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:12px}
+.footer-links a{font-size:12px;color:var(--text-secondary);text-decoration:none}
+.footer-links a:hover{color:var(--primary)}
+.footer p{font-size:12px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/zh/" class="logo">Tool<span>ify</span></a>
+      <nav class="nav">
+        <a href="/zh/">工具</a>
+        <a href="/zh/pricing/">定价</a>
+        <a href="/zh/support/">支持</a>
+        <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">中文 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/zh/jpg-to-pdf/" class="lang-option">English</a>
+        <a href="/zh/jpg-to-pdf/" class="lang-option active">中文</a>
+        <a href="/ja/jpg-to-pdf/" class="lang-option">日本語</a>
+      </div>
+    </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <h1>JPG转PDF</h1>
+      <p>将JPG、PNG和WebP图片合并为PDF。拖拽排序，批量转换，无需上传。</p>
+      <div class="badges">
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 1l4 4H6V1zm6 14H2V5h5V0h5v15z"/></svg> 无需上传</span>
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 1l4 4H6V1zm6 14H2V5h5V0h5v15z"/></svg> 无水印</span>
+        <span class="badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 1l4 4H6V1zm6 14H2V5h5V0h5v15z"/></svg> 批量转换</span>
+      </div>
+    </section>
+
+    <section class="tool-section container">
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 4l12 12h-8v16h-8V16h-8L24 4zM4 36h40v8H4v-8z"/></svg></div>
+        <p>拖放图片到此处或点击选择</p>
+        <p class="hint">JPG, PNG, WebP — 每个最大50MB</p>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+      </div>
+
+      <div class="or-divider">或</div>
+
+      <div class="file-list" id="fileList"></div>
+
+      <button class="btn-convert" id="convertBtn" disabled>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 0a10 10 0 100 20A10 10 0 0010 0zm5 11h-4v4H9v-4H5V9h4V5h2v4h4v2z"/></svg>
+        转换为PDF
+      </button>
+
+      <div class="progress" id="progress">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p class="progress-text" id="progressText">转换中...</p>
+      </div>
+
+      <div class="result" id="result">
+        <div class="result-card">
+          <div class="result-icon"><svg viewBox="0 0 56 56" fill="currentColor"><path d="M28 4a24 24 0 100 48 24 24 0 000-48zm-4 32L14 26l4-4 6 6 12-12 4 4-16 16z"/></svg></div>
+          <h3>PDF已创建！</h3>
+          <p id="resultMsg">您的PDF已准备好下载。</p>
+          <a href="#" class="btn-download" id="downloadBtn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2v10m0 0l4-4m-4 4l-4-4M2 16h16v2H2v-2z"/></svg>
+            下载PDF
+          </a>
+          <button class="btn-again" id="againBtn">继续转换</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-slot">广告位</div>
+
+    <section class="seo-section">
+      <h2>如何将JPG转PDF</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h4>上传图片</h4><p>选择或拖放JPG、PNG、WebP文件</p></div>
+        <div class="step"><div class="step-num">2</div><h4>排序</h4><p>拖动文件排列页面顺序</p></div>
+        <div class="step"><div class="step-num">3</div><h4>下载PDF</h4><p>点击转换并下载PDF</p></div>
+      </div>
+      <p>我们的JPG转PDF工具完全在浏览器中使用jsPDF运行。您的图片不会离开设备——所有处理在本地完成，确保完全的隐私和安全。</p>
+      <p>每张图片成为PDF中的一页，尺寸与原始图片一致。转换前可以拖放重新排序。支持JPG、PNG和WebP格式，每个文件最大50MB。</p>
+
+      <div class="faq">
+        <div class="faq-item"><h3>这个JPG转PDF工具免费吗？</h3><p>是的，完全免费。无需账号，无水印，无限制。所有处理在浏览器中完成。</p></div>
+        <div class="faq-item"><h3>支持哪些图片格式？</h3><p>JPG、PNG和WebP。全部转换为PDF，每张图片一页。</p></div>
+        <div class="faq-item"><h3>我的图片会上传到服务器吗？</h3><p>不会。所有转换在浏览器中使用JavaScript本地完成。您的图片不会离开设备。</p></div>
+        <div class="faq-item"><h3>可以重新排序页面吗？</h3><p>可以。上传后，拖动任意文件可重新排序。列表中的顺序决定了PDF中的页面顺序。</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/zh/pdf-to-word/">PDF转Word</a>
+      <a href="/zh/word-to-pdf/">Word转PDF</a>
+      <a href="/zh/pdf-merge/">PDF合并</a>
+      <a href="/zh/pdf-split/">PDF拆分</a>
+      <a href="/zh/qr-code-generator/">二维码生成</a>
+      <a href="/zh/heic-to-jpg/">HEIC转JPG</a>
+      <a href="/zh/json-formatter/">JSON格式化</a>
+      <a href="/zh/time-zone-converter/">时区转换器</a>
+      <a href="/zh/jpg-to-pdf/">JPG转PDF</a>
+      <a href="/zh/currency-converter/">汇率换算</a>
+      <a href="/zh/pricing/">定价</a>
+      <a href="/zh/support/">支持</a>
+    </div>
+    <p>&copy; 2026 Toolify. 所有工具均在浏览器本地运行。</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/assets/config.js"></script>
+  <script src="/assets/app.js"></script>
+  <script>
+var uploadArea = document.getElementById('uploadArea');
+var fileInput = document.getElementById('fileInput');
+var fileList = document.getElementById('fileList');
+var convertBtn = document.getElementById('convertBtn');
+var progress = document.getElementById('progress');
+var progressFill = document.getElementById('progressFill');
+var progressText = document.getElementById('progressText');
+var result = document.getElementById('result');
+var downloadBtn = document.getElementById('downloadBtn');
+var againBtn = document.getElementById('againBtn');
+var toast = document.getElementById('toast');
+var images = [];
+var resultBlob = null;
+
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function handle文件s(files) {
+  var added = 0;
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    if (!f.type.startsWith('image/')) continue;
+    if (f.size > 50 * 1024 * 1024) {
+      showToast('文件 "' + f.name + '" 超过50MB限制', true);
+      continue;
+    }
+    images.push({ file: f, name: f.name, size: f.size, dataUrl: null });
+    added++;
+  }
+  if (added > 0) {
+    render文件List();
+    convertBtn.disabled = false;
+    showToast(added + ' 张图片已添加');
+  }
+}
+
+function render文件List() {
+  var html = '';
+  for (var i = 0; i < images.length; i++) {
+    var img = images[i];
+    html += '<div class="file-item" data-idx="' + i + '">';
+    html += '<span class="file-handle" draggable="true" data-idx="' + i + '"><svg viewBox="0 0 18 18" fill="currentColor"><circle cx="6" cy="4" r="1.5"/><circle cx="12" cy="4" r="1.5"/><circle cx="6" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="6" cy="14" r="1.5"/><circle cx="12" cy="14" r="1.5"/></svg></span>';
+    if (img.dataUrl) {
+      html += '<img class="file-thumb" src="' + img.dataUrl + '" alt="">';
+    } else {
+      html += '<div class="file-thumb" style="display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 20 20" fill="var(--text-muted)"><path d="M2 3h16v14H2V3zm2 2v8l3-3 3 3 3-4 3 4V5H4z"/></svg></div>';
+      (function(idx) {
+        var reader = new 文件Reader();
+        reader.onload = function(e) { images[idx].dataUrl = e.target.result; var el = fileList.querySelector('[data-idx="' + idx + '"] .file-thumb'); if (el) el.src = e.target.result; };
+        reader.readAsDataURL(img.file);
+      })(i);
+    }
+    html += '<div class="file-info"><div class="file-name">' + img.name + '</div><div class="file-meta">' + formatSize(img.size) + ' — 第 ' + (i + 1) + '</div></div>';
+    html += '<button class="file-remove" data-remove="' + i + '">&times;</button>';
+    html += '</div>';
+  }
+  fileList.innerHTML = html;
+
+  // Remove buttons
+  fileList.querySelectorAll('[data-remove]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      var idx = parseInt(e.target.getAttribute('data-remove'));
+      images.splice(idx, 1);
+      render文件List();
+      if (images.length === 0) convertBtn.disabled = true;
+    });
+  });
+
+  // Drag to reorder
+  var dragIdx = null;
+  fileList.querySelectorAll('.file-handle').forEach(function(handle) {
+    handle.addEventListener('dragstart', function(e) {
+      dragIdx = parseInt(handle.getAttribute('data-idx'));
+      e.dataTransfer.effectAllowed = 'move';
+    });
+  });
+  fileList.querySelectorAll('.file-item').forEach(function(item) {
+    item.addEventListener('dragover', function(e) {
+      e.preventDefault();
+    });
+    item.addEventListener('drop', function(e) {
+      e.preventDefault();
+      var dropIdx = parseInt(item.getAttribute('data-idx'));
+      if (dragIdx !== null && dragIdx !== dropIdx) {
+        var moved = images.splice(dragIdx, 1)[0];
+        images.splice(dropIdx, 0, moved);
+        render文件List();
+      }
+    });
+  });
+}
+
+// Upload area events
+uploadArea.addEventListener('click', function() { fileInput.click(); });
+fileInput.addEventListener('change', function(e) { handle文件s(e.target.files); fileInput.value = ''; });
+uploadArea.addEventListener('dragover', function(e) { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', function() { uploadArea.classList.remove('drag-over'); });
+uploadArea.addEventListener('drop', function(e) {
+  e.preventDefault();
+  uploadArea.classList.remove('drag-over');
+  handle文件s(e.dataTransfer.files);
+});
+
+// Convert
+convertBtn.addEventListener('click', async function() {
+  if (images.length === 0) return;
+  convertBtn.disabled = true;
+  progress.classList.add('active');
+  progressFill.style.width = '0%';
+
+  try {
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = null;
+
+    for (var i = 0; i < images.length; i++) {
+      var img = images[i];
+      progressText.textContent = '处理中 ' + (i + 1) + ' / ' + images.length + '...';
+      progressFill.style.width = ((i / images.length) * 100) + '%';
+
+      // Read image
+      var dataUrl = img.dataUrl;
+      if (!dataUrl) {
+        dataUrl = await new Promise(function(resolve, reject) {
+          var reader = new 文件Reader();
+          reader.onload = function(e) { resolve(e.target.result); };
+          reader.onerror = reject;
+          reader.readAsDataURL(img.file);
+        });
+      }
+
+      // Get image dimensions
+      var dims = await new Promise(function(resolve, reject) {
+        var tempImg = new Image();
+        tempImg.onload = function() { resolve({ w: tempImg.naturalWidth, h: tempImg.naturalHeight, src: dataUrl }); };
+        tempImg.onerror = reject;
+        tempImg.src = dataUrl;
+      });
+
+      // Determine format
+      var format = img.file.type === 'image/png' ? 'PNG' : 'JPEG';
+      var orientation = dims.w > dims.h ? 'l' : 'p';
+
+      if (i === 0) {
+        doc = new jsPDF({ orientation: orientation, unit: 'px', format: [dims.w, dims.h] });
+      } else {
+        doc.add第([dims.w, dims.h], orientation);
+      }
+      doc.addImage(dims.src, format, 0, 0, dims.w, dims.h);
+
+      // Yield to UI
+      await new Promise(function(r) { setTimeout(r, 10); });
+    }
+
+    progressFill.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    // Generate PDF blob
+    resultBlob = doc.output('bloburl');
+
+    setTimeout(function() {
+      progress.classList.remove('active');
+      result.classList.add('active');
+      downloadBtn.href = resultBlob;
+      downloadBtn.setAttribute('download', 'images.pdf');
+      document.getElementById('resultMsg').textContent =
+        images.length + ' 张图片已转换为PDF (' + formatSize(doc.output('blob').size) + ').';
+      convertBtn.disabled = false;
+      showToast('PDF创建成功！');
+    }, 400);
+
+  } catch (err) {
+    console.error(err);
+    progress.classList.remove('active');
+    convertBtn.disabled = false;
+    showToast('错误： ' + err.message, true);
+  }
+});
+
+againBtn.addEventListener('click', function() {
+  result.classList.remove('active');
+  images = [];
+  render文件List();
+  convertBtn.disabled = true;
+});
+</script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JPG转PDF",
+  "url": "https://toolify.com/jpg-to-pdf",
+  "description": "免费在线将JPG、PNG、WebP图片转换为PDF。批量转换，拖拽排序，无需上传，无水印。在浏览器中运行。",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "/fers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</body>
+</html>

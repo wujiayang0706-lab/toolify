@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料為替レート変換ツール — リアルタイムUSDレート</title>
@@ -83,10 +84,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .toast.error{background:var(--danger)}
 @media(max-width:640px){.hero h1{font-size:22px}.nav{display:none}.converter-row{flex-direction:column}.swap-btn{align-self:center;transform:rotate(90deg)}.swap-btn:hover{transform:rotate(270deg)}.result-amount{font-size:26px}.rates-table{font-size:12px}.rates-table th,.rates-table td{padding:8px 10px}}
 
-.lang-switcher{display:flex;gap:2px;align-items:center;margin-left:12px}
-.lang-link{padding:4px 10px;border-radius:14px;font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all .15s}
-.lang-link:hover{background:var(--primary-light);color:var(--primary)}
-.lang-link.active{background:var(--primary);color:#fff}
+.lang-switcher{position:relative;margin-left:12px}
+.lang-toggle{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.lang-toggle svg{width:12px;height:12px}
+.lang-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:100;min-width:120px}
+.lang-menu.open{display:block}
+.lang-option{display:block;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:all .1s}
+.lang-option:hover{background:var(--primary-light);color:var(--primary)}
+.lang-option.active{background:var(--primary);color:#fff}
 
 </style>
 </head>
@@ -101,7 +107,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <a href="/ja/pdf-merge/">PDF結合</a>
       <a href="/ja/pricing/">料金</a>
       <a href="/ja/support/">サポート</a>
-    <div class="lang-switcher"><a href="/currency-converter/" class="lang-link">EN</a><a href="/zh/currency-converter/" class="lang-link">中文</a><a href="/ja/currency-converter/" class="lang-link active">日本語</a></div>
+    <div class="lang-switcher">
+      <button class="lang-toggle" onclick="var m=document.getElementById('langMenu');m.style.display=m.style.display==='block'?'none':'block'">日本語 <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L2 4h8z"/></svg></button>
+      <div class="lang-menu" id="langMenu" style="display:none">
+        <a href="/currency-converter/" class="lang-option">English</a>
+        <a href="/zh/currency-converter/" class="lang-option">中文</a>
+        <a href="/ja/currency-converter/" class="lang-option active">日本語</a>
+      </div>
+    </div>
     </nav>
   </div>
 </header>
@@ -492,6 +505,12 @@ setInterval(fetchRates, 5 * 60 * 1000);
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
+</script>
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('langMenu');
+  if(m&&!e.target.closest('.lang-switcher'))m.style.display='none';
+});
 </script>
 </body>
 </html>
